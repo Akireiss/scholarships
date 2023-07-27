@@ -1,13 +1,9 @@
 <?php
-// use App\Http\Controllers\AddStudentController;
-// use App\Http\Controllers\AdminGovernmentController;
-// use App\Http\Controllers\AdminPrivateController;
-use App\Http\Controllers\AdminGovernmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Livewire\ViewForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\AddStudentPrivateController;
+use App\Http\Controllers\AdminGovernmentController;
 use App\Http\Controllers\accountSetController;
 use App\Http\Controllers\AddStudentController;
 use App\Http\Livewire\Grantees;
@@ -36,10 +32,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // register here
 
 Route::controller(AuthController::class)->group(function() {
+    // admin
     Route::get('admin/settings/register', 'register')->name('admin.settings.register');
-    // to save the data of the user's
-        Route::post('register', 'registerSave')->name('register.save');
-    // it ends here
+    Route::post('register', 'registerSave')->name('register.save');
+    // staff
+    Route::get('staff/settings/register', 'register')->name('staff.settings.register');
+    Route::post('register', 'registerSave')->name('register.save');
+    // campus-NLUC
+
+
 
         // log in
 
@@ -47,10 +48,11 @@ Route::controller(AuthController::class)->group(function() {
         Route::post('login', 'loginAction')->name('login.action');
 
 
-// for the admin dashboard
+// for the users dashboard
 Route::middleware('auth')->group(function () {
     Route::view('/admin/dashboard', 'admin.dashboard')->name('admin.dashboard');
     Route::view('/staff/dashboardStaff', 'staff.dashboardStaff')->name('staff.dashboardStaff');
+    Route::view('/campus-NLUC/dashboard', 'campus-NLUC.dashboardCamp')->name('campus-NLUC.dashboardCamp');
 });
 
 
@@ -67,6 +69,7 @@ Route::get('admin/scholarship/view', [AdminGovernmentController::class, 'view'])
 // staff
 Route::get('/view-form', ViewForm::class)->name('view-form');
 Route::get('staff/scholarship/view', [StaffGovernmentController::class, 'view'])->name('staff.scholarship.view');
+// campus-NLUC
 });
 
 
@@ -77,6 +80,7 @@ Route::get('admin/scholarship/grantees', [AddStudentController::class, 'grantees
 // staff
 Route::get('/staff/scholarship/grantees', Grantees::class)->name('staff.scholarship.grantees');
 Route::get('staff/scholarship/grantees', [StaffaddStudentController::class, 'grantees'])->name('staff.scholarship.grantees');
+// campus-NLUC
 
 
 

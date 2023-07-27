@@ -17,7 +17,7 @@
                         <div class="form-check">
                             <label for="scholarship_name" class="mb-2 fw-bold">Scholarship Name</label>
                             <select wire:model="scholarship_name" id="scholarship_name" class="form-select mb-2">
-                                <option value="">Select Scholarship Name</option>
+                                {{-- <option value="">Select Scholarship Name</option> --}}
                                 @foreach ($scholarshipNames as $name)
                                     <option value="{{ $name->id }}">{{ $name->name }}</option>
                                 @endforeach
