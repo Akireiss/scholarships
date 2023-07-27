@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminGovernmentController;
 use App\Http\Controllers\accountSetController;
 use App\Http\Controllers\AddStudentController;
+use App\Http\Controllers\auditController;
 use App\Http\Livewire\Grantees;
 use App\Http\Controllers\StaffaddStudentController;
 use App\Http\Controllers\StaffGovernmentController;
+use App\Http\Livewire\AuditTrail;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +88,11 @@ Route::get('staff/scholarship/grantees', [StaffaddStudentController::class, 'gra
 
 // settings
 Route::get('admin/settings/accountSettings',[accountSetController::class, 'accountSettings'])->name('admin.settings.accountSettings');
+// auditlogs
+// admin
+Route::get('/admin/settings/auditTrail', AuditTrail::class)->name('admin.settings.auditTrail');
+Route::get('/admin/settings/auditTrail', [auditController::class, 'auditTrail'])->name('admin.settings.auditTrail');
+
 
 // add scholarship
 

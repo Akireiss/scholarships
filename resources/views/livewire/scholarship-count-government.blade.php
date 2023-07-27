@@ -1,4 +1,6 @@
 <div>
+
+<div class="row">
     <div class="col-md-6 stretch-card grid-margin">
         <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
             <div class="card-body">
@@ -25,5 +27,18 @@
             </div>
         </div>
     </div>
-    
+    <div class="col-md-6 stretch-card grid-margin">
+        <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
+          <div class="card-body">
+            <i class="mdi mdi-dots-horizontal float-end"></i>
+            <h2 class="font-weight-normal mb-3">
+              <i class="mdi mdi-human-male mdi-50px"></i>
+            </h2>
+              <h4 class="mb-3">Total of Scholars in Government</h4>
+              <h5 class="card-text">30,000</h5>
+          </div>
+        </div>
+      </div>
+</div>
+
 </div>
