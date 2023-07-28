@@ -9,10 +9,12 @@ class AddStudentController extends Controller
 {
     public function grantees(Request $request)
     {
-
-
-   // Pass the campuses, courses, and selected campus data to the view
-   return view('admin.scholarship.grantees'  );
+        // Pass the campuses, courses, and selected campus data to the view
+        return view('admin.scholarship.grantees'  );
+    }
+    public function granteesStaff(Request $request)
+    {
+        return view('staff.scholarship.grantees'  );
     }
 
 }

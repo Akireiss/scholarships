@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Livewire\AuditTrail;
+use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,30 +18,38 @@ class AuthController extends Controller
         {
             return view('admin/settings/register');
         }
+        public function registerStaff()
+        {
+            return view('staff/settings/register');
+        }
 
 
         public function registerSave(Request $request)
         {
-          Validator::make($request->all(),
-            [
+            Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|unique:users|max:255',
                 'password' => 'required|string|min:8|confirmed',
-                'role' => 'required|in:0,1,2'
+                'role' => 'required|in:0,1,2',
             ])->validate();
 
-            User::create
-            ([
+            $user = User::create([
                 'name' => $request->name,
                 'username' => $request->username,
                 'password' => Hash::make($request['password']),
                 'role' => $request->role,
             ]);
 
-            // redirect to dashboard
-                return back()->with('message', 'Successfully created an account');
-            // ends
-        }
+    // Record audit trail for user registration
+    AuditLog::create([
+        'user_id' => $user->id,
+        'action' => 'create',
+        'data' => json_encode($user),
+    ]);
+
+    // redirect to users dashboard
+    return back()->with('message', 'Successfully created an account');
+}
 
 
         // log in here
@@ -53,7 +63,6 @@ class AuthController extends Controller
 
         public function loginAction(Request $request)
         {
-
             $validatedData = $request->validate([
                 'username' => 'required',
                 'password' => 'required',
@@ -63,7 +72,14 @@ class AuthController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                if ($user->role == 1 ) {
+                // Record audit trail for user login
+                AuditLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'login',
+                    'data' => json_encode(['username' => $user->username]),
+                ]);
+
+                if ($user->role == 1) {
                     return redirect()->route('admin.dashboard')->with('message', 'Welcome');
                 } else if ($user->role == 0) {
                     // Redirect to a different dashboard or homepage for users with roles other than 1
@@ -75,7 +91,6 @@ class AuthController extends Controller
 
             return redirect()->back()->withErrors(['login' => 'Invalid credentials'])->withInput();
         }
-
 // log out here
 
 public function logout(Request $request)

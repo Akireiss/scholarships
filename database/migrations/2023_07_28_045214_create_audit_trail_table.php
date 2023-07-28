@@ -6,16 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('audit', function (Blueprint $table) {
+        Schema::create('audit_trail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('event');
-            $table->text('description')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->string('action');
+            $table->text('data')->nullable(); 
             $table->timestamps();
-            // foreign
+
+            // Foreign key constraint to link user_id with users table
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('audit');
+        Schema::dropIfExists('audit_trail');
     }
 };

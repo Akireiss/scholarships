@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AuditTrail extends Component
@@ -16,7 +17,8 @@ class AuditTrail extends Component
 
     public function loadAuditLogs()
     {
-        $this->auditLogs = AuditLog::latest()->get();
+        // Fetch the audit logs from the audit_trail table
+        $this->auditLogs = AuditLog::orderBy('created_at','desc')->get();
     }
 
     public function render()

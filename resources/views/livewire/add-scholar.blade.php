@@ -1,14 +1,25 @@
-<div>
 
+<div>
     <section class="mt-3 p-5">
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body shadow-lg">
+                            @if ($successMessage)
+                                <div class="alert alert-success mt-3" wire:offline.remove>
+                                    {{ $successMessage }}
+                                </div>
+                            @endif
+                            @if ($errorMessage)
+                                <div class="alert alert-danger mt-3" wire:offline.remove>
+                                    {{ $errorMessage }}
+                                </div>
+                            @endif
                         <form wire:submit.prevent="submit">
                             <div class="form-check">
-                                <label for="type" class="mb-2 fw-bold">Scholarship Type</label>
-                                <select wire:model="scholarship_type" id="scholarship_type" class="form-select mb-2">
+                                <label for="scholarship_type_id" class="mb-2 fw-bold">Scholarship Type</label>
+                                <select wire:model="scholarship_type_id" id="scholarship_type_id" class="form-select mb-2">
+                                    <option value="">Select Scholarship Type</option>
                                     @foreach ($scholarshipTypes as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
@@ -31,5 +42,4 @@
             </div>
         </div>
     </section>
-
 </div>

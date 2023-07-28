@@ -9,6 +9,7 @@ class ScholarshipName extends Model
 {
     protected $table = 'scholarship_name';
     protected $primaryKey = 'id';
+    protected $fillable = ['name', 'scholarship_type_id']; // fillable attributes
 
     public function scholarshipType()
     {

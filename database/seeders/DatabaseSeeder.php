@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // // Log in a user temporarily for seeding
+        // Auth::loginUsingId(1);
+
         // Call ScholarshipTypeSeeder first
         $this->call(ScholarshipTypeSeeder::class);
 
@@ -20,5 +24,8 @@ class DatabaseSeeder extends Seeder
 
         // Call FundSourceSeeder last
         $this->call(FundSourceSeeder::class);
-    }
+
+        // // Log out the user after seeding
+        // Auth::logout();
+}
 }

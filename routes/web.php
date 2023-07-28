@@ -3,15 +3,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Livewire\ViewForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminGovernmentController;
+// account
 use App\Http\Controllers\accountSetController;
-use App\Http\Controllers\AddStudentController;
-use App\Http\Controllers\auditController;
+use App\Http\Controllers\addScholarController;
+// add
 use App\Http\Livewire\Grantees;
-use App\Http\Controllers\StaffaddStudentController;
-use App\Http\Controllers\StaffGovernmentController;
+use App\Http\Controllers\AddStudentController;
+// audit
+use App\Http\Controllers\auditController;
 use App\Http\Livewire\AuditTrail;
-
+// view
+use App\Http\Controllers\AdminGovernmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,23 +26,22 @@ use App\Http\Livewire\AuditTrail;
 */
 // admin here
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // register here
 
-Route::controller(AuthController::class)->group(function() {
+    Route::controller(AuthController::class)->group(function() {
     // admin
     Route::get('admin/settings/register', 'register')->name('admin.settings.register');
     Route::post('register', 'registerSave')->name('register.save');
     // staff
-    Route::get('staff/settings/register', 'register')->name('staff.settings.register');
+    Route::get('staff/settings/register', 'registerStaff')->name('staff.settings.register');
     Route::post('register', 'registerSave')->name('register.save');
-    // campus-NLUC
 
 
 
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 // Scholarship tables to view
 
 Route::middleware('auth')->group(function () {
@@ -70,9 +72,11 @@ Route::get('/view-form', ViewForm::class)->name('view-form');
 Route::get('admin/scholarship/view', [AdminGovernmentController::class, 'view'])->name('admin.scholarship.view');
 // staff
 Route::get('/view-form', ViewForm::class)->name('view-form');
-Route::get('staff/scholarship/view', [StaffGovernmentController::class, 'view'])->name('staff.scholarship.view');
+Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewStaff'])->name('staff.scholarship.view');
 // campus-NLUC
 });
+
+
 
 
 // add grantees
@@ -81,7 +85,7 @@ Route::get('/admin/scholarship/grantees', Grantees::class)->name('admin.scholars
 Route::get('admin/scholarship/grantees', [AddStudentController::class, 'grantees'])->name('admin.scholarship.grantees');
 // staff
 Route::get('/staff/scholarship/grantees', Grantees::class)->name('staff.scholarship.grantees');
-Route::get('staff/scholarship/grantees', [StaffaddStudentController::class, 'grantees'])->name('staff.scholarship.grantees');
+Route::get('staff/scholarship/grantees', [AddStudentController::class, 'granteesStaff'])->name('staff.scholarship.grantees');
 // campus-NLUC
 
 
@@ -91,10 +95,21 @@ Route::get('admin/settings/accountSettings',[accountSetController::class, 'accou
 // auditlogs
 // admin
 Route::get('/admin/settings/auditTrail', AuditTrail::class)->name('admin.settings.auditTrail');
-Route::get('/admin/settings/auditTrail', [auditController::class, 'auditTrail'])->name('admin.settings.auditTrail');
+Route::get('/admin/settings/auditTrail', [auditController::class, 'audit'])->name('admin.settings.auditTrail');
+// staff
+Route::get('/staff/settings/auditTrail', AuditTrail::class)->name('staff.settings.auditTrail');
+Route::get('/staff/settings/auditTrail', [auditController::class, 'auditStaff'])->name('staff.settings.auditTrail');
+
+
 
 
 // add scholarship
+// admin
+Route::get('/admin/settings/addScholar', [addScholarController::class, 'showForm'])->name('admin.settings.addScholar');
+Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
+// staff
+Route::get('/staff/settings/addScholar', [addScholarController::class, 'showFormStaff'])->name('staff.settings.addScholar');
+Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit');
 
 
 });

@@ -39,9 +39,9 @@
         <div class="collapse" id="settings">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.accountSettings') }}"> Account Settings </a></li>
-            <li class="nav-item"> <a class="nav-link" href=""> Add Scholarships </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.addScholar') }}"> Add Scholarships </a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.register')}}"> Add User Accounts </a></li>
-            <li class="nav-item"> <a class="nav-link" href="#"> Audit Trail </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.auditTrail') }}"> Audit Trail </a></li>
             <li class="nav-item"> <a class="nav-link" href="#"> Data back-up </a></li>
           </ul>
         </div>

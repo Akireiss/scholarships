@@ -82,7 +82,7 @@
               <div class="col-md-6 mb-3 mx-auto text-center">
                     <select id="role" class="form-select mb-1 @error('role') is-invalid @enderror" name="role">
                     <option value="0">Staff</option>
-                    {{-- <option value="1">Admin</option> --}}
+                    <option value="1">Admin</option>
                     <option value="2">Campus In-charge - NLUC</option>
                     </select>
                     <label class="form-label px-3" for="role">User type</label>

@@ -11,7 +11,16 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        // $campuses = ['Mluc', 'Nluc', 'Sluc', 'Ous'];
+        // $studentCounts = [];
+
+        // foreach ($campuses as $campus) {
+        //     $studentCount = Student::where('campus', $campus)->count();
+        //     $studentCounts[] = $studentCount;
+        // }
+
+        // Pass the data to the view
+        return view('admin.dashboard', compact('campuses', 'studentCounts'));
     }
 
     /**
