@@ -1,61 +1,57 @@
 @extends('layouts.includes.staff.index')
 @section('content')
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-success text-white me-2">
+                    <i class="mdi mdi-home"></i>
+                </span> Dashboard
+            </h3>
+        </div>
 
+        {{-- message --}}
 
-<div class="content-wrapper">
-    <div class="page-header">
-      <h3 class="page-title">
-        <span class="page-title-icon bg-gradient-success text-white me-2">
-          <i class="mdi mdi-home"></i>
-        </span> Dashboard
-      </h3>
-    </div>
+        <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;">
+            {{ session('message') }}
+        </div>
 
-    {{-- message --}}
+        {{-- message ends --}}
 
-    <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;">
-      {{ session('message') }}
-    </div>
-
-    {{-- message ends --}}
-
-{{-- cards --}}
-<div class="row">
+        {{-- cards --}}
+        <div class="row">
             @livewire('scholarship-count-government')
-</div>
+        </div>
 
 
-      <!-- charts -->
+        <!-- charts -->
 
-      <!-- Line chart -->
-      <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">Line chart</h4>
-              <canvas id="lineChart" style="height:300px"></canvas>
+        <!-- Line chart -->
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Line chart</h4>
+                        <canvas id="lineChart" style="height:300px"></canvas>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- it ends here -->
+        <!-- it ends here -->
 
 
-      <!-- normative reports here  -->
+        <!-- normative reports here  -->
 
-      <div class="row align-items-lg-center justify-content-center">
-        <div class="col-lg-10 grid-margin shadow-lg">
-          <div class="card-body">
-            <h4 class="d-flex align-items-md-center justify-content-center">
-              Text here...
-            </h4>
-          </div>
+        <div class="row align-items-lg-center justify-content-center">
+            <div class="col-lg-10 grid-margin shadow-lg">
+                <div class="card-body">
+                    <h4 class="d-flex align-items-md-center justify-content-center">
+                        Text here...
+                    </h4>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- it ends here -->
+        <!-- it ends here -->
 
-  </div>
-
-
+    </div>
 @endsection

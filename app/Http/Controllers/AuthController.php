@@ -58,9 +58,6 @@ class AuthController extends Controller
         {
             return view('auth.login');
         }
-
-
-
         public function loginAction(Request $request)
         {
             $validatedData = $request->validate([
@@ -79,6 +76,7 @@ class AuthController extends Controller
                     'data' => json_encode(['username' => $user->username]),
                 ]);
 
+
                 if ($user->role == 1) {
                     return redirect()->route('admin.dashboard')->with('message', 'Welcome');
                 } else if ($user->role == 0) {
@@ -95,6 +93,15 @@ class AuthController extends Controller
 
 public function logout(Request $request)
 {
+
+    $user = Auth::user(); // get aunthenticated
+    // record
+    AuditLog::create([
+        'user_id' => $user->id,
+        'action' => 'logout',
+        'data' => json_encode(['username' => $user->username]),
+    ]);
+
     Auth::logout();
 
     $request->session()->invalidate();
@@ -103,6 +110,8 @@ public function logout(Request $request)
 
     return redirect('/login')->with('message', 'You have been logged out successfully.');
 }
+
+// dashboard
 
         public function dashboard()
         {
@@ -122,12 +131,5 @@ public function logout(Request $request)
 
             return view('campus-NLUC.dashboardCamp', compact('user'));
         }
-// ends here
 
-
-// staff here
-// ends here
-
-// campus here
-// ends here
 }

@@ -1,6 +1,4 @@
 @extends('layouts.includes.admin.index')
 @section('content')
-
-<livewire:addScholar/>
-
+    <livewire:addScholar />
 @endsection

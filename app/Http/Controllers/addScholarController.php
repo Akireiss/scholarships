@@ -13,7 +13,7 @@ class addScholarController extends Controller
 
     public function submitForm(Request $request)
     {
-        // Optionally, redirect back to the form with a success message
+        //message
         return redirect()->route('admin.settings.addScholar')->with('success', 'Scholarship application submitted successfully!');
     }
     
@@ -25,7 +25,20 @@ class addScholarController extends Controller
 
     public function submitFormStaff(Request $request)
     {
-        // Optionally, redirect back to the form with a success message
+        //message
         return redirect()->route('staff.settings.addScholar')->with('success', 'Scholarship application submitted successfully!');
+    }
+
+    // campus-NLUC
+    
+    public function showFormNLUC()
+    {
+        return view('campus-NLUC.settings.addScholar');
+    }
+
+    public function submitFormNLUC(Request $request)
+    {
+        //message
+        return redirect()->route('campus-NLUC.settings.addScholar')->with('success', 'Scholarship application submitted successfully!');
     }
 }

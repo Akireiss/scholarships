@@ -7,17 +7,17 @@ use App\Models\ScholarshipName;
 
 class ScholarshipCountGovernment extends Component
 {
-    public $selectedType;
-    public $governmentCount;
-    public $privateCount;
+    public $selectedType = 'Government';  // Default to 'Government'
+    public $governmentCount = 0;
+    public $privateCount = 0;
 
     public function render()
     {
-        if ($this->selectedType == 'Government') {
+        if ($this->selectedType === 'Government') {
             $this->governmentCount = ScholarshipName::whereHas('scholarshipType', function ($query) {
                 $query->where('name', 'Government');
             })->count();
-        } elseif ($this->selectedType == 'Private') {
+        } elseif ($this->selectedType === 'Private') {
             $this->privateCount = ScholarshipName::whereHas('scholarshipType', function ($query) {
                 $query->where('name', 'Private');
             })->count();

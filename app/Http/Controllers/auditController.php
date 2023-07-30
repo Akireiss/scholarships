@@ -16,4 +16,9 @@ class auditController extends Controller
     {
         return view('staff.settings.auditTrail');
     }
+    // campus_NLUC
+    public function auditNLUC()
+    {
+        return view('campus-NLUC.settings.auditTrail');
+    }
 }
