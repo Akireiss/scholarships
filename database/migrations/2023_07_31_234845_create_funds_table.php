@@ -11,15 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fund', function (Blueprint $table) {
+        Schema::create('funds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedInteger('scholarship_name_id');
-
-
-            $table->foreign('scholarship_name_id')->references('id')->on('scholarship_name');
-
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fund');
+        Schema::dropIfExists('funds');
     }
 };
