@@ -66,10 +66,15 @@
                                 <p class="mt-3 fw-bold fs-6">ADDRESS<span class="text-danger">*</span></p>
                                 <!--  Province Address -->
                                 <div class="col-md-4 position-relative mt-0">
-                                    <label class="form-label">Provinve</label>
-                                    <select class="form-select" aria-label="Default select example" name="province"
-                                        id="province">
-                                        <option value="" selected disabled>Select Province</option>
+                                    <label class="form-label">Province</label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        wire:model="selectedProvince">
+                                        <option value="" selected >Select Province</option>
+                                        @foreach ($provinces as $province)
+                                            <option value="{{ $province->id }}">
+                                                {{ $province->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('province')
                                         <span class="invalid-feedback" role="alert">
@@ -80,9 +85,13 @@
                                 <!--  City Address -->
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label">City/Municipality</label>
-                                    <select class="form-select" aria-label="Default select example" name="municipal"
-                                        id="municipal">
-                                        <option value="" selected disabled>Select City</option>
+                                    <select class="form-select" aria-label="Default select example"
+                                        wire:model="selectedMunicipality">
+                                        <option value="" selected>Select City</option>
+                                        @foreach($municipalities as $municipality)
+                                        <option value="{{ $municipality->id }}">{{ $municipality->name }}</option>
+                                    @endforeach
+
                                     </select>
                                     @error('municipal')
                                         <span class="invalid-feedback" role="alert">
@@ -90,12 +99,16 @@
                                         </span>
                                     @enderror
                                 </div>
+
                                 <!--  Barangay Address -->
-                                <div class="col-md-4  position-relative mt-0">
+                                <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label">Barangay</label>
                                     <select class="form-select" aria-label="Default select example" name="barangay"
-                                        id="barangay">
-                                        <option value="" selected disabled>Select Barangay</option>
+                                        wire:model="selectedBarangay">
+                                        <option value="" selected>Select Barangay</option>
+                                        @foreach($barangays as $barangay)
+                                        <option value="{{ $barangay->id }}">{{ $barangay->name }}</option>
+                                    @endforeach
                                     </select>
                                     @error('barangay')
                                         <span class="invalid-feedback" role="alert">
@@ -103,8 +116,9 @@
                                         </span>
                                     @enderror
                                 </div>
-
                             </div>
+
+
 
                             {{-- sex here --}}
                             <div class="row mx-3">
@@ -305,13 +319,13 @@
                                 <div class="col-6 col-md-6 col-lg-6">
                                     <p class="fw-bold">Are you a recipient of any scholarship/grant?</p>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="yes"
-                                            value="yes" name="yes">
+                                        <input class="form-check-input" type="radio" id="yes" value="yes"
+                                            name="grant_status">
                                         <label class="form-check-label" for="yes">Yes</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="no"
-                                            value="no">
+                                        <input class="form-check-input" type="radio" id="no" value="no"
+                                            name="grant_status">
                                         <label class="form-check-label" for="no">No</label>
                                     </div>
                                 </div>
@@ -327,16 +341,26 @@
 
                             <script>
                                 const yesCheckbox = document.getElementById('yes');
+                                const noCheckbox = document.getElementById('no');
                                 const grantNew = document.getElementById('grantNew');
 
-                                yesCheckbox.addEventListener('change', function() {
-                                    if (this.checked) {
+                                // Function to show or hide the "grantNew" element based on the radio button selection
+                                function showHideGrantNew() {
+                                    if (yesCheckbox.checked) {
                                         grantNew.style.display = 'block';
                                     } else {
                                         grantNew.style.display = 'none';
                                     }
-                                });
+                                }
+
+                                // Add event listeners to both radio buttons
+                                yesCheckbox.addEventListener('change', showHideGrantNew);
+                                noCheckbox.addEventListener('change', showHideGrantNew);
+
+                                // Call the function initially to set the initial state based on the default selection
+                                showHideGrantNew();
                             </script>
+
 
 
                             {{-- recipient --}}
@@ -375,6 +399,34 @@
                                             @endforeach
                                         @endif
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <p class="fw-bold fs-5">II. FAMILY INFORMATION</p>
+
+                                <div class="col-md-6 position-relative mt-0">
+                                    <label class="form-label" for="father" name="father">Father's name</label>
+                                    <input type="text" id="father"
+                                        class="form-control form-control-sm @error('father') is-invalid @enderror"
+                                        name="father" />
+                                    @error('father')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 position-relative mt-0">
+                                    <label class="form-label" for="mother" name="mother">Mother's name</label>
+                                    <input type="text" id="mother"
+                                        class="form-control form-control-sm @error('mother') is-invalid @enderror"
+                                        name="mother" />
+                                    @error('mother')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
 
