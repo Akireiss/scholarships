@@ -11,7 +11,9 @@ use App\Models\Province;
 use App\Models\Municipal;
 use App\Models\ScholarshipName;
 use App\Models\Fund;
-use TijsVerkoyen\CssToInlineStyles\Css\Rule\Rule;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+
 
 class Grantees extends Component
 {
@@ -69,8 +71,8 @@ class Grantees extends Component
     // end here
     public function saveStudent()
     {
-        dd($this->all());
-
+        // dd($this->all());
+        try{
            // Validate the student form fields
             $rules = [
                 'selectedCampus' => 'required',
@@ -85,7 +87,7 @@ class Grantees extends Component
                 'selectedBarangay' => 'required',
                 'contact' => 'required',
                 'email' => 'required|email',
-                'student_id' => 'required|unique:students,student_id', // Ensure unique student ID
+                'student_id' => 'required', // Ensure unique student ID
                 'level' => 'required',
                 'studentType' => 'required',
                 'father' => 'required',
@@ -102,6 +104,12 @@ class Grantees extends Component
             }
             $this->validate($rules);
 
+                    // Check if the student exists before checking scholarship limit
+                    $student = Student::where('student_id', $this->student_id)->first();
+                    if ($student && $student->funds && $student->funds->count() >= 2) {
+                        $this->addError('error', 'The student has reached the scholarship limit of 2.');
+                        return;
+                    }
 
             // Get the campus and course based on the selectedCampus and selectedCourse
             $campus = Campus::findOrFail($this->selectedCampus);
@@ -111,8 +119,6 @@ class Grantees extends Component
             $province = Province::findOrFail($this->selectedProvince);
             $municipality = Municipal::findOrFail($this->selectedMunicipality);
             $barangay = Barangay::findOrFail($this->selectedBarangay);
-
-
 
             // Save the student data
             $student = Student::create([
@@ -138,6 +144,7 @@ class Grantees extends Component
                 'father' => $this->father,
                 'mother' => $this->mother,
             ]);
+
             // Save the selected fund sources with the student ID in the fund table
             foreach ($this->selectedFundSources as $sourceId) {
                 Fund::create([
@@ -145,13 +152,20 @@ class Grantees extends Component
                     'source_id' => $sourceId
                 ]);
             }
+            session()->flash('success', 'Student information saved successfully.');
+            $this->resetForm();
 
-            // Optionally, you can reset the form fields after saving the data
-            $this->reset();
+        // Emit the Livewire event to trigger page reload
+        $this->emit('reloadPage');
 
-            // Optionally, you can redirect the user to a success page or show a success message.
-            return back()->session()->flash('success', 'Student data saved successfully!');
-        }
+        // // Redirect to the current page
+        // return Redirect::back();
+    } catch (\Exception $e) {
+        // Log the error or perform appropriate error handling
+        // dd($e->getMessage()); // Debugging output to see the exception message
+        return back()->withErrors(['error' => 'An error occurred while saving the data.']);
+    }
+}
 
 
     public function render()
@@ -225,6 +239,8 @@ class Grantees extends Component
      $this->father = null;
      $this->mother = null;
      $this->selectedFundSources = [];
+
+     $this->showNewInput = false;
  }
 
     }

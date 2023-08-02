@@ -4,13 +4,18 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        @if (session()->has('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                         <form wire:submit.prevent="saveStudent">
                             @csrf
+                            @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            @if ($errors->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('error') }}
+                                </div>
+                            @endif
                             <!-- Campus -->
                             <div class="d-flex align-items-center">
                                 <label for="campus" class="fw-bold fs-5 col-sm-2">CAMPUS:</label>
@@ -238,7 +243,7 @@
                                         <select class="form-select" id="selectedCourse" wire:model="selectedCourse">
                                             <option value="">Select Course</option>
                                             @foreach ($courses as $course)
-                                                <option value="{{ $course->id }}">{{ $course->course_name }}
+                                                <option value="{{ $course->course_id }}">{{ $course->course_name }}
                                                 </option>
                                             @endforeach
                                         </select>

@@ -16,8 +16,8 @@ class CreateCampusesTable extends Migration
         });
 
         $campuses = [
-            ['campus_name' => 'MLUC'],
             ['campus_name' => 'NLUC'],
+            ['campus_name' => 'MLUC'],
             ['campus_name' => 'SLUC'],
             ['campus_name' => 'OUS'],
         ];

@@ -13,6 +13,12 @@
 
 
 @livewireScripts
+<script>
+    // Livewire event listener
+    Livewire.on('reloadPage', () => {
+        location.reload();
+    });
+</script>
 <!-- plugins:js -->
 <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
 <!-- endinject -->

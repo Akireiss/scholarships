@@ -670,3 +670,11 @@ class Grantees extends Component
     // adresssss
 
     }
+    php artisan migrate:refresh --seed
+    php artisan db:seed --class=ProvinceSeeder
+    php artisan db:seed --class=MunicipalSeeder
+    php artisan db:seed --class=BarangaySeeder
+    php artisan db:seed --class=ScholarshipTypeSeeder
+    php artisan db:seed --class=ScholarshipNameSeeder
+    php artisan db:seed --class=FundSourceSeeder
+    php artisan migrate:rollback

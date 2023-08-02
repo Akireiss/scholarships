@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fund', function (Blueprint $table) {
+        Schema::create('funds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedInteger('scholarship_name_id');
-
-
-            $table->foreign('scholarship_name_id')->references('id')->on('scholarship_name');
-
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->string('student_id');
+            $table->unsignedInteger('source_id');
             $table->timestamps();
+
+            // Define foreign key relationships
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('source_id')->references('source_id')->on('fund_sources')->onDelete('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fund');
+        Schema::dropIfExists('funds');
     }
 };
