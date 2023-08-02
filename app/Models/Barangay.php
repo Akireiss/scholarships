@@ -12,13 +12,13 @@ class Barangay extends Model
 
     protected $table = 'barangays';
 
-    protected $fillbale = [
+    protected $fillable = [
         'name',
         'municipal_id'
     ];
 
-    public function municipality()
+    public function municipal()
     {
-        return $this->belongsTo(Municipal::class, 'municipal_id', 'id');
+        return $this->belongsTo(Municipal::class, 'municipal_id');
     }
 }

@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('audit_trail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable(); // Change this line to allow null
             $table->string('action');
-            $table->text('data')->nullable(); 
+            $table->text('data');
             $table->timestamps();
 
-            // Foreign key constraint to link user_id with users table
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // Add foreign key constraint if needed
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

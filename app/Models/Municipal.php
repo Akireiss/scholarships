@@ -12,13 +12,13 @@ class Municipal extends Model
 
     protected $table = 'municipals';
 
-    protected $fillbale = [
+    protected $fillable = [
         'name',
         'province_id'
     ];
 
-    public function provinces()
+    public function province()
     {
-        return $this->belongsTo(Province::class, 'municipality_id', 'id');
+        return $this->belongsTo(Province::class, 'province_id');
     }
 }

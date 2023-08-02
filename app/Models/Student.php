@@ -8,29 +8,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    protected $table = "students";
     protected $fillable = [
         'student_id',
         'lastname',
         'firstname',
-        'middle_initial',
+        'initial',
         'email',
         'sex',
-        'civil_status',
+        'status',
         'barangay',
         'municipal',
         'province',
         'campus',
         'course',
-        'year_level',
-        'father_name',
-        'mother_name',
-        'contact_number',
-        'student_type',
-        'last_school_attended',
-        'last_school_year',
+        'level',
+        'father',
+        'mother',
+        'contact',
+        'studentType',
+        'nameSchool',
+        'lastYear',
         'grant_status',
-        'grant_details',
+        'grant',
     ];
+
   // Define the relationships if there are any
     // For example, if a student belongs to a campus and a course, you can define the relationships like this:
 
@@ -43,7 +45,8 @@ class Student extends Model
         {
             return $this->belongsTo(Course::class);
         }
-                // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
+        
+        // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
         public function province()
         {
             return $this->belongsTo(Province::class);

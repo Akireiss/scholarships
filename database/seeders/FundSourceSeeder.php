@@ -35,7 +35,7 @@ class FundSourceSeeder extends Seeder
         FundSource::create(['source_name' => 'Kalinga Partylist', 'scholarship_name_id' => 15]);
         FundSource::create(['source_name' => 'Congressional Scholarship', 'scholarship_name_id' => 15]);
         FundSource::create(['source_name' => 'LGU Alaminos Pangasinan', 'scholarship_name_id' => 16]);
-        FundSource::create(['source_name' => 'LGU Bagulin La Unio', 'scholarship_name_id' => 16]);
+        FundSource::create(['source_name' => 'LGU Bagulin La Union', 'scholarship_name_id' => 16]);
         FundSource::create(['source_name' => 'LGU Candon City', 'scholarship_name_id' => 16]);
         FundSource::create(['source_name' => 'LGU Ilocos Sur', 'scholarship_name_id' => 16]);
         FundSource::create(['source_name' => 'LGU Aringay', 'scholarship_name_id' => 16]);
