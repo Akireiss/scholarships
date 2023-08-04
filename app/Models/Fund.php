@@ -19,4 +19,5 @@ class Fund extends Model
     {
         return $this->hasMany(FundSource::class, 'scholarship_name_id', 'id');
     }
+    
 }

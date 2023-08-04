@@ -11,14 +11,11 @@ class Barangay extends Model
     use HasFactory;
 
     protected $table = 'barangays';
-
-    protected $fillable = [
-        'name',
-        'municipal_id'
-    ];
+    protected $primaryKey = 'barangay_id';
+    protected $fillable = ['brgyCode', 'brgyDesc', 'regCode', 'provCode', 'citynumCode'];
 
     public function municipal()
     {
-        return $this->belongsTo(Municipal::class, 'municipal_id');
+        return $this->belongsTo(Municipal::class, 'municipality_id');
     }
 }

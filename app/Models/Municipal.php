@@ -11,11 +11,8 @@ class Municipal extends Model
     use HasFactory;
 
     protected $table = 'municipals';
-
-    protected $fillable = [
-        'name',
-        'province_id'
-    ];
+    protected $primaryKey = 'municipality_id';
+    protected $fillable = ['psgcCode', 'citynumDesc', 'regCode', 'provCode', 'citynumCode'];
 
     public function province()
     {

@@ -14,6 +14,8 @@ use App\Http\Controllers\auditController;
 use App\Http\Livewire\AuditTrail;
 // view
 use App\Http\Controllers\AdminGovernmentController;
+use App\Http\Controllers\StudentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,6 +78,10 @@ Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewSta
 // campus-NLUC
 });
 
+// tables to view
+// admin
+Route::get('/student_table', StudentTable::class)->name('student_table');
+Route::get('admin/scholarship/student_table', [StudentController::class, 'student_table'])->name('admin.scholarship.student_table');
 
 
 
@@ -109,7 +115,7 @@ Route::get('/admin/settings/addScholar', [addScholarController::class, 'showForm
 Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
 // staff
 Route::get('/staff/settings/addScholar', [addScholarController::class, 'showFormStaff'])->name('staff.settings.addScholar');
-Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit');
+Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit.staff');
 
 
 });

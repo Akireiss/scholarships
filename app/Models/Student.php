@@ -45,7 +45,7 @@ class Student extends Model
         {
             return $this->belongsTo(Course::class);
         }
-        
+
         // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
         public function province()
         {
@@ -63,4 +63,19 @@ class Student extends Model
         {
             return $this->belongsTo(Barangay::class);
         }
+
+        public function funds()
+        {
+            return $this->hasMany(Fund::class);
+        }
+        public function scholarshipType()
+        {
+            return $this->hasMany(ScholarshipType::class);
+        }
+
+        // public function region()
+        // {
+        //     return $this->belongsTo(Region::class);
+        // }
+
     }
