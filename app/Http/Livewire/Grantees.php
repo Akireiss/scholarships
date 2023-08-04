@@ -35,7 +35,7 @@
             // Address
             public $selectedProvince;
             public $selectedMunicipality;
-                public $selectedBarangay;
+            public $selectedBarangay;
             public $provinces = [];
             public $municipalities = [];
             public $barangays = [];
@@ -140,7 +140,6 @@
                     'grant' => $this->grant,
                     'father' => $this->father,
                     'mother' => $this->mother,
-                    // 'scholarshipType' =>
                 ];
 
                 $student = Student::create($studentData);

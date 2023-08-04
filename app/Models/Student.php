@@ -68,14 +68,5 @@ class Student extends Model
         {
             return $this->hasMany(Fund::class);
         }
-        public function scholarshipType()
-        {
-            return $this->hasMany(ScholarshipType::class);
-        }
-
-        // public function region()
-        // {
-        //     return $this->belongsTo(Region::class);
-        // }
 
     }
