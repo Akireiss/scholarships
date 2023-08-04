@@ -31,6 +31,7 @@ class Student extends Model
         'lastYear',
         'grant_status',
         'grant',
+        'scholarshipType'
     ];
 
   // Define the relationships if there are any
@@ -68,5 +69,16 @@ class Student extends Model
         {
             return $this->hasMany(Fund::class);
         }
+        public function scholarshipName()
+        {
+             return $this->belongsTo(ScholarshipName::class);
+        }
+        public function scholarshipType()
+        {
+            return $this->belongsTo(ScholarshipType::class);
+        }
+
+
+
 
     }

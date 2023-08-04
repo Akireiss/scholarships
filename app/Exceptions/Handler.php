@@ -2,9 +2,10 @@
 
 namespace App\Exceptions;
 
+use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -35,6 +36,8 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof NotFoundHttpException) {
             return response()->view('components.404', [], 404);
+        } elseif ($exception instanceof HttpException && $exception->getStatusCode() == 500) {
+            return response()->view('components.500', [], 500);
         }
         return parent::render($request, $exception);
     }

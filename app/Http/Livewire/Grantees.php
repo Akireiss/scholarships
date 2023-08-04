@@ -106,16 +106,17 @@
 
                 // Get the campus and course based on the selectedCampus and selectedCourse
                 $campus = Campus::findOrFail($this->selectedCampus);
-                // dd($campus);
                 $course = Course::findOrFail($this->selectedCourse);
-                // dd($course);
 
                 // Get the province, municipal, and barangay names based on their IDs
                 $province = Province::where('provCode', $this->selectedProvince)->firstOrFail();
-                // dd($province);
                 $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
                 $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
-
+                // dd($barangay);
+                // Get the selected scholarship
+                $scholarship = ScholarshipName::find(1);
+                $scholarshipType = $scholarship->scholarshipType;
+                // dd($scholarshipType);
 
                 // Save the student data
                 $studentData = [
@@ -140,12 +141,11 @@
                     'grant' => $this->grant,
                     'father' => $this->father,
                     'mother' => $this->mother,
+                    'scholarshipType' => $scholarship->scholarshipType->id,
                 ];
 
                 $student = Student::create($studentData);
                 // dd($studentData);
-
-
 
                 // Save the selected fund sources with the student ID in the fund table
                 foreach ($this->selectedFundSources as $sourceId) {
@@ -154,17 +154,18 @@
                         'source_id' => $sourceId
                     ]);
                 }
-      // Reset the form fields
-      $this->resetForm();
 
       // Flash a success message to the session
-      session()->flash('success', 'Student saved successfully!');
+      session()->flash('success', 'Student data saved successfully!');
+        // Reset the form fields
+        $this->resetForm();
+
   } catch (\Exception $e) {
       // Flash an error message to the session
       session()->flash('error', 'An error occurred while saving the student data.');
 
     //   // Or dispatch a browser event with a custom error message
-    //   $this->dispatchBrowserEvent('student-error', ['message' => 'An error occurred while saving the student data.']);
+    //  $this->dispatchBrowserEvent('student-error', ['message' => 'An error occurred while saving the student data.']);
   }
 }
 
