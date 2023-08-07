@@ -2,53 +2,76 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Fund;
+use App\Models\Student;
 use Livewire\Component;
-use App\Models\ScholarshipType;
-use App\Models\ScholarshipName;
 use App\Models\FundSource;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\ScholarshipName;
+use App\Models\ScholarshipType;
+use Illuminate\Support\Facades\DB;
+
 
 class ViewForm extends Component
 {
-    public $scholarship_type;
-    public $scholarship_name;
-    public $fund_sources;
 
-    public function render()
+    public $scholarshipTypes;
+    public $scholarshipNames;
+    public $fundSources;
+    public $selectedType;
+    public $selectedName;
+    public $selectedSource;
+    public $students;
+    public $sourceName;
+
+    public function mount()
     {
-
-                // Fetch the data from the database
-                $scholarshipTypes = ScholarshipType::all();
-                $scholarshipNames = $this->getScholarshipNames();
-                $fundSources = $this->getFundSources();
-
-        return view('livewire.view-form', [
-            'scholarshipTypes' => $scholarshipTypes,
-            'scholarshipNames' => $scholarshipNames,
-            'fundSources' => $fundSources,
-        ]);
+        // Retrieve data from the database
+        $this->scholarshipTypes = ScholarshipType::all();
+        $this->scholarshipNames = collect();
+        $this->fundSources = collect();
     }
 
-    public function getScholarshipNames()
+    public function updatedSelectedType($value)
     {
-        if ($this->scholarship_type) {
-            return ScholarshipName::where('scholarship_type_id', $this->scholarship_type)->get();
+        // Update the scholarship names based on the selected scholarship type
+        if ($value) {
+            $this->scholarshipNames = ScholarshipName::where('scholarship_type_id', $value)->get();
+        } else {
+            $this->scholarshipNames = collect();
         }
-
-        return [];
+        // Reset the selected scholarship name and fund source
+        $this->selectedName = null;
+        $this->selectedSource = null;
     }
 
-    public function getFundSources()
+    public function updatedSelectedName($value)
     {
-        if ($this->scholarship_name) {
-            return FundSource::where('scholarship_name_id', $this->scholarship_name)->get();
+        // Update the fund sources based on the selected scholarship name
+        if ($value) {
+            $this->fundSources = FundSource::where('scholarship_name_id', $value)->get();
+        } else {
+            $this->fundSources = collect();
         }
-
-        return [];
+        // Reset the selected fund source
+        $this->selectedSource = null;
     }
 
     public function submit()
     {
-        // Handle form submission if needed.
+        // Retrieve students based on the selected source of funds
+        $students = Student::whereHas('funds', function ($query) {
+            $query->where('source_id', $this->selectedSource);
+        })->get();
+
+        // Retrieve the name of the selected source of funds
+        $sourceName = FundSource::find($this->selectedSource)->source_name;
+
+        // Redirect to the student data route with the students and source name as parameters
+        return redirect()->route('livewire.student-data', ['students' => $students, 'sourceName' => $sourceName] );
+    }
+
+    public function render()
+    {
+        return view('livewire.view-form');
     }
 }

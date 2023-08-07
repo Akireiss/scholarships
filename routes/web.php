@@ -1,20 +1,24 @@
 <?php
-use App\Http\Controllers\AuthController;
+
+use App\Http\Livewire\Grantees;
 use App\Http\Livewire\ViewForm;
+use App\Http\Livewire\AccountSet;
+use App\Http\Livewire\AuditTrail;
+// account
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-// account
+// add
+use App\Http\Controllers\AuthController;
+// audit
+use App\Http\Controllers\HomeController;
+// view
+use App\Http\Controllers\auditController;
 use App\Http\Controllers\accountSetController;
 use App\Http\Controllers\addScholarController;
-// add
-use App\Http\Livewire\Grantees;
 use App\Http\Controllers\AddStudentController;
-// audit
-use App\Http\Controllers\auditController;
-use App\Http\Livewire\AuditTrail;
-// view
+use App\Http\Controllers\StudentData;
+use App\Http\Controllers\viewStudentController;
 use App\Http\Controllers\AdminGovernmentController;
-use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,8 +84,14 @@ Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewSta
 
 // tables to view
 // admin
-Route::get('/student_table', StudentTable::class)->name('student_table');
-Route::get('admin/scholarship/student_table', [StudentController::class, 'student_table'])->name('admin.scholarship.student_table');
+Route::get('/student-data', StudentData::class)->name('student-data');
+Route::get('admin/scholarship/student-view', 'viewStudentController@studentAdmin')->name('admin.scholarship.student-view');
+
+
+// staff
+Route::get('staff/scholarship/student-view', [viewStudentController::class, 'studentStaff'])->name('staff.scholarship.student-view');
+//campus-NLUC
+Route::get('campus-NLUC/scholarship/student-view', [viewStudentController::class, 'studentCampus'])->name('campus-NLUC.scholarship.student-view');
 
 
 
@@ -97,6 +107,7 @@ Route::get('staff/scholarship/grantees', [AddStudentController::class, 'grantees
 
 
 // settings
+Route::get('/admin/settings/accountSettings', AccountSet::class)->name('admin.settings.accountSettings');
 Route::get('admin/settings/accountSettings',[accountSetController::class, 'accountSettings'])->name('admin.settings.accountSettings');
 // auditlogs
 // admin

@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\ScholarshipName;
+use Illuminate\Support\Facades\DB;
+
 
 class ScholarshipCountGovernment extends Component
 {
@@ -15,6 +17,7 @@ class ScholarshipCountGovernment extends Component
     public $selectedTypeScholar = 'Government';  // Default to 'Government'
     public $governmentScholar = 0;
     public $privateScholar = 0;
+    public $chartData = [];
 
     public function mount()
 {
@@ -27,7 +30,16 @@ class ScholarshipCountGovernment extends Component
                 $this->governmentScholar = 0;
                 $this->privateScholar = 0;
             }
+            // linechart
+            $this->chartData = Student::select('campus', DB::raw('count(*) as total'))
+            ->groupBy('campus')
+            ->get()
+            ->toArray();
+            // dd($this->chartData);
+
 }
+
+
 
 
     public function render()

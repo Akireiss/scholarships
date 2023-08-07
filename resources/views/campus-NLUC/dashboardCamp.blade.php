@@ -19,7 +19,7 @@
 
         {{-- cards --}}
 
-        @livewire('scholarship-count-government')
+        {{-- @livewire('scholarship-count-government') --}}
 
         {{-- it ends here --}}
 

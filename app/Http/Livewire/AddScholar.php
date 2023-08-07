@@ -30,13 +30,6 @@ class AddScholar extends Component
         $this->fund_sources = null;
     }
 
-    public function render()
-    {
-        $scholarshipTypes = ScholarshipType::all();
-
-        return view('livewire.add-scholar', compact('scholarshipTypes'));
-    }
-
 public function submit()
 {
         // Validate the form data
@@ -76,6 +69,13 @@ public function submit()
 
     // Clear the form fields after submission
     $this->reset(['scholarship_type_id', 'scholarship_name', 'fund_sources']);
+}
+
+public function render()
+{
+    $scholarshipTypes = ScholarshipType::all();
+
+    return view('livewire.add-scholar', compact('scholarshipTypes'));
 }
 
 
