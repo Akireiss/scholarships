@@ -11,10 +11,6 @@ class ScholarshipName extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'scholarship_type_id']; // fillable attributes
 
-    // public function scholarshipType()
-    // {
-    //     return $this->belongsTo(ScholarshipType::class, 'scholarship_type_id', 'id');
-    // }
     public function scholarshipType()
     {
         return $this->belongsTo(ScholarshipType::class, 'scholarship_type_id', 'id');

@@ -606,3 +606,238 @@ form for view-form //  <section class="mt-3 p-5">
     </section>
 
 </div>
+
+
+ Don Mariano Marcos Memorial State  University North La Union Campus
+ Don Mariano Marcos Memorial State  University Mid La Union Campus
+ Don Mariano Marcos Memorial State  University South La Union Campus
+ Don Mariano Marcos Memorial State  University Open University System
+
+
+
+
+
+ <?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Fund;
+use App\Models\Student;
+use Livewire\Component;
+use App\Models\ScholarshipName;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+
+
+class ViewForm extends Component
+{
+
+    public $grid;
+    public $selectedScholarshipName;
+    public $selectedSourceId;
+    // public $selectedSourceId;
+
+     public function render()
+    {
+
+        // scholarship names & funds sources
+
+        $scholarship = ScholarshipName::query()
+        ->where('name', $this->selectedScholarshipName)
+        ->with('fundSources')
+        ->first();
+
+            $studentIds = Fund::query()
+        ->where('source_id', $this->selectedSourceId)
+        ->pluck('student_id');
+
+            $students = Student::query()
+        ->whereIn('id', $studentIds)
+        ->get();
+
+        // it ends here
+
+        $grid = PowerGrid::eloquent($students);
+            $this->model('students')
+            ->addColumn('id', 'ID')
+            ->addColumn('student_id', 'Student ID')
+            ->addColumn('lastname', 'Lastname')
+            ->addColumn('firstname', 'Firstname')
+            ->addColumn('initial', 'Middle Initial')
+            ->addColumn('email', 'Email Address')
+            ->addColumn('sex', 'Sex')
+            ->addColumn('status', 'Civil Status')
+            ->addColumn('barangay', 'Barangay')
+            ->addColumn('municipal', 'Municipal')
+            ->addColumn('province', 'Province')
+            ->addColumn('campus', 'Campus')
+            ->addColumn('course', 'Course')
+            ->addColumn('level', 'Year Level')
+            ->addColumn('father', 'Fathers Full Name')
+            ->addColumn('mother', 'Mothers Full Name')
+            ->addColumn('contact', 'Contact Number')
+            ->addColumn('studentType', 'Type of Student ')
+            ->addColumn('nameSchool', 'Name of School Last Attended')
+            ->addColumn('lastYear', 'School Year Last Attended')
+            ->addColumn('grant_status', 'Recipient')
+            ->addColumn('grant', 'Name of Scholarship/Grant')
+            ->filterable('lastname')
+            ->sortable('id')
+            ->disablePagination()
+            ->exportable();
+
+             return view('livewire.view-form', [
+        'grid' => $grid
+    ]);
+    }
+
+}
+
+
+public function mount()
+    {
+        // Retrieve data from the database
+        $this->scholarshipNames = ScholarshipName::all();
+        $this->fundSources = collect();
+    }
+
+
+    public function updatedSelectedName($value)
+    {
+        // Update the fund sources based on the selected scholarship name
+        if ($value) {
+            $this->fundSources = FundSource::where('scholarship_name_id', $value)->get();
+        } else {
+            $this->fundSources = collect();
+        }
+        // Reset the selected fund source
+        $this->selectedSource = null;
+    }
+
+    public function render()
+    {
+        // Retrieve data from the database
+        $this->scholarshipNames = ScholarshipName::all();
+        $this->fundSources = collect();
+
+        public function updatedSelectedName($value)
+    {
+        // Update the fund sources based on the selected scholarship name
+        if ($value) {
+            $this->fundSources = FundSource::where('scholarship_name_id', $value)->get();
+        } else {
+            $this->fundSources = collect();
+        }
+        // Reset the selected fund source
+        $this->selectedSource = null;
+    }
+
+        // Retrieve students based on the selected source of funds
+        $students = Student::whereHas('funds', function ($query) {
+            $query->where('source_id', $this->selectedSource);
+        })->get();
+
+        // Retrieve the name of the selected source of funds
+        $sourceName = FundSource::find($this->selectedSource)->source_name;
+
+        // Redirect to the student data route with the students and source name as parameters
+        return view('livewire.view-form');
+    }
+
+
+
+
+    public function render()
+    {
+            public function getScholarshipNames()
+    {
+        if ($this->scholarship_type) {
+            // Assuming ScholarshipName is the correct model name
+            return ScholarshipName::where('scholarship_type_id', $this->scholarship_type)->get();
+        }
+
+        return [];
+    }
+
+    public function getFundSources()
+    {
+        if ($this->scholarship_name) {
+            // Assuming FundSource is the correct model name
+            return FundSource::where('scholarship_name_id', $this->scholarship_name)->get();
+        }
+
+        return [];
+    }
+
+    public function getStudentsByFund()
+    {
+        if ($this->selectedFund) {
+            // Assuming FundStudent is the pivot model for the many-to-many relationship
+            $students = Fund::where('source_id', $this->selectedFund)
+                ->pluck('student_id')
+                ->toArray();
+
+            // Assuming Student is the correct model name for the students table
+            $studentDetails = Student::whereIn('student_id', $students)->get();
+
+            return $studentDetails;
+        }
+
+        return [];
+    }
+    public $students;
+    public $sourceName;
+
+    public function submit()
+    {
+        $funds = DB::table('funds')
+            ->where('source_id', $this->selectedSource)
+            ->pluck('student_id');
+
+        $students = [];
+        foreach ($funds as $fund) {
+            $student = Student::find($fund);
+            $students[] = $student;
+        }
+
+        $sourceName = DB::table('fund_sources')
+        ->where('source_id', $this->selectedSource)
+        ->value('source_name');
+
+        $this->students = $students;
+
+        // Fetch the data from the database
+        $scholarshipTypes = ScholarshipType::all();
+        $scholarshipNames = $this->getScholarshipNames();
+        $fundSources = $this->getFundSources();
+        $studentsByFund = $this->getStudentsByFund();
+
+        // Fetch the selected fund source from the database
+        $selectedFundSource = FundSource::find($this->selectedFund);
+
+        return view('livewire.view-form', [
+            'scholarshipTypes' => $scholarshipTypes,
+            'scholarshipNames' => $scholarshipNames,
+            'fundSources' => $fundSources,
+            'selectedFundSource' => $selectedFundSource,
+            'studentsByFund' => $studentsByFund ?? [] // Use empty array if $studentsByFund is not set
+        ]);
+    }
+
+
+
+        return redirect()->route('livewire.student-data', ['students' => $students, 'sourceName' => $sourceName]);
+    }
+
+
+
+}
+
+
+
+    // "auth": {
+    //     "github": {
+    //         "token": "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"
+    //     }
+    // },
+
+

@@ -168,6 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        PowerComponents\LivewirePowerGrid\Providers\PowerGridServiceProvider::class,
+        // PowerGrid\Models\PowerGrid::class,
     ])->toArray(),
 
     /*

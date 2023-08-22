@@ -11,10 +11,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+
+    js: {
+        target: 'esnext',
+        parser: {
+            jsx: 'preserve',
+        },
+    },
 });
-
-// import Alpine from 'alpinejs'
-
-// window.Alpine = Alpine
-
-// Alpine.start()

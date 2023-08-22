@@ -433,6 +433,11 @@
                                                 <label class="form-check-label"
                                                     for="fund_source_{{ $fundSource->source_id }}">{{
                                                     $fundSource->source_name }}</label>
+                                                    @error('selectedFundSources')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
                                             </div>
                                             @endforeach
                                             @endif

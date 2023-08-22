@@ -12,14 +12,15 @@ class CreateCampusesTable extends Migration
         Schema::create('campuses', function (Blueprint $table) {
             $table->bigIncrements('id')->collation('utf8mb4_unicode_ci');
             $table->string('campus_name');
+            $table->string('campusDesc');
             $table->timestamps();
         });
 
         $campuses = [
-            ['campus_name' => 'NLUC'],
-            ['campus_name' => 'MLUC'],
-            ['campus_name' => 'SLUC'],
-            ['campus_name' => 'OUS'],
+            ['campus_name' => 'NLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University North La Union Campus'],
+            ['campus_name' => 'MLUC', 'campusDesc' => 'Mariano Marcos Memorial State  University Mid La Union Campus'],
+            ['campus_name' => 'SLUC', 'campusDesc' => 'Mariano Marcos Memorial State  University South La Union Campus'],
+            ['campus_name' => 'OUS', 'campusDesc' => 'Don Mariano Marcos Memorial State  University Open University System'],
         ];
 
         DB::table('campuses')->insert($campuses);

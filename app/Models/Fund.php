@@ -15,9 +15,10 @@ class Fund extends Model
     {
         return $this->belongsTo(Student::class);
     }
-    public function fundSources()
+    // Define the relationship between Fund and FundSource
+    public function fundSource()
     {
-        return $this->hasMany(FundSource::class, 'scholarship_name_id', 'id');
+        return $this->belongsTo(FundSource::class);
     }
     
 }

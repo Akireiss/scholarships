@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Livewire\AuditTrail;
 use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\Request;

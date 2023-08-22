@@ -16,7 +16,7 @@
 
     class Grantees extends Component
     {
-            // campus&course
+            // campus & course
             public $selectedCampus, $campuses;
             public $selectedCourse, $courses = [];
             // Types
@@ -43,6 +43,52 @@
             // show&hide
             public $showNewInput = false;
 
+
+
+            protected $rules = [
+                'selectedCampus' => 'required',
+                'selectedCourse' => 'required',
+                'lastname' => 'required',
+                'firstname' => 'required',
+                'initial' => 'required',
+                'sex' => 'required',
+                'status' => 'required',
+                'selectedProvince' => 'required',
+                'selectedMunicipality' => 'required',
+                'selectedBarangay' => 'required',
+                'contact' => 'required',
+                'email' => 'required|email',
+                'student_id' => 'required',
+                'level' => 'required',
+                'studentType' => 'required',
+                'father' => 'required',
+                'mother' => 'required',
+                'selectedFundSources' => 'required',
+            ];
+            
+            public function updatedStudentType($value)
+            {
+                if ($value === 'new') {
+                    $this->rules['nameSchool'] = 'required';
+                    $this->rules['lastYear'] = 'required|numeric'; // Ensure lastYear is numeric
+                } else {
+                    unset($this->rules['nameSchool']);
+                    unset($this->rules['lastYear']);
+                }
+            }
+
+
+                 public function updatedGrantStatus($value)
+                    {
+                        if ($value === 'yes') {
+                            $this->rules['grant'] = 'required';
+                        } else {
+                            unset($this->rules['grant']);
+                        }
+                    }
+
+ 
+
             public function showNewInput()
             {
                 $this->showNewInput = true;
@@ -53,55 +99,24 @@
                 $this->showNewInput = false;
             }
 
+    
         public function saveStudent()
         {
+            $this->validate();
+
+        // Count the occurrences of the student_id in the funds table
+        $studentIdCount = Fund::where('student_id', $this->student_id)->count();
+
+        // Define the maximum limit for scholarship
+        $maxLimit = 2;
+
+        if ($studentIdCount >= $maxLimit) {
+            session()->flash('error', 'The student has reached the maximum scholarship limit.');
+            return;
+        }
             try{
             // dd('Debugging');
             // Validate the student form fields
-                $rules = [
-                    'selectedCampus' => 'required',
-                    'selectedCourse' => 'required',
-                    'lastname' => 'required',
-                    'firstname' => 'required',
-                    'initial' => 'required',
-                    'sex' => 'required',
-                    'status' => 'required',
-                    'selectedProvince' => 'required',
-                    'selectedMunicipality' => 'required',
-                    'selectedBarangay' => 'required',
-                    'contact' => 'required',
-                    'email' => 'required|email',
-                    'student_id' => 'required',
-                    'level' => 'required',
-                    'studentType' => 'required',
-                    'father' => 'required',
-                    'mother' => 'required',
-                ];
-
-                if ($this->studentType === 'new') {
-                    $rules['nameSchool'] = 'required';
-                    $rules['lastYear'] = 'required|numeric'; // Ensure lastYear is numeric
-                }
-
-                if ($this->grant_status === 'yes') {
-                    $rules['grant'] = 'required';
-                }
-
-                // Count the occurrences of the student_id in the funds table
-                $studentIdCount = Fund::where('student_id', $this->student_id)->count();
-
-                // Define the maximum limit for scholarship
-                $maxLimit = 2;
-
-                // Check if the student has reached the scholarship limit
-                if ($studentIdCount >= $maxLimit) {
-                // Display error message and return early
-                    session()->flash('error', 'The student has reached the maximum scholarship limit.');
-                    return;
-                }
-
-                $this->validate($rules);
-
 
 
                 // Get the campus and course based on the selectedCampus and selectedCourse
@@ -120,7 +135,7 @@
 
                 // Save the student data
                 $studentData = [
-                    'campus' => $campus->campus_name,
+                    'campus' => $campus->campusDesc,
                     'course' => $course->course_name,
                     'lastname' => $this->lastname,
                     'firstname' => $this->firstname,
@@ -141,11 +156,10 @@
                     'grant' => $this->grant,
                     'father' => $this->father,
                     'mother' => $this->mother,
-                    'scholarshipType' => $scholarship->scholarshipType->id,
+                    'scholarshipType' => $scholarship->scholarshipType->name,
                 ];
 
                 $student = Student::create($studentData);
-                // dd($studentData);
 
                 // Save the selected fund sources with the student ID in the fund table
                 foreach ($this->selectedFundSources as $sourceId) {
@@ -163,13 +177,10 @@
   } catch (\Exception $e) {
       // Flash an error message to the session
       session()->flash('error', 'An error occurred while saving the student data.');
+              $this->resetForm();
 
-    //   // Or dispatch a browser event with a custom error message
-    //  $this->dispatchBrowserEvent('student-error', ['message' => 'An error occurred while saving the student data.']);
   }
 }
-
-
 
         public function render()
         {
@@ -228,28 +239,28 @@
             // Method to reset the form fields
             public function resetForm()
             {
-                $this->selectedCampus = null;
-                $this->selectedCourse = null;
-                $this->lastname = null;
-                $this->firstname = null;
-                $this->initial = null;
-                $this->sex = null;
-                $this->status = null;
-                $this->selectedProvince = null;
-                $this->selectedMunicipality = null;
-                $this->selectedBarangay = null;
-                $this->contact = null;
-                $this->email = null;
-                $this->student_id = null;
-                $this->level = null;
-                $this->studentType = null;
-                $this->nameSchool = null;
-                $this->lastYear = null;
-                $this->grant_status = null;
-                $this->grant = null;
-                $this->father = null;
-                $this->mother = null;
-                $this->selectedFundSources = [];
+                $this->selectedCampus = "";
+                $this->selectedCourse = "";
+                $this->lastname = "";
+                $this->firstname = "";
+                $this->initial = "";
+                $this->sex = "";
+                $this->status = "";
+                $this->selectedProvince = "";
+                $this->selectedMunicipality = "";
+                $this->selectedBarangay = "";
+                $this->contact = "";
+                $this->email = "";
+                $this->student_id = "";
+                $this->level = "";
+                $this->studentType = "";
+                $this->nameSchool = "";
+                $this->lastYear = "";
+                $this->grant_status = "";
+                $this->grant = "";
+                $this->father = "";
+                $this->mother = "";
+                $this->selectedFundSources = "";
 
                 $this->showNewInput = false;
             }

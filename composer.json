@@ -27,7 +27,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "App\\Http\\Controllers\\": "app/Http/Controllers/"
+            "App\\Http\\Controllers\\": "app/Http/Controllers/",
+            "PowerGrid\\": "vendor/power-components/livewire-powergrid/src/"
         }
     },
     "autoload-dev": {
@@ -55,6 +56,13 @@
             "dont-discover": []
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/livewire/livewire"
+        }
+    ],
+
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

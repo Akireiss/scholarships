@@ -10,17 +10,17 @@ class Student extends Model
 {
     protected $table = "students";
     protected $fillable = [
-        'student_id',
-        'lastname',
+         'student_id',
+         'lastname',
         'firstname',
-        'initial',
+         'initial',
         'email',
         'sex',
         'status',
         'barangay',
         'municipal',
         'province',
-        'campus',
+         'campus',
         'course',
         'level',
         'father',
@@ -31,7 +31,7 @@ class Student extends Model
         'lastYear',
         'grant_status',
         'grant',
-        'scholarshipType'
+         'scholarshipType'
     ];
 
   // Define the relationships if there are any
@@ -77,8 +77,6 @@ class Student extends Model
         {
             return $this->belongsTo(ScholarshipType::class);
         }
-
-
 
 
     }

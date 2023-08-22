@@ -1,24 +1,25 @@
 <?php
 
+use Livewire\Livewire;
+use App\Models\Student;
 use App\Http\Livewire\Grantees;
 use App\Http\Livewire\ViewForm;
 use App\Http\Livewire\AccountSet;
 use App\Http\Livewire\AuditTrail;
 // account
+use App\Http\Livewire\StudentData;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 // add
-use App\Http\Controllers\AuthController;
-// audit
-use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
 // view
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\auditController;
 use App\Http\Controllers\accountSetController;
 use App\Http\Controllers\addScholarController;
 use App\Http\Controllers\AddStudentController;
-use App\Http\Controllers\StudentData;
 use App\Http\Controllers\viewStudentController;
 use App\Http\Controllers\AdminGovernmentController;
+use App\Http\Controllers\studentViewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,6 @@ Auth::routes();
     // staff
     Route::get('staff/settings/register', 'registerStaff')->name('staff.settings.register');
     Route::post('register', 'registerSave')->name('register.save');
-
 
 
         // log in
@@ -82,11 +82,9 @@ Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewSta
 // campus-NLUC
 });
 
-// tables to view
-// admin
-Route::get('/student-data', StudentData::class)->name('student-data');
-Route::get('admin/scholarship/student-view', 'viewStudentController@studentAdmin')->name('admin.scholarship.student-view');
 
+// admin
+Route::get('admin/scholarship/student-view/{id}',[studentViewController::class, 'adminView'])->name('admin.scholarship.student-view');
 
 // staff
 Route::get('staff/scholarship/student-view', [viewStudentController::class, 'studentStaff'])->name('staff.scholarship.student-view');

@@ -23,9 +23,9 @@ class ScholarshipCountGovernment extends Component
 {
             // 2nd card
             if ($this->selectedTypeScholar === 'Government') {
-                $this->governmentScholar = Student::where('scholarshipType', 1)->count();
+                $this->governmentScholar = Student::where('scholarshipType', 'Government')->count();
             } elseif ($this->selectedTypeScholar === 'Private') {
-                $this->privateScholar = Student::where('scholarshipType', 2)->count();
+                $this->privateScholar = Student::where('scholarshipType', 'Private')->count();
             } else {
                 $this->governmentScholar = 0;
                 $this->privateScholar = 0;
@@ -35,7 +35,6 @@ class ScholarshipCountGovernment extends Component
             ->groupBy('campus')
             ->get()
             ->toArray();
-            // dd($this->chartData);
 
 }
 
