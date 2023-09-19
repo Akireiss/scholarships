@@ -4,7 +4,7 @@
         <div class="row d-flex align-items-center justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-body shadow-md p-3">
+                    <div class="card-body shadow-md p-2">
                         {{-- Data table --}}
                         <livewire:view-form />
                         {{-- ends here --}}

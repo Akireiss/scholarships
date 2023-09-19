@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
+        'email',
         'role',
     ];
 
@@ -47,6 +48,19 @@ class User extends Authenticatable
 
         // Record audit trail for user creation
 
+        public function getRoleText()
+        {
+            switch ($this->role) {
+                case 0:
+                    return 'Staff';
+                case 1:
+                    return 'Admin';
+                case 2:
+                    return 'Campus In-charge - NLUC';
+                default:
+                    return 'Unknown';
+            }
+        }
 
-        
+
 }

@@ -26,6 +26,7 @@ class AuthController extends Controller
         {
             Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'email' => 'required|email',
                 'username' => 'required|string|unique:users|max:255',
                 'password' => 'required|string|min:8|confirmed',
                 'role' => 'required|in:0,1,2',
@@ -33,6 +34,7 @@ class AuthController extends Controller
 
             $user = User::create([
                 'name' => $request->name,
+                'email' => $request->email,
                 'username' => $request->username,
                 'password' => Hash::make($request['password']),
                 'role' => $request->role,
@@ -41,8 +43,8 @@ class AuthController extends Controller
     // Record audit trail for user registration
     AuditLog::create([
         'user_id' => $user->id,
-        'action' => 'create',
-        'data' => json_encode($user),
+        'action' => 'Created an account',
+        'data' => json_encode('Created by ' . $user),
     ]);
 
     // redirect to users dashboard
@@ -72,8 +74,8 @@ class AuthController extends Controller
                 // Record audit trail for user login
                 AuditLog::create([
                     'user_id' => $user->id,
-                    'action' => 'login',
-                    'data' => json_encode(['username' => $user->username]),
+                    'action' => 'Login',
+                    'data' => json_encode('Login by ' . $user->username),
                 ]);
 
 
@@ -98,8 +100,8 @@ public function logout(Request $request)
     // record
     AuditLog::create([
         'user_id' => $user->id,
-        'action' => 'logout',
-        'data' => json_encode(['username' => $user->username]),
+        'action' => 'Logout',
+        'data' => json_encode('Logout: ' . $user->username),
     ]);
 
     Auth::logout();

@@ -10,11 +10,11 @@ class Province extends Model
 {
     use HasFactory;
     protected $table = 'provinces';
-    protected $primaryKey = 'province_id';
-    protected $fillable = ['psgcCode', 'provDesc', 'provCode'];
+    protected $primaryKey = 'id';
+    protected $fillable = ['psgcCode', 'provDesc', 'regCode' , 'provCode'];
 
     public function region()
     {
-        return $this->belongsTo(Region::class, 'region_id');
+        return $this->belongsTo(Region::class, 'id');
     }
 }

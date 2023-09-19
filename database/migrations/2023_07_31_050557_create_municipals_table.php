@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('municipals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('province_id');
-            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->string('psgcCode');
+            $table->string('citymunDesc');
+            $table->string('regCode');
+            $table->string('citymunCode');
+
             $table->timestamps();
         });
     }

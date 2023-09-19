@@ -11,11 +11,11 @@ class Municipal extends Model
     use HasFactory;
 
     protected $table = 'municipals';
-    protected $primaryKey = 'municipality_id';
+    protected $primaryKey = 'id';
     protected $fillable = ['psgcCode', 'citynumDesc', 'regCode', 'provCode', 'citynumCode'];
 
     public function province()
     {
-        return $this->belongsTo(Province::class, 'province_id');
+        return $this->belongsTo(Province::class, 'id');
     }
 }

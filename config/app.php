@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         PowerComponents\LivewirePowerGrid\Providers\PowerGridServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
         // PowerGrid\Models\PowerGrid::class,
     ])->toArray(),
 
@@ -187,4 +188,11 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'livewire' => [
+        'class' => \Livewire\Livewire::class,
+        'viewPath' => resource_path('views/livewire'),
+        'aliases' => [
+            'BackupDatabase' => \App\Http\Livewire\BackupDatabaseComponent::class,
+        ],
+    ],
 ];

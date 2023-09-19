@@ -36,6 +36,10 @@
             "Tests\\": "tests/"
         }
     },
+    "proxy": {
+        "host": "localhost",
+        "port": 8080
+    },
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -62,6 +66,10 @@
             "url": "https://github.com/livewire/livewire"
         }
     ],
+    "github-oauth": {
+
+        "github.com": "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"
+    },
 
     "config": {
         "optimize-autoloader": true,
@@ -70,8 +78,11 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+            
         }
     },
+
     "minimum-stability": "stable",
     "prefer-stable": true
+    
 }

@@ -1,4 +1,6 @@
-<script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script defer src="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-html5-2.4.2/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.js"></script>
+
 <script>
     $(document).ready(function() {
         var message = $('#message');
@@ -12,7 +14,7 @@
 </script>
 
 @livewireScripts
-<script type="module" src="{{ asset('assets/js/module.js') }}"></script>
+<script defer type="module" src="{{ asset('assets/js/module.js') }}"></script>
 
 <!-- plugins:js -->
 <script defer src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>

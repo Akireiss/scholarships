@@ -26,17 +26,20 @@
                                 </select>
                             </div>
                             <div class="form-check">
-                                <label for="scholarship_name" class="mb-2 fw-bold">Scholarship Name</label>
+                                <label for="scholarship_name" class="mb-2 fw-bold">Scholarship Name <font class="text-danger">*</font></label>
                                 <input class="form-control form-control-md mb-2" type="text"
                                     wire:model="scholarship_name" id="scholarship_name">
+                                    <p class="text-danger">Required</p>
                             </div>
                             <div class="form-check">
-                                <label class="mb-2 fw-bold" for="fund_sources">Source of Funds</label>
+                                <label class="mb-2 fw-bold" for="fund_sources">Source of Funds <font class="text-danger">*</font></label>
                                 <input type="text" wire:model="fund_sources" id="fund_sources"
                                     class="form-control form-control-md mb-2">
+                                    <p class="text-danger">Required</p>
                             </div>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <button type="submit" class="btn btn-gradient-success text-dark fw-bold">ADD</button>
+                            <div class="float-end mt-2 gap-2">
+                                <button type="submit" class="btn btn-success btn-sm text-dark fw-bold">ADD</button>
+                                <a type="button" class="btn btn-danger btn-sm fw-bold text-dark" href="{{ route('admin.dashboard') }}">Cancel</a>
                             </div>
                         </form>
                     </div>

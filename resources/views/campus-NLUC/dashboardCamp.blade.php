@@ -11,7 +11,7 @@
 
         {{-- message --}}
 
-        <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;">
+        <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;"
             {{ session('message') }}
         </div>
 
@@ -19,25 +19,12 @@
 
         {{-- cards --}}
 
-        {{-- @livewire('scholarship-count-government') --}}
+       <div class="row">
+            @livewire('nluc-dash')
+       </div>
 
         {{-- it ends here --}}
 
-
-        <!-- charts -->
-
-        <!-- Line chart -->
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Line chart</h4>
-                        <canvas id="lineChart" style="height:300px"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- it ends here -->
 
 
         <!-- normative reports here  -->

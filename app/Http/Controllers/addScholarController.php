@@ -31,14 +31,14 @@ class addScholarController extends Controller
 
     // campus-NLUC
 
-    // public function showFormNLUC()
-    // {
-    //     return view('campus-NLUC.settings.addScholar');
-    // }
+    public function showFormNLUC()
+    {
+        return view('campus-NLUC.settings.addScholar');
+    }
 
-    // public function submitFormNLUC(Request $request)
-    // {
-    //     //message
-    //     return redirect()->route('campus-NLUC.settings.addScholar')->with('success', 'Scholarship application submitted successfully!');
-    // }
+    public function submitFormNLUC(Request $request)
+    {
+        //message
+        return redirect()->route('campus-NLUC.settings.addScholar')->with('success', 'Scholarship application submitted successfully!');
+    }
 }

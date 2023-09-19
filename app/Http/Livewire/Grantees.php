@@ -2,10 +2,12 @@
 
     namespace App\Http\Livewire;
 
-    use App\Models\Fund;
+use App\Models\AuditLog;
+use App\Models\Fund;
     use App\Models\Campus;
     use App\Models\Course;
     use App\Models\Student;
+    use Illuminate\Support\Facades\Auth;
     use Livewire\Component;
     use App\Models\Barangay;
     use App\Models\Province;
@@ -20,7 +22,7 @@
             public $selectedCampus, $campuses;
             public $selectedCourse, $courses = [];
             // Types
-            public $scholarship_name, $scholarships;
+            public $scholarship_name, $scholarships, $selectedScholarshipType;
             public $selectedFundSources, $funds;
 
             // Personal Information
@@ -65,7 +67,7 @@
                 'mother' => 'required',
                 'selectedFundSources' => 'required',
             ];
-            
+
             public function updatedStudentType($value)
             {
                 if ($value === 'new') {
@@ -87,7 +89,7 @@
                         }
                     }
 
- 
+
 
             public function showNewInput()
             {
@@ -98,8 +100,14 @@
             {
                 $this->showNewInput = false;
             }
+            public function updatedScholarship_name($value)
+{
+    if ($value !== $this->scholarship_name) {
+        $this->selectedScholarshipType = null;
+    }
+}
 
-    
+
         public function saveStudent()
         {
             $this->validate();
@@ -114,9 +122,8 @@
             session()->flash('error', 'The student has reached the maximum scholarship limit.');
             return;
         }
+
             try{
-            // dd('Debugging');
-            // Validate the student form fields
 
 
                 // Get the campus and course based on the selectedCampus and selectedCourse
@@ -129,9 +136,20 @@
                 $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
                 // dd($barangay);
                 // Get the selected scholarship
-                $scholarship = ScholarshipName::find(1);
-                $scholarshipType = $scholarship->scholarshipType;
+                // $scholarship = ScholarshipName::get();
+                // $scholarshipType = $scholarship->scholarshipType;
                 // dd($scholarshipType);
+
+                    // Get the selected scholarship
+        $scholarship = ScholarshipName::find($this->scholarship_name);
+
+        if (!$scholarship) {
+            session()->flash('error', 'Selected scholarship not found.');
+            return;
+        }
+
+        // Get the associated scholarship type
+        $scholarshipType = $scholarship->scholarshipType->name;
 
                 // Save the student data
                 $studentData = [
@@ -156,9 +174,8 @@
                     'grant' => $this->grant,
                     'father' => $this->father,
                     'mother' => $this->mother,
-                    'scholarshipType' => $scholarship->scholarshipType->name,
+                    'scholarshipType' => $scholarshipType,
                 ];
-
                 $student = Student::create($studentData);
 
                 // Save the selected fund sources with the student ID in the fund table
@@ -180,6 +197,14 @@
               $this->resetForm();
 
   }
+
+  $user = Auth::user();
+//   record
+AuditLog::create([
+    'user_id' => $user->id,
+    'action' => 'Add new student',
+    'data' => json_encode(['Added by ' => $user->username]),
+]);
 }
 
         public function render()
@@ -233,6 +258,8 @@
                     $this->selectedFundSources = array_slice($this->selectedFundSources, 1, 3); // Corrected slice parameters
                 }
             }
+
+
 
 
 

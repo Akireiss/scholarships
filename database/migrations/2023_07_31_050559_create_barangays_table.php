@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('barangays', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('municipal_id');
-            $table->foreign('municipal_id')->references('id')->on('municipals');
-            $table->timestamps();
+            $table->string('brgyCode');
+            $table->string('brgyDesc');
+            $table->string('regCode');
+            $table->string('citymunCode');
         });
     }
 

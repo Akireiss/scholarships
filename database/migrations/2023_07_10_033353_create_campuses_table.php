@@ -18,8 +18,8 @@ class CreateCampusesTable extends Migration
 
         $campuses = [
             ['campus_name' => 'NLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University North La Union Campus'],
-            ['campus_name' => 'MLUC', 'campusDesc' => 'Mariano Marcos Memorial State  University Mid La Union Campus'],
-            ['campus_name' => 'SLUC', 'campusDesc' => 'Mariano Marcos Memorial State  University South La Union Campus'],
+            ['campus_name' => 'MLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University Mid La Union Campus'],
+            ['campus_name' => 'SLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University South La Union Campus'],
             ['campus_name' => 'OUS', 'campusDesc' => 'Don Mariano Marcos Memorial State  University Open University System'],
         ];
 

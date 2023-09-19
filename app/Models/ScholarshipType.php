@@ -8,6 +8,7 @@ class ScholarshipType extends Model
 {
     protected $table = 'scholarship_type';
     protected $primaryKey = 'id';
+    
 
     public function scholarships()
     {

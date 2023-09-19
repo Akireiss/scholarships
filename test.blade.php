@@ -841,3 +841,10 @@ public function mount()
     // },
 
 
+
+
+// "datatables.net-buttons-dt": "^2.4.1",
+// "datatables.net-dt": "^1.13.6",
+// "datatables.net-responsive-dt": "^2.5.0",
+// "datatables.net-scroller-dt": "^2.2.0",
+// "datatables.net-searchbuilder-dt": "^1.5.0",

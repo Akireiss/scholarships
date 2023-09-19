@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\AuditLog;
 use App\Models\FundSource;
 use App\Models\ScholarshipName;
 use App\Models\ScholarshipType;
@@ -62,6 +63,14 @@ public function submit()
             'source_name' => $this->fund_sources,
             'scholarship_name_id' => $scholarshipName->id,
         ]);
+        
+                        // Create an audit log entry
+                        $user = auth()->user(); // Assuming you have authentication in place
+                        AuditLog::create([
+                            'user_id' => $user->id,
+                            'action' => 'Create a new scholarship name & new fund source',
+                            'data' => json_encode( $this->scholarship_name . ' & ' . $this->fund_sources),
+                        ]);
 
         // Display the success message after successful form submission
         $this->successMessage = 'Scholarship information added successfully!';

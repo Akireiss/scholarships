@@ -412,11 +412,14 @@
                                             class="form-control form-control-sm mb-2">
                                             <option>Select Scholarship Name</option>
                                             @foreach ($scholarships as $scholarship)
-                                            <option value="{{ $scholarship->id }}">{{ $scholarship->name }} -
-                                                {{ $scholarship->scholarshipType->name }}</option>
+                                            <option value="{{ $scholarship->id }}">{{ $scholarship->name }}</option>
                                             @endforeach
                                         </select>
+                                        @if ($selectedScholarshipType)
+                                        <p class="mt-2">Selected Scholarship Type: {{ $selectedScholarshipType }}</p>
+                                        @endif
                                     </div>
+
 
                                     <div class="col-12 col-md-12 mb-5">
                                         <label>Scholarship Fund</label>
@@ -433,11 +436,11 @@
                                                 <label class="form-check-label"
                                                     for="fund_source_{{ $fundSource->source_id }}">{{
                                                     $fundSource->source_name }}</label>
-                                                    @error('selectedFundSources')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
+                                                @error('selectedFundSources')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
                                             </div>
                                             @endforeach
                                             @endif
@@ -448,10 +451,12 @@
                                 </div>
 
                                 <div class="d-flex float-start mt-3 gap-4">
-                                    <button type="reset" class="btn btn-gradient-warning btn-fw fw-bold text-dark mt-2"
+                                    <button type="reset" class="btn btn-warning btn-sm fw-bold text-dark mt-2"
                                         wire:model="resetForm">Reset</button>
-                                    <button type="submit"
-                                        class="btn btn-gradient-success btn-fw fw-bold text-dark mt-2">Save</button>
+                                    <button type="submit" wire:loading.attr='disabled'
+                                        class="btn btn-success btn-sm fw-bold text-dark mt-2">Save</button>
+                                    <a type="button" class="btn btn-danger btn-sm fw-bold text-dark mt-2"
+                                        href="{{ route('admin.dashboard') }}">Cancel</a>
                                 </div>
                         </form>
                     </div>

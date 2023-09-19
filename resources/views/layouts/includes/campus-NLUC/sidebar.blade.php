@@ -2,7 +2,7 @@
     <ul class="nav">
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('campus-NLUC.dashboard') }}">
+            <a class="nav-link" href="{{ route('campus-NLUC.dashboardCamp') }}">
                 <span class="menu-title">Dashboard</span>
                 <i class="mdi mdi-home menu-icon"></i>
             </a>
@@ -20,11 +20,11 @@
                 <ul class="nav flex-column sub-menu">
                     <!-- View -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('campus-NLUC.scholarship.view') }}">View</a>
+                        <a class="nav-link" href="#">View</a>
                     </li>
                     <!-- Add grantees -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('campus-NLUC.scholarship.grantees') }}">Grantee</a>
+                        <a class="nav-link" href="#">Grantee</a>
                     </li>
                 </ul>
             </div>
@@ -40,7 +40,7 @@
             </a>
             <div class="collapse" id="settings">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href=""> Add Scholarships </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('campus-NLUC.settings.addScholar') }}"> Add Scholarships </a></li>
                     <li class="nav-item"> <a class="nav-link" href="#"> Audit Trail </a></li>
                     <li class="nav-item"> <a class="nav-link" href="#"> Data back-up </a></li>
                 </ul>

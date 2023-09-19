@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
+            $table->string('email')->email();
             $table->string('password');
-            $table->unsignedTinyInteger('role')->default(0)->comment('staff:0 | admin:1 | campus: 2');
+            $table->integer('role')->default(1)->comment('0:staff | 1:admin | 2:campus');
             $table->timestamps();
         });
     }

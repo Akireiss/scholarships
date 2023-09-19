@@ -23,19 +23,5 @@
         @livewire('scholarship-count-government')
     </div>
 
-    <!-- normative reports here  -->
-
-    <div class="row align-items-lg-center justify-content-center">
-        <div class="col-lg-10 grid-margin shadow-lg">
-            <div class="card-body">
-                <h4 class="d-flex align-items-md-center justify-content-center">
-                    Text here...
-                </h4>
-            </div>
-        </div>
-    </div>
-
-    <!-- it ends here -->
-
 </div>
 @endsection
