@@ -22,4 +22,18 @@ class studentViewController extends Controller
 
         return view('admin.scholarship.student-view', compact('students'));
     }
+
+    public function staffView(Request $request)
+    {
+
+        $sourceId = $request->route('source_id');
+
+        $fund = Fund::where('source_id', $sourceId)->first();
+        $studentId = $fund->student_id;
+
+        $students = Student::where('student_id', $studentId)->get();
+
+
+        return view('staff.scholarship.student-view', compact('students'));
+    }
 }

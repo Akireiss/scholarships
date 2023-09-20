@@ -86,19 +86,21 @@ Route::get('/view-form', ViewForm::class)->name('view-form');
 Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewStaff'])->name('staff.scholarship.view');
 // campus-NLUC
 
-//VIEW
+//VIEW funds
 Route::get('admin/scholarship/view/{scholarship}', [SourcesController::class, 'funds'])->name('scholarship-name.view');
+Route::get('staff/scholarship/view/{scholarship}', [SourcesController::class, 'fundsStaff'])->name('scholarship-name.view');
 });
 
-
+// view
 // admin
 Route::get('admin/scholarship/student-view/{source_id}',[studentViewController::class, 'adminView'])->name('admin.scholarship.student-view');
-
 // staff
-Route::get('staff/scholarship/student-view', [viewStudentController::class, 'studentStaff'])->name('staff.scholarship.student-view');
+Route::get('staff/scholarship/student-view/{source_id}', [studentViewController::class, 'staffView'])->name('staff.scholarship.student-view');
 //campus-NLUC
 Route::get('campus-NLUC/scholarship/student-view', [viewStudentController::class, 'studentCampus'])->name('campus-NLUC.scholarship.student-view');
+
 // view more
+// admin
 Route::get('admin/scholarship/view_more/{student}', [StudentController::class, 'viewMore'])->name('admin.scholarship.view_more');
 
 

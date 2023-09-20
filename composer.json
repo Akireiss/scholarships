@@ -68,7 +68,7 @@
     ],
     "github-oauth": {
 
-        "github.com": "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"
+        "github.com": "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"
     },
 
     "config": {
@@ -78,11 +78,11 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-            
+
         }
     },
 
     "minimum-stability": "stable",
     "prefer-stable": true
-    
+
 }

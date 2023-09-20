@@ -13,4 +13,10 @@ class SourcesController extends Controller
             'scholarships' =>  $scholarships,
         ]);
     }
+    public function fundsStaff($scholarship) {
+        $scholarships = ScholarshipName::findOrFail($scholarship);
+        return view('staff.scholarship.funds', [
+            'scholarships' =>  $scholarships,
+        ]);
+    }
 }
