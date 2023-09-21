@@ -224,7 +224,7 @@ public function showHideFundSource()
 AuditLog::create([
     'user_id' => $user->id,
     'action' => 'Add new student',
-    'data' => json_encode(['Added by ' => $user->username]),
+    'data' => json_encode(['Added by '. $user->username]),
 ]);
 }
 
