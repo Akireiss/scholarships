@@ -6,6 +6,7 @@ use App\Models\AuditLog;
 use App\Models\Fund;
     use App\Models\Campus;
     use App\Models\Course;
+    use App\Models\FundSource;
     use App\Models\Student;
     use Illuminate\Support\Facades\Auth;
     use Livewire\Component;
@@ -23,14 +24,14 @@ use App\Models\Fund;
             public $selectedCourse, $courses = [];
             // Types
             public $scholarship_name, $scholarships, $selectedScholarshipType;
-            public $selectedFundSources, $funds;
+            public $selectedFundSources, $funds, $selectedFundSource = null;
 
             // Personal Information
             public $lastname, $firstname, $initial;
             public $sex, $status, $contact, $email, $level;
             public $nameSchool, $lastYear;
-            public $student_id;
-            public $grant_status, $grant;
+            public $student_id,  $scholarshipLimitExceeded = false;
+            public $grant_status = 'no', $grant, $fundSources;
             public $studentType;
             public $father, $mother;
 
@@ -101,9 +102,31 @@ use App\Models\Fund;
                 $this->showNewInput = false;
             }
             public function updatedScholarship_name($value)
+            {
+                if ($value !== $this->scholarship_name) {
+                    $this->selectedScholarshipType = null;
+                }
+            }
+
+
+public function checkScholarshipLimit()
 {
-    if ($value !== $this->scholarship_name) {
-        $this->selectedScholarshipType = null;
+    // Count the occurrences of the student_id in the funds table
+    $studentIdCount = Fund::where('student_id', $this->student_id)->count();
+
+    // Define the maximum limit for scholarship
+    $maxLimit = 2;
+
+    if ($studentIdCount >= $maxLimit) {
+        $this->scholarshipLimitExceeded = true;
+    } else {
+        $this->scholarshipLimitExceeded = false;
+    }
+}
+public function showHideFundSource()
+{
+    if ($this->grant_status === 'no') {
+        $this->selectedFundSource = null;
     }
 }
 
@@ -112,16 +135,6 @@ use App\Models\Fund;
         {
             $this->validate();
 
-        // Count the occurrences of the student_id in the funds table
-        $studentIdCount = Fund::where('student_id', $this->student_id)->count();
-
-        // Define the maximum limit for scholarship
-        $maxLimit = 2;
-
-        if ($studentIdCount >= $maxLimit) {
-            session()->flash('error', 'The student has reached the maximum scholarship limit.');
-            return;
-        }
 
             try{
 
@@ -134,11 +147,6 @@ use App\Models\Fund;
                 $province = Province::where('provCode', $this->selectedProvince)->firstOrFail();
                 $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
                 $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
-                // dd($barangay);
-                // Get the selected scholarship
-                // $scholarship = ScholarshipName::get();
-                // $scholarshipType = $scholarship->scholarshipType;
-                // dd($scholarshipType);
 
                     // Get the selected scholarship
         $scholarship = ScholarshipName::find($this->scholarship_name);
@@ -171,18 +179,31 @@ use App\Models\Fund;
                     'last_school_attended' => $this->nameSchool,
                     'last_school_year' => $this->lastYear,
                     'grant_status' => $this->grant_status,
-                    'grant' => $this->grant,
                     'father' => $this->father,
                     'mother' => $this->mother,
                     'scholarshipType' => $scholarshipType,
                 ];
+
+               // Check if grant status is 'yes' and a fund source is selected
+                if ($this->grant_status === 'yes' && $this->selectedFundSource) {
+                    $studentData['fund_source_id'] = $this->selectedFundSource;
+                }
+
                 $student = Student::create($studentData);
+
 
                 // Save the selected fund sources with the student ID in the fund table
                 foreach ($this->selectedFundSources as $sourceId) {
                     Fund::create([
                         'student_id' => $this->student_id,
                         'source_id' => $sourceId
+                    ]);
+                }
+                // Save the selected fund source with the student ID in the fund table
+                if ($this->grant_status === 'yes' && $this->selectedFundSource) {
+                    Fund::create([
+                        'student_id' => $this->student_id,
+                        'source_id' => $this->selectedFundSource
                     ]);
                 }
 
@@ -206,6 +227,7 @@ AuditLog::create([
     'data' => json_encode(['Added by ' => $user->username]),
 ]);
 }
+
 
         public function render()
         {
@@ -237,6 +259,7 @@ AuditLog::create([
 
             // Fetch scholarships along with their types and fund sources
             $this->scholarships = ScholarshipName::with('scholarshipType', 'fundSources')->get();
+            $this->fundSources = FundSource::all();
 
             return view('livewire.grantees', [
                 'campuses' => $this->campuses,

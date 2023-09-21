@@ -138,13 +138,13 @@
                                         <label for="sex" class="fw-bold mr-2">Sex:</label>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input @error('sex') is-invalid @enderror"
-                                                type="radio" name="sex" id="male" value="male" wire:model="sex">
+                                                type="radio" name="sex" id="male" value="Male" wire:model="sex">
                                             <label class="form-check-label" for="male">Male</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input @error('sex') is-invalid @enderror"
                                                 type="radio" name="sex" id="female" value="female" wire:model="sex">
-                                            <label class="form-check-label" for="female">Female</label>
+                                            <label class="form-check-label" for="Female">Female</label>
                                         </div>
                                         {{-- required here --}}
                                         @error('sex')
@@ -160,13 +160,13 @@
                                         <label for="status" class="fw-bold mr-2">Civil Status:</label>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input @error('status') is-invalid @enderror"
-                                                type="radio" name="status" id="single" value="single"
+                                                type="radio" name="status" id="single" value="Single"
                                                 wire:model="status">
                                             <label class="form-check-label" for="single">Single</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input @error('status') is-invalid @enderror"
-                                                type="radio" name="status" id="married" value="married"
+                                                type="radio" name="status" id="married" value="Married"
                                                 wire:model="status">
                                             <label class="form-check-label" for="married">Married</label>
                                         </div>
@@ -215,12 +215,19 @@
                                     <label class="form-label" for="student_id">Student ID</label>
                                     <input type="text" id="student_id"
                                         class="form-control form-control-sm @error('student_id') is-invalid @enderror"
-                                        wire:model="student_id" name="student_id" maxlength="10" />
+                                        wire:keydown="checkScholarshipLimit" wire:model="student_id" name="student_id"
+                                        maxlength="10" />
                                     @error('student_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    @if ($scholarshipLimitExceeded)
+                                    <div class="alert alert-danger mt-2">
+                                        The student has reached the maximum scholarship limit.
+                                    </div>
+                                    @endif
+
                                 </div>
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function() {
@@ -279,24 +286,24 @@
 
 
                                 <!-- Types of Students -->
-                                <div class="row mt-1 mx-3">
+                                <div class="row mt-2 mx-3">
                                     <p class="fw-bold fs-5">Type of Student:</p>
                                     <div class="col-6 col-md-6 col-lg-6">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="studentType"
-                                                id="checkNew" value="new" wire:model="studentType"
+                                                id="checkNew" value="New" wire:model="studentType"
                                                 wire:click="showNewInput">
                                             <label class="form-check-label" for="checkNew">New</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="studentType"
-                                                id="continuing" value="continuing" wire:model="studentType"
+                                                id="continuing" value="Continuing" wire:model="studentType"
                                                 wire:click="hideNewInput">
                                             <label class="form-check-label" for="continuing">Continuing</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="studentType" id="return"
-                                                value="return" wire:model="studentType" wire:click="hideNewInput">
+                                                value="Return" wire:model="studentType" wire:click="hideNewInput">
                                             <label class="form-check-label" for="return">Returning
                                                 Student</label>
                                         </div>
@@ -309,7 +316,7 @@
                                         <input type="text" class="form-control form-control-sm" name="nameSchool"
                                             id="nameSchool" wire:model.defer="nameSchool">
 
-                                        <p class="fw-bold fs-6 mt-1">
+                                        <p class="mt-1"><span class="text-danger">*</span>
                                             School year last attended:
                                         </p>
                                         <input type="text" class="form-control form-control-sm" name="lastYear"
@@ -333,10 +340,10 @@
                                     <div class="col-6 col-md-6 col-lg-6">
                                         <p class="fw-bold">Are you a recipient of any scholarship/grant?</p>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" id="yes" value="yes"
-                                                name="grant_status" wire:model="grant_status">
+                                            <input class="form-check-input" type="radio" id="yes" value="yes" name="grant_status" wire:model="grant_status" wire:change="showHideFundSource">
                                             <label class="form-check-label" for="yes">Yes</label>
                                         </div>
+
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" id="no" value="no"
                                                 name="grant_status" wire:model="grant_status">
@@ -344,33 +351,21 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-6 col-md-6 col-lg-6" id="grantNew">
-                                        <p>If yes, write the complete name of the scholarship/grant and amount of
-                                            stipend received per semester</p>
-                                        <input type="text" class="form-control form-control-sm" name="grant" id="grant"
-                                            wire:model.defer="grant">
+                                    <div class="col-6 col-md-6 col-lg-6" id="fundSource" wire:loading.remove>
+                                        @if ($grant_status === 'yes')
+                                            <p>If yes, write the complete name of the scholarship/grant and amount of stipend received per semester</p>
+                                            <label for="selectedFundSource" class="mb-1">Select Fund Source <font class="text-danger">*</font></label>
+                                            <select class="form-control form-control-sm" id="selectedFundSource" name="selectedFundSource" wire:model="selectedFundSource">
+                                                <option value="">Select Fund Source</option>
+                                                @foreach ($fundSources as $fundSource)
+                                                    <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
                                     </div>
+
+
                                 </div>
-
-                                <script>
-                                    const grantNew = document.getElementById('grantNew');
-                                        const grantStatusRadios = document.querySelectorAll('[name="grant_status"]');
-
-                                        // Function to show or hide the "grantNew" element based on the radio button selection
-                                        function showHideGrantNew() {
-                                            grantNew.style.display = grantStatusRadios[0].checked ? 'block' : 'none';
-                                        }
-
-                                        // Add event listeners to both radio buttons
-                                        grantStatusRadios.forEach(radio => {
-                                            radio.addEventListener('change', showHideGrantNew);
-                                        });
-
-                                        // Initially set the display based on the initial value of the grant_status property
-                                        document.addEventListener("DOMContentLoaded", function() {
-                                            showHideGrantNew();
-                                        });
-                                </script>
 
 
                                 {{-- family --}}
