@@ -3,18 +3,6 @@
         <div class="row p-3">
             <div class="col-lg-12">
                 <div class="card">
-                    {{-- Display success message --}}
-                    @if (session()->has('success'))
-                    <div class="alert alert-success text-center">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-                    @if (session()->has('error'))
-                    <div class="alert alert-danger text-center">
-                        {{ session('error') }}
-                    </div>
-                    @endif
-                    {{-- ends here --}}
                     <div class="card-body shadow-lg">
                         <form wire:submit.prevent="saveStudent">
                             @csrf
@@ -340,7 +328,9 @@
                                     <div class="col-6 col-md-6 col-lg-6">
                                         <p class="fw-bold">Are you a recipient of any scholarship/grant?</p>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" id="yes" value="yes" name="grant_status" wire:model="grant_status" wire:change="showHideFundSource">
+                                            <input class="form-check-input" type="radio" id="yes" value="yes"
+                                                name="grant_status" wire:model="grant_status"
+                                                wire:change="showHideFundSource">
                                             <label class="form-check-label" for="yes">Yes</label>
                                         </div>
 
@@ -353,14 +343,18 @@
 
                                     <div class="col-6 col-md-6 col-lg-6" id="fundSource" wire:loading.remove>
                                         @if ($grant_status === 'yes')
-                                            <p>If yes, write the complete name of the scholarship/grant and amount of stipend received per semester</p>
-                                            <label for="selectedFundSource" class="mb-1">Select Fund Source <font class="text-danger">*</font></label>
-                                            <select class="form-control form-control-sm" id="selectedFundSource" name="selectedFundSource" wire:model="selectedFundSource">
-                                                <option value="">Select Fund Source</option>
-                                                @foreach ($fundSources as $fundSource)
-                                                    <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <p>If yes, write the complete name of the scholarship/grant and amount of
+                                            stipend received per semester</p>
+                                        <label for="selectedFundSource" class="mb-1">Select Fund Source <font
+                                                class="text-danger">*</font></label>
+                                        <select class="form-control form-control-sm" id="selectedFundSource"
+                                            name="selectedFundSource" wire:model="selectedFundSource">
+                                            <option value="">Select Fund Source</option>
+                                            @foreach ($fundSources as $fundSource)
+                                            <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                         @endif
                                     </div>
 
@@ -444,15 +438,39 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="d-flex float-start mt-3 gap-4">
-                                    <button type="reset" class="btn btn-warning btn-sm fw-bold text-dark mt-2"
-                                        wire:model="resetForm">Reset</button>
-                                    <button type="submit" wire:loading.attr='disabled'
-                                        class="btn btn-success btn-sm fw-bold text-dark mt-2">Save</button>
-                                    <a type="button" class="btn btn-danger btn-sm fw-bold text-dark mt-2"
-                                        href="{{ route('admin.dashboard') }}">Cancel</a>
+                                <div class="row mt-3">
+                                    <div class="col-md-6 d-flex justify-content-center gap-4">
+                                        <button type="reset" class="btn btn-warning btn-md fw-bold text-dark mt-2">
+                                            <i class="mdi mdi-close"></i>
+                                            Reset
+                                        </button>
+                                        <button type="submit" wire:loading.attr='disabled'
+                                            class="btn btn-success btn-md fw-bold text-dark mt-2">
+                                            <i class="mdi mdi-content-save"></i>
+                                            Save
+                                        </button>
+                                        <a type="button" class="btn btn-danger btn-md fw-bold text-dark mt-2"
+                                            href="{{ route('admin.dashboard') }}">
+                                            <i class="mdi mdi-close-circle"></i>
+                                            Cancel
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Display success message --}}
+                                        @if (session()->has('success'))
+                                        <div class="alert alert-success text-center">
+                                            {{ session('success') }}
+                                        </div>
+                                        @endif
+                                        @if (session()->has('error'))
+                                        <div class="alert alert-danger text-center">
+                                            {{ session('error') }}
+                                        </div>
+                                        @endif
+                                        {{-- ends here --}}
+                                    </div>
                                 </div>
+
                         </form>
                     </div>
                 </div>
@@ -461,4 +479,14 @@
     </section>
 
     {{-- forms end --}}
+    <style>
+        .mdi-icon {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+
+        .btn .mdi-icon {
+            margin-right: 5px;
+        }
+    </style>
 </div>
