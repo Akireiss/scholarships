@@ -12,4 +12,20 @@ class backupController extends Controller
         
         return view('admin.settings.backup');
     }
+
+
+    // staff
+    public function staffBackup()
+    {
+        
+        return view('staff.settings.backup');
+    }
+
+    // NLUC
+    public function nlucBackup()
+    {
+        
+        return view('campus-NLUC.settings.backup');
+    }
 }
+

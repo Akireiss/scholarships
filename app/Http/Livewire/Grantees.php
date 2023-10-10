@@ -2,8 +2,8 @@
 
     namespace App\Http\Livewire;
 
-use App\Models\AuditLog;
-use App\Models\Fund;
+    use App\Models\AuditLog;
+    use App\Models\Fund;
     use App\Models\Campus;
     use App\Models\Course;
     use App\Models\FundSource;
@@ -19,19 +19,23 @@ use App\Models\Fund;
 
     class Grantees extends Component
     {
+            public $selectedScholarship;
             // campus & course
             public $selectedCampus, $campuses;
             public $selectedCourse, $courses = [];
-            // Types
-            public $scholarship_name, $scholarships, $selectedScholarshipType;
-            public $selectedFundSources, $funds, $selectedFundSource = null;
+
+            public $governmentScholars = [],  $selectedScholarshipType;
+            public $privateScholars = [];
+            public $selectedGovernmentScholarship, $selectedPrivateFundSources = [];
+            public $selectedPrivateScholarship, $selectedGovernmentFundSources = []; // Update the property name
+            public $governmentFundSources = [], $privateFundSources = [] ;
 
             // Personal Information
             public $lastname, $firstname, $initial;
             public $sex, $status, $contact, $email, $level;
             public $nameSchool, $lastYear;
             public $student_id,  $scholarshipLimitExceeded = false;
-            public $grant_status = 'no', $grant, $fundSources;
+            public $grant_status;
             public $studentType;
             public $father, $mother;
 
@@ -59,38 +63,27 @@ use App\Models\Fund;
                 'selectedProvince' => 'required',
                 'selectedMunicipality' => 'required',
                 'selectedBarangay' => 'required',
-                'contact' => 'required',
+                'contact' => 'required|min:11|max:11',
                 'email' => 'required|email',
                 'student_id' => 'required',
                 'level' => 'required',
+                'grant_status' => 'required',
                 'studentType' => 'required',
                 'father' => 'required',
                 'mother' => 'required',
-                'selectedFundSources' => 'required',
             ];
+
 
             public function updatedStudentType($value)
             {
                 if ($value === 'new') {
                     $this->rules['nameSchool'] = 'required';
-                    $this->rules['lastYear'] = 'required|numeric'; // Ensure lastYear is numeric
+                    $this->rules['lastYear'] = 'required|numeric';
                 } else {
                     unset($this->rules['nameSchool']);
                     unset($this->rules['lastYear']);
                 }
             }
-
-
-                 public function updatedGrantStatus($value)
-                    {
-                        if ($value === 'yes') {
-                            $this->rules['grant'] = 'required';
-                        } else {
-                            unset($this->rules['grant']);
-                        }
-                    }
-
-
 
             public function showNewInput()
             {
@@ -101,38 +94,45 @@ use App\Models\Fund;
             {
                 $this->showNewInput = false;
             }
-            public function updatedScholarship_name($value)
-            {
-                if ($value !== $this->scholarship_name) {
-                    $this->selectedScholarshipType = null;
-                }
+            // public function governmentScholarship($value)
+            // {
+            //     if ($value !== $this->selectedGovernmentScholarship) {
+            //         $this->selectedScholarshipType = null;
+            //     }
+            // }
+            // public function privateScholarship($value)
+            // {
+            //     if ($value !== $this->selectedPrivateScholarship) {
+            //         $this->selectedScholarshipType = null;
+            //     }
+            // }
+
+
+        public function checkScholarshipLimit()
+        {
+            // Count the occurrences of the student_id in the funds table
+            $studentIdCount = Fund::where('student_id', $this->student_id)->count();
+
+            // Define the maximum limit for scholarship
+            $maxLimit = 2;
+
+            if ($studentIdCount >= $maxLimit) {
+                $this->scholarshipLimitExceeded = true;
+            } else {
+                $this->scholarshipLimitExceeded = false;
             }
-
-
-public function checkScholarshipLimit()
-{
-    // Count the occurrences of the student_id in the funds table
-    $studentIdCount = Fund::where('student_id', $this->student_id)->count();
-
-    // Define the maximum limit for scholarship
-    $maxLimit = 2;
-
-    if ($studentIdCount >= $maxLimit) {
-        $this->scholarshipLimitExceeded = true;
-    } else {
-        $this->scholarshipLimitExceeded = false;
-    }
-}
-public function showHideFundSource()
-{
-    if ($this->grant_status === 'no') {
-        $this->selectedFundSource = null;
-    }
-}
+        }
+        public function showHideFundSource()
+        {
+            if ($this->grant_status === 'no') {
+                $this->selectedPrivateFundSources && $this->selectedGovernmentFundSources = null;
+            }
+        }
 
 
         public function saveStudent()
         {
+
             $this->validate();
 
 
@@ -148,16 +148,13 @@ public function showHideFundSource()
                 $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
                 $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
 
-                    // Get the selected scholarship
-        $scholarship = ScholarshipName::find($this->scholarship_name);
 
-        if (!$scholarship) {
-            session()->flash('error', 'Selected scholarship not found.');
-            return;
-        }
+                // Get the selected scholarship
+                //GOVERNMENT
+                $scholarships = ScholarshipName::find($this->selectedGovernmentScholarship && $this->selectedPrivateScholarship);
 
-        // Get the associated scholarship type
-        $scholarshipType = $scholarship->scholarshipType->name;
+                // Get the associated scholarship type
+                $scholarshipType = $scholarships->scholarshipType->name;
 
                 // Save the student data
                 $studentData = [
@@ -183,54 +180,88 @@ public function showHideFundSource()
                     'mother' => $this->mother,
                     'scholarshipType' => $scholarshipType,
                 ];
-
-               // Check if grant status is 'yes' and a fund source is selected
-                if ($this->grant_status === 'yes' && $this->selectedFundSource) {
-                    $studentData['fund_source_id'] = $this->selectedFundSource;
-                }
+                // dd($studentData);
 
                 $student = Student::create($studentData);
 
 
-                // Save the selected fund sources with the student ID in the fund table
-                foreach ($this->selectedFundSources as $sourceId) {
-                    Fund::create([
-                        'student_id' => $this->student_id,
-                        'source_id' => $sourceId
-                    ]);
-                }
                 // Save the selected fund source with the student ID in the fund table
-                if ($this->grant_status === 'yes' && $this->selectedFundSource) {
+                if ($this->grant_status === 'yes' && $this->selectedFundSources) {
+                    foreach ($this->selectedFundSources as $sourceId) {
+                        Fund::create([
+                            'student_id' => $this->student_id,
+                            'source_id' => $sourceId
+                        ]);
+                    }
+                } elseif ($this->grant_status === 'no') {
+                    // Automatically save source_id = 1 when grant_status is 'no'
                     Fund::create([
                         'student_id' => $this->student_id,
-                        'source_id' => $this->selectedFundSource
+                        'source_id' => 1 // Change this to the appropriate source_id value
                     ]);
                 }
 
-      // Flash a success message to the session
-      session()->flash('success', 'Student data saved successfully!');
-        // Reset the form fields
-        $this->resetForm();
+        // Flash a success message to the session
+        session()->flash('success', 'Student data saved successfully!');
+            // Reset the form fields
+            $this->resetForm();
 
-  } catch (\Exception $e) {
-      // Flash an error message to the session
-      session()->flash('error', 'An error occurred while saving the student data.');
-              $this->resetForm();
+        } catch (\Exception $e) {
+            // Flash an error message to the session
+            session()->flash('error', 'An error occurred while saving the student data.');
+                    $this->resetForm();
 
-  }
+        }
 
-  $user = Auth::user();
-//   record
-AuditLog::create([
-    'user_id' => $user->id,
-    'action' => 'Add new student',
-    'data' => json_encode(['Added by '. $user->username]),
-]);
-}
+        $user = Auth::user();
+        AuditLog::create([
+            'user_id' => $user->id,
+            'action' => 'Add new student',
+            'data' => json_encode('Added by '. $user->name),
+        ]);
+        }
+        public function updatedSelectedGovernmentScholarship($value)
+        {
+            // When the selected government scholarship changes, fetch associated fund sources
+            if ($value) {
+                $this->selectedGovernmentFundSources = ScholarshipName::find($value)->fundSources->pluck('id')->toArray();
+            } else {
+                $this->selectedGovernmentFundSources = [];
+            }
+        }
+
+        public function updatedSelectedPrivateScholarship($value)
+        {
+            // When the selected private scholarship changes, fetch associated fund sources
+            if ($value) {
+                $this->selectedPrivateFundSources = ScholarshipName::find($value)->fundSources->pluck('id')->toArray();
+            } else {
+                $this->selectedPrivateFundSources = [];
+            }
+        }
+
+        public function fetchGovernmentScholarships()
+        {
+            // Fetch government scholarships
+            $this->governmentScholars = ScholarshipName::where('scholarship_type', 0)->get();
+        }
+
+        public function fetchPrivateScholarships()
+        {
+            // Fetch private scholarships
+            $this->privateScholars = ScholarshipName::where('scholarship_type', 1)->get();
+        }
+
 
 
         public function render()
         {
+
+    // Call the methods to fetch scholarship data
+    $this->fetchGovernmentScholarships();
+    $this->fetchPrivateScholarships();
+
+
             // Fetch campuses and courses
             $this->campuses = Campus::all();
 
@@ -257,34 +288,14 @@ AuditLog::create([
                 $this->barangays = [];
             }
 
-            // Fetch scholarships along with their types and fund sources
-            $this->scholarships = ScholarshipName::with('scholarshipType', 'fundSources')->get();
-            $this->fundSources = FundSource::all();
 
             return view('livewire.grantees', [
                 'campuses' => $this->campuses,
                 'provinces' => $this->provinces,
+                'governmentScholars' => $this->governmentScholars,
+                'privateScholars' => $this->privateScholars,
             ]);
         }
-
-            // updatedSelectedFundSources method
-            public function updatedSelectedFundSources()
-            {
-                // Ensure $this->selectedFundSources is an array
-                if (!is_array($this->selectedFundSources)) {
-                    $this->selectedFundSources = [];
-                }
-
-                // Limit the selection to 2 fund sources
-                if (count($this->selectedFundSources) > 2) {
-                    // Uncheck any additional selections beyond the first two
-                    $this->selectedFundSources = array_slice($this->selectedFundSources, 1, 3); // Corrected slice parameters
-                }
-            }
-
-
-
-
 
             // Method to reset the form fields
             public function resetForm()
@@ -307,10 +318,8 @@ AuditLog::create([
                 $this->nameSchool = "";
                 $this->lastYear = "";
                 $this->grant_status = "";
-                $this->grant = "";
                 $this->father = "";
                 $this->mother = "";
-                $this->selectedFundSources = "";
 
                 $this->showNewInput = false;
             }

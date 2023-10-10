@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\AuditLog;
 use App\Models\ScholarshipName;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -157,6 +159,7 @@ final class ScholashipNameTable extends PowerGridComponent
                ->class('btn btn-sm btn-primary text-dark')
                ->route('scholarship-name.view', function(ScholarshipName $model) {
                     return ['scholarship' => $model->id];
+                    
                }),
         ];
     }

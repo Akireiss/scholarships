@@ -19,4 +19,10 @@ class SourcesController extends Controller
             'scholarships' =>  $scholarships,
         ]);
     }
+    // public function fundsNLUC($scholarship) {
+    //     $scholarships = ScholarshipName::findOrFail($scholarship);
+    //     return view('campus-NLUC.scholarship.funds', [
+    //         'scholarships' =>  $scholarships,
+    //     ]);
+    // }
 }

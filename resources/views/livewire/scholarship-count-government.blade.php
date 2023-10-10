@@ -1,5 +1,4 @@
 <div>
-    {{-- wire:init="mount" --}}
     <div class="row">
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">

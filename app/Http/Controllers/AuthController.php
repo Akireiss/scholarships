@@ -44,7 +44,7 @@ class AuthController extends Controller
     AuditLog::create([
         'user_id' => $user->id,
         'action' => 'Created an account',
-        'data' => json_encode('Created by ' . $user),
+        'data' => json_encode('Created by ' . $user->name),
     ]);
 
     // redirect to users dashboard
@@ -75,7 +75,7 @@ class AuthController extends Controller
                 AuditLog::create([
                     'user_id' => $user->id,
                     'action' => 'Login',
-                    'data' => json_encode('Login by ' . $user->username),
+                    'data' => json_encode('Login by ' . $user->name),
                 ]);
 
 
@@ -101,7 +101,7 @@ public function logout(Request $request)
     AuditLog::create([
         'user_id' => $user->id,
         'action' => 'Logout',
-        'data' => json_encode('Logout: ' . $user->username),
+        'data' => json_encode('Logout: ' . $user->name),
     ]);
 
     Auth::logout();

@@ -16,6 +16,10 @@ class AdminGovernmentController extends Controller
         return view('staff.scholarship.view');
     }
     // campus
+    public function viewNLUC()
+    {
+        return view('campus-NLUC.scholarship.view');
+    }
 
 
 }

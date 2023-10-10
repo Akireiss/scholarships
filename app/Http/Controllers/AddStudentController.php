@@ -15,5 +15,9 @@ class AddStudentController extends Controller
     {
         return view('staff.scholarship.grantees'  );
     }
+    public function granteesNLUC(Request $request)
+    {
+        return view('campus-NLUC.scholarship.grantees'  );
+    }
 
 }

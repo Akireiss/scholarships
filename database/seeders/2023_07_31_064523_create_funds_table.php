@@ -19,7 +19,7 @@ return new class extends Migration
 
             // Define foreign key relationships
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('source_id')->references('source_id')->on('fund_sources')->onDelete('cascade');
+            $table->foreign('source_id')->references('id')->on('fund_sources')->onDelete('cascade');
         });
     }
 

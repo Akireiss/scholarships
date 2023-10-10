@@ -848,3 +848,112 @@ public function mount()
 // "datatables.net-responsive-dt": "^2.5.0",
 // "datatables.net-scroller-dt": "^2.2.0",
 // "datatables.net-searchbuilder-dt": "^1.5.0",
+
+
+
+
+
+
+                                {{-- <div class="row">
+                                    <div class="col-12 col-md-12 mb-2">
+                                        <label for="scholarship_name" class="mb-2">Scholarship Name</label>
+                                        <select wire:model="scholarship_name" id="scholarship_name"
+                                            class="form-control form-control-sm mb-2">
+                                            <option>Select Scholarship Name</option>
+                                            @foreach ($scholarships as $scholarship)
+                                            <option value="{{ $scholarship->id }}">{{ $scholarship->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($selectedScholarshipType)
+                                        <p class="mt-2">Selected Scholarship Type: {{ $selectedScholarshipType }}</p>
+                                        @endif
+                                    </div>
+
+
+                                    <div class="col-12 col-md-12 mb-5">
+                                        <label>Scholarship Fund</label>
+                                        <div class="mx-5">
+                                            @if ($scholarship_name)
+                                            @foreach ($scholarships as $scholarship)
+                                            @if ($scholarship->id == $scholarship_name)
+                                            @foreach ($scholarship->fundSources as $fundSource)
+                                            <div class="form-check form-check-inline mb-2">
+                                                <input class="form-check-input" type="checkbox"
+                                                    value="{{ $fundSource->source_id }}"
+                                                    id="fund_source_{{ $fundSource->source_id }}"
+                                                    wire:model="selectedFundSources">
+                                                <label class="form-check-label"
+                                                    for="fund_source_{{ $fundSource->source_id }}">{{
+                                                    $fundSource->source_name }}</label>
+                                                @error('selectedFundSources')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                            @endforeach
+                                            @endif
+                                            @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                                {{-- <div class="row mt-2 mx-3 mb-3">
+                                    <div class="col-6 col-md-6 col-lg-6">
+                                        <p class="fw-bold">Are you a recipient of any scholarship/grant?</p>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="yes" value="yes"
+                                                name="grant_status" wire:model="grant_status"
+                                                wire:change="showHideFundSource">
+                                            <label class="form-check-label" for="yes">Yes</label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="no" value="no"
+                                                name="grant_status" wire:model="grant_status">
+                                            <label class="form-check-label" for="no">No</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-6 col-lg-6" id="fundSource" wire:loading.remove>
+                                        @if ($grant_status === 'yes')
+                                        <p>If yes, write the complete name of the scholarship/grant and amount of
+                                            stipend received per semester</p>
+                                        <label class="mb-1">Select Fund Source <font class="text-danger">*</font>
+                                        </label>
+                                        <select class="form-control form-control-sm" id="grant" wire:model="grant">
+                                            <option>Select Fund Source</option>
+                                            @foreach ($fundSources as $fundSource)
+                                            <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @endif
+                                    </div>
+                                </div> --}}
+
+
+            // Fetch scholarships along with their types and fund sources
+            // $this->scholarships = ScholarshipName::with('scholarshipType', 'fundSources')->get();
+            // $this->fundSources = FundSource::all();
+
+
+
+            // updatedSelectedFundSources method
+            // public function updatedSelectedFundSources()
+            // {
+            //     // Ensure $this->selectedFundSources is an array
+            //     if (!is_array($this->selectedFundSources)) {
+            //         $this->selectedFundSources = [];
+            //     }
+
+            //     // Limit the selection to 2 fund sources
+            //     if (count($this->selectedFundSources) > 2) {
+            //         // Uncheck any additional selections beyond the first two
+            //         $this->selectedFundSources = array_slice($this->selectedFundSources, 1, 3); // Corrected slice parameters
+            //     }
+            // }
+
+
+            FY40PG#?fbcd

@@ -14,8 +14,23 @@
                                 <input class="form-control form-control-sm" value="{{ $student->course }}" disabled>
                             </div>
                         </div>
-
-                        <hr>
+                        <div class="row mt-2 mb-2">
+                            <div class="col-md-4 position-relative mt-3">
+                                <label class="form-label">Type of Student</label>
+                                <input class="form-control form-control-sm" value="{{ $student->studentType }}"
+                                    disabled>
+                            </div>
+                            <div class="col-md-4 position-relative mt-3">
+                                <label class="form-label">Name of School Last Attended</label>
+                                <input class="form-control form-control-sm"
+                                    value="{{ $student->nameSchool ?? 'No info' }}" disabled>
+                            </div>
+                            <div class="col-md-4 position-relative mt-3">
+                                <label class="form-label">School Year Last Attended</label>
+                                <input class="form-control form-control-sm"
+                                    value="{{ $student->lastYear ?? 'No info' }}" disabled>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <p class="fw-bold fs-5">I. STUDENT INFORMATION</p>
@@ -94,24 +109,17 @@
                                 <input class=" form-control form-control-sm" value="{{ $student->level }}" disabled>
                             </div>
                         </div>
-
                         <div class="row mt-2 mb-2">
-                            <div class="col-md-4 position-relative mt-3">
-                                <label class="form-label">Type of Student</label>
-                                <input class="form-control form-control-sm" value="{{ $student->studentType }}"
-                                    disabled>
+                            <div class="col-md-6 position-relative mt-3">
+                                <label class="form-label">Father's Fullname</label>
+                                <input class="form-control form-control-sm" value="{{ $student->father }}" disabled>
                             </div>
-                            <div class="col-md-4 position-relative mt-3">
-                                <label class="form-label">Name of School Last Attended</label>
-                                <input class="form-control form-control-sm" value="{{ $student->nameSchool ?? 'No info' }}"
-                                    disabled>
-                            </div>
-                            <div class="col-md-4 position-relative mt-3">
-                                <label class="form-label">School Year Last Attended</label>
-                                <input class="form-control form-control-sm" value="{{ $student->lastYear ?? 'No info' }}"
-                                    disabled>
+                            <div class="col-md-6 position-relative mt-3">
+                                <label class="form-label">Mother's Fullname</label>
+                                <input class="form-control form-control-sm" value="{{ $student->mother }}" disabled>
                             </div>
                         </div>
+
                         <div class="row mt-2 mb-2">
                             <div class="col-md-4 position-relative mt-3">
                                 <label class="form-label">Recipient</label>
@@ -120,7 +128,7 @@
                             </div>
                             <div class="col-md-4 position-relative mt-3">
                                 <label class="form-label">Name of the Scholarship/Grant</label>
-                                <input class="form-control form-control-sm" value="{{ $student->selectedFundSources ?? 'No info' }}"
+                                <input class="form-control form-control-sm" value="{{ $student->grant ?? 'No info' }}"
                                     disabled>
                             </div>
                         </div>

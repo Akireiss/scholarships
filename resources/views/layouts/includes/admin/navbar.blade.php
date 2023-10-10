@@ -40,7 +40,8 @@
             <!-- it ends here -->
             <li>
                 <div class="nav-profile-text px-2">
-                    <p class="mb-1 text-dark font-weight-bold">{{ Auth::user()->name }}</p>
+                    <p class="mb-1 text-dark font-weight-bold">{{ auth()->user()->name }}</p>
+                    <p  class="mb-1 text-dark font-weight-light text-center">{{ auth()->user()->getRoleText() }}</p>
                 </div>
             </li>
             </li>

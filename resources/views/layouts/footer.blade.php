@@ -1,5 +1,14 @@
-<script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+{{-- datatable --}}
+<script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+{{-- ends --}}
+
+
+
+<script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script defer src="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-html5-2.4.2/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.js"></script>
+<script defer src="DataTables/datatables.min.js"></script>
 
 <script>
     $(document).ready(function() {

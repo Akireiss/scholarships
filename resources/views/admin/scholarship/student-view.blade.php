@@ -3,11 +3,11 @@
 @section('content')
 <section class="px-5">
     <div class="row d-flex align-items-center justify-content-center">
-        <div class="col-6-md m-3">
+        {{-- <div class="col-6-md m-3">
             <div class="dt-buttons btn-group float-start">
                 <button class="btn btn-primary btn-sm">Export to Excel</button>
             </div>
-        </div>
+        </div> --}}
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -20,7 +20,7 @@
                 <div class="card-body shadow-md p-3">
                     <div class="table-responsive p-2">
                         <div class="row">
-                            <table class="table table-striped data-table" style="width: 100%">
+                            <table id="student" class="table table-striped" style="width: 100%">
                                 <thead>
                                     <th>Student Id</th>
                                     <th>Lastname</th>
@@ -40,7 +40,8 @@
                                         <td>{{ $student->campus }}</td>
                                         <td>{{ $student->scholarshipType }}</td>
                                         <td>
-                                            <a href="{{route('admin.scholarship.view_more', $student->id)}}" class="btn btn-sm btn-primary text-dark">View more</a>
+                                            <a href="{{route('admin.scholarship.view_more', $student->id)}}"
+                                                class="btn btn-sm btn-primary text-dark">View more</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -70,7 +71,7 @@
 </style>
 <script>
     $(document).ready(function() {
-    $('.data-table').DataTable({
+    $('#student').DataTable({
         // Options
         buttons: [
             {

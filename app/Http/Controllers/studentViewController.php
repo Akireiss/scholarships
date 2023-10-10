@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 class studentViewController extends Controller
 {
 
+    // public $selectedFundSource;
+
     public function adminView(Request $request)
     {
-
-        $sourceId = $request->route('source_id');
+            $sourceId = $request->route('source_id');
 
         $fund = Fund::where('source_id', $sourceId)->first();
         $studentId = $fund->student_id;
@@ -25,7 +26,17 @@ class studentViewController extends Controller
 
     public function staffView(Request $request)
     {
+            $sourceId = $request->route('source_id');
 
+        $fund = Fund::where('source_id', $sourceId)->first();
+        $studentId = $fund->student_id;
+
+        $students = Student::where('student_id', $studentId)->get();
+
+        return view('staff.scholarship.student-view', compact('students'));
+    }
+    public function nlucView(Request $request)
+    {
         $sourceId = $request->route('source_id');
 
         $fund = Fund::where('source_id', $sourceId)->first();
@@ -34,6 +45,8 @@ class studentViewController extends Controller
         $students = Student::where('student_id', $studentId)->get();
 
 
-        return view('staff.scholarship.student-view', compact('students'));
+        return view('campus-NLUC.scholarship.student-view', compact('students'));
     }
 }
+
+

@@ -11,10 +11,8 @@ class CreateScholarshipNameTable extends Migration
         Schema::create('scholarship_name', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->unsignedInteger('scholarship_type_id');
+            $table->unsignedInteger('scholarship_type');
             $table->timestamps();
-
-            $table->foreign('scholarship_type_id')->references('id')->on('scholarship_type');
         });
     }
 

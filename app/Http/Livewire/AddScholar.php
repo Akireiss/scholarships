@@ -69,7 +69,7 @@ public function submit()
                         AuditLog::create([
                             'user_id' => $user->id,
                             'action' => 'Create a new scholarship name & new fund source',
-                            'data' => json_encode( $this->scholarship_name . ' & ' . $this->fund_sources),
+                            'data' => json_encode('Created ' . $this->scholarship_name . ' & ' . $this->fund_sources . ' by ' . $user->name),
                         ]);
 
         // Display the success message after successful form submission

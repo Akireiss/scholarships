@@ -31,7 +31,8 @@ class Student extends Model
         'lastYear',
         'grant_status',
         'grant',
-         'scholarshipType'
+         'scholarshipType',
+         'student_status'
     ];
 
   // Define the relationships if there are any
@@ -50,19 +51,19 @@ class Student extends Model
         // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
         public function province()
         {
-            return $this->belongsTo(Province::class);
+            return $this->belongsTo(Province::class, 'id');
         }
 
         // Define the relationship with the Municipal model (assuming the "addresses" table has a foreign key "municipal_id")
         public function municipal()
         {
-            return $this->belongsTo(Municipal::class);
+            return $this->belongsTo(Municipal::class, 'id');
         }
 
         // Define the relationship with the Barangay model (assuming the "addresses" table has a foreign key "barangay_id")
         public function barangay()
         {
-            return $this->belongsTo(Barangay::class);
+            return $this->belongsTo(Barangay::class, 'id');
         }
 
         public function funds()
