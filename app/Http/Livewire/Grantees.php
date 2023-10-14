@@ -168,21 +168,31 @@
 
                 $studentData = Student::create($studentData);
 
-                // Save the selected fund source with the student ID in the fund table
-                if ($this->grant_status === 'yes' && $this->selectedFundSources) {
-                    foreach ($this->selectedFundSources as $sourceId) {
-                        Fund::create([
-                            'student_id' => $this->student_id,
-                            'source_id' => $sourceId
-                        ]);
-                    }
-                } elseif ($this->grant_status === 'no') {
-                    // Automatically save source_id = 1 when grant_status is 'no'
-                    Fund::create([
-                        'student_id' => $this->student_id,
-                        'source_id' => 1 // Change this to the appropriate source_id value
-                    ]);
-                }
+                // // Save the selected fund source with the student ID in the fund table
+                // if ($this->grant_status === 'yes' && $this->selectedFundSources) {
+                //     foreach ($this->selectedFundSources as $sourceId) {
+                //         Fund::create([
+                //             'student_id' => $this->student_id,
+                //             'source_id' => $sourceId
+                //         ]);
+                //     }
+                // } elseif ($this->grant_status === 'no') {
+                //     // Automatically save source_id = 1 when grant_status is 'no'
+                //     Fund::create([
+                //         'student_id' => $this->student_id,
+                //         'source_id' => 1 // Change this to the appropriate source_id value
+                //     ]);
+                // }
+
+                // if ($this->selectedGovernmentFundSources) {
+                //     $scholarshipType = $this->selectedGovernmentScholarship;
+                // } elseif ($this->selectedPrivateScholarship) {
+                //     $scholarshipType = $this->selectedPrivateScholarship;
+                // }
+
+                $studentData->funds()->create([
+                    'source_id' => $this->governmentFundSources
+                ]);
 
         session()->flash('success', 'Student data saved successfully!');
             // Reset the form fields
