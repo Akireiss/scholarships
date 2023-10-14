@@ -136,36 +136,21 @@
             $this->validate();
 
 
-            try{
+                if ($this->selectedGovernmentScholarship) {
+                    $scholarshipType = $this->selectedGovernmentScholarship;
+                } elseif ($this->selectedPrivateScholarship) {
+                    $scholarshipType = $this->selectedPrivateScholarship;
+                }
 
-
-                // Get the campus and course based on the selectedCampus and selectedCourse
-                $campus = Campus::findOrFail($this->selectedCampus);
-                $course = Course::findOrFail($this->selectedCourse);
-
-                // Get the province, municipal, and barangay names based on their IDs
-                $province = Province::where('provCode', $this->selectedProvince)->firstOrFail();
-                $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
-                $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
-
-
-                // Get the selected scholarship
-                //GOVERNMENT
-                $scholarships = ScholarshipName::find($this->selectedGovernmentScholarship && $this->selectedPrivateScholarship);
-
-                // Get the associated scholarship type
-                $scholarshipType = $scholarships->scholarshipType->name;
-
-                // Save the student data
                 $studentData = [
-                    'campus' => $campus->campusDesc,
-                    'course' => $course->course_name,
+                    'campus' => $this->selectedCampus,
+                    'course' => $this->courses,
                     'lastname' => $this->lastname,
                     'firstname' => $this->firstname,
                     'initial' => $this->initial,
-                    'province' => $province->provDesc,
-                    'municipal' => $municipality->citymunDesc,
-                    'barangay' => $barangay->brgyDesc,
+                    'province' => $this->selectedProvince,
+                    'municipal' => $this->selectedMunicipality,
+                    'barangay' => $this->selectedBarangay,
                     'sex' => $this->sex,
                     'status' => $this->status,
                     'contact' => $this->contact,
@@ -180,10 +165,8 @@
                     'mother' => $this->mother,
                     'scholarshipType' => $scholarshipType,
                 ];
-                // dd($studentData);
 
-                $student = Student::create($studentData);
-
+                $studentData = Student::create($studentData);
 
                 // Save the selected fund source with the student ID in the fund table
                 if ($this->grant_status === 'yes' && $this->selectedFundSources) {
@@ -201,17 +184,9 @@
                     ]);
                 }
 
-        // Flash a success message to the session
         session()->flash('success', 'Student data saved successfully!');
             // Reset the form fields
             $this->resetForm();
-
-        } catch (\Exception $e) {
-            // Flash an error message to the session
-            session()->flash('error', 'An error occurred while saving the student data.');
-                    $this->resetForm();
-
-        }
 
         $user = Auth::user();
         AuditLog::create([
@@ -288,12 +263,13 @@
                 $this->barangays = [];
             }
 
-
+            // $fund_sources = FundSource::all();
             return view('livewire.grantees', [
                 'campuses' => $this->campuses,
                 'provinces' => $this->provinces,
                 'governmentScholars' => $this->governmentScholars,
                 'privateScholars' => $this->privateScholars,
+
             ]);
         }
 

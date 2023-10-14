@@ -378,15 +378,16 @@
                                             <div class="grid col-6 col-md-12">
                                                 <div class="mb-2">
                                                     <label for="government_scholarship" class="mb-2">Government Scholarship Name</label>
-                                                    <select wire:model="selectedGovernmentScholarship"
-                                                        id="government_scholarship"
-                                                        class="form-select form-select-sm mb-2">
-                                                        <option selected>Select Scholarship Name</option>
+                                                    <select wire:model="selectedGovernmentScholarship" id="government_scholarship" class="form-select form-select-sm mb-2" @if ($selectedPrivateScholarship) disabled @endif>
+                                                        <option value="">Select Scholarship Name</option>
                                                         @foreach ($governmentScholars as $governmentScholar)
                                                             <option value="{{ $governmentScholar->id }}">{{ $governmentScholar->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
+
+
+
                                                 <div class="mb-2 mt-2">
                                                     <label for="government_fund_sources">Government Scholarship Fund Sources</label>
                                                     <select id="government_fund_sources"
@@ -413,18 +414,17 @@
                                         {{-- Scholarship 2 (Private Scholarship) --}}
                                         <div class="mb-4">
                                             <h5>Scholarship 2 (Private Scholarship)</h5>
-                                            <div class="grid col-6 col-md-12">
-                                                <div class="mb-2">
-                                                    <label for="private_scholarship" class="mb-2">Private Scholarship Name</label>
-                                                    <select wire:model="selectedPrivateScholarship"
-                                                        id="private_scholarship"
-                                                        class="form-select form-select-sm mb-2">
-                                                        <option selected>Select Scholarship Name</option>
-                                                        @foreach ($privateScholars as $privateScholar)
-                                                            <option value="{{ $privateScholar->id }}">{{ $privateScholar->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                            <div class="mb-2">
+                                                <label for="private_scholarship" class="mb-2">Private Scholarship Name</label>
+                                                <select wire:model="selectedPrivateScholarship" id="private_scholarship" class="form-select form-select-sm mb-2" @if ($selectedGovernmentScholarship) disabled @endif>
+                                                    <option value="">Select Scholarship Name</option>
+                                                    @foreach ($privateScholars as $privateScholar)
+                                                        <option value="{{ $privateScholar->id }}">{{ $privateScholar->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('selectedPrivateScholarship') <span class="error">{{ $message }}</span> @enderror
+                                            </div>
+
                                                 <div class="mb-2 mt-2">
                                                     <label for="private_fund_sources">Private Scholarship Fund Sources</label>
                                                     <select id="private_fund_sources"
@@ -441,6 +441,7 @@
                                                             @endforeach
                                                         @endif
                                                     </select>
+                                                    @error('selectedPrivateFundSources') <span class="error">{{ $message }}</span> @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -448,7 +449,7 @@
                                     </div>
                                 @endif
                             </div>
-                            
+
 
 
 
@@ -493,9 +494,8 @@
             </div>
     </section>
 
-    <script>
 
-    </script>
+
     {{-- forms end --}}
     <style>
         .mdi-icon {
