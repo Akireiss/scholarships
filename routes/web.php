@@ -188,6 +188,8 @@ Route::put('admin/settings/update/{scholar}', [ScholarController::class, 'update
 // routes/web.php
 
 Route::get('admin/settings/actions/editFunds/{source_id}', [SourcesController::class, 'editFunds'])->name('admin.settings.actions.editFunds');
+//edit
+Route::put('admin/settings/actions/updateFunds/{source_id}', [SourcesController::class, 'updateFunds']);
 
 
 
