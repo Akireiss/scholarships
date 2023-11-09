@@ -491,8 +491,8 @@ $(function () {
     });
   }
 
-  if ($("#linechart-multi").length) {
-    var multiLineCanvas = $("#linechart-multi").get(0).getContext("2d");
+  if ($("#chart").length) {
+    var multiLineCanvas = $("#chart").get(0).getContext("2d");
     var lineChart = new Chart(multiLineCanvas, {
       type: 'line',
       data: multiLineData,

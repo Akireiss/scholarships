@@ -18,4 +18,13 @@ class Campus extends Model
 
     protected $fillable = [];
 
+    // public function getCampus()
+    // {
+    //     $value = $this->attributes['campus'];
+    //     switch ($value)
+    //     {
+    //         cas
+    //     }
+    // }
+
 }

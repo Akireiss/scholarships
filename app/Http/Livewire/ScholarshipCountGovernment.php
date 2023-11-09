@@ -2,20 +2,35 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Campus;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\ScholarshipName;
-use Illuminate\Support\Facades\DB;
 
 
 class ScholarshipCountGovernment extends Component
 {
     public $governmentCount, $privateCount;
     public $governmentStudent, $privateStudent;
+    public $active, $inactive;
     public $chartData;
 
     public function mount()
     {
+        $campuses = Campus::all();
+        $data = [];
+
+        foreach ($campuses as $campus) {
+            $studentCount = Student::where('campus', $campus->campusDesc)->count();
+            $data[] = [
+                'campus' => $campus->campus_name,
+                'studentCount' => $studentCount,
+            ];
+        }
+
+        $this->chartData = $data;
+
+
         // 1st card
         // Count government scholarship names
         $this->governmentCount = ScholarshipName::where('scholarship_type', 0)->count();
@@ -25,26 +40,25 @@ class ScholarshipCountGovernment extends Component
 
         // 2nd card
         // Count scholars in government
-        $this->governmentStudent = Student::where('scholarshipType', 'Government')->count();
+        $this->governmentStudent = Student::where('scholarshipType', 0)->count();
 
         // Count scholars in private
-        $this->privateStudent = Student::where('scholarshipType', 'Private')->count();
+        $this->privateStudent = Student::where('scholarshipType', 1)->count();
 
-        // Get all campus names
-        $campuses = DB::table('campuses')->pluck('campus_name');
+        // active and inactive
+        $this->active = Student::where('student_status', 0)->count();
+        $this->inactive = Student::where('student_status', 1)->count();
 
-        // Initialize chartData as an empty array
-        $this->chartData = [];
 
-        // Fetch student count for each campus
-        foreach ($campuses as $campus) {
-            $studentCount = Student::where('campus', $campus)->count();
-            $this->chartData[] = ['campus_name' => $campus, 'total' => $studentCount];
-        }
+
     }
 
     public function render()
     {
         return view('livewire.scholarship-count-government');
     }
+
+
+
+
 }

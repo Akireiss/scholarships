@@ -6,19 +6,38 @@
                     <div class="card-body shadow-lg">
                         <form wire:submit.prevent="saveStudent">
                             @csrf
-                            <!-- Campus -->
-                            <div class="d-flex align-items-center">
+
+                            <div class="row mt-0 mb-1 justify-content-center">
+                                <div class="col-6 col-md-6 col-lg-6 text-center">
+                                    {{-- Add an additional div for the image and label --}}
+                                    <div class="d-flex flex-column align-items-center">
+                                        <img src="{{ asset('assets/images/updated.png') }}" class="img-fluid"
+                                            style="width: 150px; height: 150px;" alt="dmmmsu-logo">
+                                        <label class="form-check-label fw-bold mb-1" for="semester">Semester</label>
+                                        <select class="form-select form-select-sm text-center @error('semester') is-invalid @enderror" wire:model="semester">
+                                            <option value="1" selected>1st</option>
+                                            <option value="2">2nd</option>
+                                        </select>
+                                        @error('semester')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row align-items-center">
                                 <label for="campus" class="fw-bold fs-5 col-sm-2">CAMPUS:</label>
                                 @foreach ($campuses as $campus)
                                 <div class="form-check form-check-inline col-sm-2">
-                                    <input class="form-check-input campus-radio" type="radio"
-                                        wire:model="selectedCampus" id="campus_{{ $campus->id }}"
-                                        value="{{ $campus->id }}">
-                                    <label class="form-check-label" for="campus_{{ $campus->id }}">{{
-                                        $campus->campus_name }}</label>
+                                    <input class="form-check-input campus-radio" type="radio" wire:model="selectedCampus" value="{{ $campus->id }}">
+                                    <label class="form-check-label" for="campus_{{ $campus->id }}">{{ $campus->campus_name }}</label>
                                 </div>
                                 @endforeach
                             </div>
+
 
                             <hr>
 
@@ -44,10 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             {{-- end --}}
-
 
                             <div class="col-12 col-md-6 col-lg-6 mx-3 my-3" id="newInput"
                                 style="display: {{ $showNewInput ? 'block' : 'none' }}">
@@ -356,13 +372,13 @@
                             <div class="col-6 col-md-6 col-lg-6 mb-4">
                                 <p class="fw-bold">Are you a recipient of any scholarship/grant?</p>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="yes" value="yes"
+                                    <input class="form-check-input" type="radio" id="yes" value="Yes"
                                         name="grant_status" wire:model="grant_status" wire:change="showHideFundSource">
                                     <label class="form-check-label" for="yes">Yes</label>
                                 </div>
 
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="no" value="no" name="grant_status"
+                                    <input class="form-check-input" type="radio" id="no" value="No" name="grant_status"
                                         wire:model="grant_status">
                                     <label class="form-check-label" for="no">No</label>
                                 </div>
@@ -370,85 +386,94 @@
 
 
                             <div class="row" wire:loading.remove>
-                                @if ($grant_status === 'yes')
-                                    <div class="col-12 col-md-6">
-                                        {{-- Scholarship 1 (Government Scholarship) --}}
-                                        <div class="mb-4">
-                                            <h5>Scholarship 1 (Government Scholarship)</h5>
-                                            <div class="grid col-6 col-md-12">
-                                                <div class="mb-2">
-                                                    <label for="government_scholarship" class="mb-2">Government Scholarship Name</label>
-                                                    <select wire:model="selectedGovernmentScholarship" id="government_scholarship" class="form-select form-select-sm mb-2" @if ($selectedPrivateScholarship) disabled @endif>
-                                                        <option value="">Select Scholarship Name</option>
-                                                        @foreach ($governmentScholars as $governmentScholar)
-                                                            <option value="{{ $governmentScholar->id }}">{{ $governmentScholar->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-
-
-                                                <div class="mb-2 mt-2">
-                                                    <label for="government_fund_sources">Government Scholarship Fund Sources</label>
-                                                    <select id="government_fund_sources"
-                                                        class="form-select form-select-sm"
-                                                        wire:model="selectedGovernmentFundSources">
-                                                        <option selected>Select Fund Source</option>
-                                                        @if ($selectedGovernmentScholarship)
-                                                            @foreach ($governmentScholars as $governmentScholar)
-                                                                @if ($governmentScholar->id == $selectedGovernmentScholarship)
-                                                                    @foreach ($governmentScholar->fundsources as $fundSource)
-                                                                        <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}</option>
-                                                                    @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{-- End Scholarship 1 (Government Scholarship) --}}
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        {{-- Scholarship 2 (Private Scholarship) --}}
-                                        <div class="mb-4">
-                                            <h5>Scholarship 2 (Private Scholarship)</h5>
+                                @if ($grant_status === 'Yes')
+                                <div class="col-12 col-md-6">
+                                    {{-- Scholarship 1 (Government Scholarship) --}}
+                                    <div class="mb-4">
+                                        <h5>Scholarship 1 (Government Scholarship)</h5>
+                                        <div class="grid col-6 col-md-12">
                                             <div class="mb-2">
-                                                <label for="private_scholarship" class="mb-2">Private Scholarship Name</label>
-                                                <select wire:model="selectedPrivateScholarship" id="private_scholarship" class="form-select form-select-sm mb-2" @if ($selectedGovernmentScholarship) disabled @endif>
+                                                <label for="government_scholarship" class="mb-2">Government Scholarship
+                                                    Name</label>
+                                                <select wire:model="selectedGovernmentScholarship"
+                                                    id="government_scholarship" class="form-select form-select-sm mb-2"
+                                                    @if ($selectedPrivateScholarship) disabled @endif>
                                                     <option value="">Select Scholarship Name</option>
-                                                    @foreach ($privateScholars as $privateScholar)
-                                                        <option value="{{ $privateScholar->id }}">{{ $privateScholar->name }}</option>
+                                                    @foreach ($governmentScholars as $governmentScholar)
+                                                    <option value="{{ $governmentScholar->id }}">{{
+                                                        $governmentScholar->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                @error('selectedPrivateScholarship') <span class="error">{{ $message }}</span> @enderror
                                             </div>
-
-                                                <div class="mb-2 mt-2">
-                                                    <label for="private_fund_sources">Private Scholarship Fund Sources</label>
-                                                    <select id="private_fund_sources"
-                                                        class="form-select form-select-sm"
-                                                        wire:model="selectedPrivateFundSources">
-                                                        <option selected>Select Fund Source</option>
-                                                        @if ($selectedPrivateScholarship)
-                                                            @foreach ($privateScholars as $privateScholar)
-                                                                @if ($privateScholar->id == $selectedPrivateScholarship)
-                                                                    @foreach ($privateScholar->fundsources as $fundSource)
-                                                                        <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name }}</option>
-                                                                    @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                    @error('selectedPrivateFundSources') <span class="error">{{ $message }}</span> @enderror
-                                                </div>
+                                            <div class="mb-2 mt-2">
+                                                <label for="government_fund_sources">Government Scholarship Fund
+                                                    Sources</label>
+                                                <select id="government_fund_sources" class="form-select form-select-sm"
+                                                    wire:model="selectedGovernmentFundSources" @if ($selectedPrivateFundSources) disabled @endif>
+                                                    <option selected>Select Fund Source</option>
+                                                    @if ($selectedGovernmentScholarship)
+                                                    @foreach ($governmentScholars as $governmentScholar)
+                                                    @if ($governmentScholar->id == $selectedGovernmentScholarship)
+                                                    @foreach ($governmentScholar->fundsources as $fundSource)
+                                                    <option value="{{ $fundSource->source_id }}">{{
+                                                        $fundSource->source_name }}</option>
+                                                    @endforeach
+                                                    @endif
+                                                    @endforeach
+                                                    @endif
+                                                </select>
                                             </div>
                                         </div>
-                                        {{-- End Scholarship 2 (Private Scholarship) --}}
                                     </div>
+                                    {{-- End Scholarship 1 (Government Scholarship) --}}
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    {{-- Scholarship 2 (Private Scholarship) --}}
+                                    <div class="mb-4">
+                                        <h5>Scholarship 2 (Private Scholarship)</h5>
+                                        <div class="mb-2">
+                                            <label for="private_scholarship" class="mb-2">Private Scholarship
+                                                Name</label>
+                                            <select wire:model="selectedPrivateScholarship" id="private_scholarship"
+                                                class="form-select form-select-sm mb-2" @if ($selectedGovernmentScholarship) disabled @endif>
+                                                <option value="">Select Scholarship Name</option>
+                                                @foreach ($privateScholars as $privateScholar)
+                                                <option value="{{ $privateScholar->id }}">{{ $privateScholar->name }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                            @error('selectedPrivateScholarship') <span class="error">{{ $message
+                                                }}</span> @enderror
+                                        </div>
+
+                                        <div class="mb-2 mt-2">
+                                            <label for="private_fund_sources">Private Scholarship Fund Sources</label>
+                                            <select id="private_fund_sources" class="form-select form-select-sm"
+                                                wire:model="selectedPrivateFundSources" @if ($selectedGovernmentFundSources) disabled @endif>
+                                                <option selected>Select Fund Source</option>
+                                                @if ($selectedPrivateScholarship)
+                                                @foreach ($privateScholars as $privateScholar)
+                                                @if ($privateScholar->id == $selectedPrivateScholarship)
+                                                @foreach ($privateScholar->fundsources as $fundSource)
+                                                <option value="{{ $fundSource->source_id }}">{{ $fundSource->source_name
+                                                    }}</option>
+                                                @endforeach
+                                                @endif
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                            @error('selectedPrivateFundSources') <span class="error">{{ $message
+                                                }}</span> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- End Scholarship 2 (Private Scholarship) --}}
                                 @endif
                             </div>
+
+
+
 
 
 

@@ -13,7 +13,7 @@ class studentViewController extends Controller
 
     public function adminView(Request $request)
     {
-            $sourceId = $request->route('source_id');
+        $sourceId = $request->route('source_id');
 
         $fund = Fund::where('source_id', $sourceId)->first();
         $studentId = $fund->student_id;

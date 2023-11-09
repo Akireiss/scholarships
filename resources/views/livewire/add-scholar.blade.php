@@ -1,10 +1,12 @@
 <div>
-    <section class="mt-3 p-5">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="col-lg-8">
+    <section class="mt-2 p-4">
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        @if ($successMessage)
+                        
+                        <livewire:scholarship-name-table/>
+                        {{-- @if ($successMessage)
                             <div class="alert alert-success mt-3" wire:offline.remove>
                                 {{ $successMessage }}
                             </div>
@@ -41,7 +43,7 @@
                                 <button type="submit" class="btn btn-success btn-sm text-dark fw-bold">ADD</button>
                                 <a type="button" class="btn btn-danger btn-sm fw-bold text-dark" href="{{ route('admin.dashboard') }}">Cancel</a>
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>

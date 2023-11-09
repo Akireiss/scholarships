@@ -20,5 +20,5 @@ class Fund extends Model
     {
         return $this->belongsTo(FundSource::class);
     }
-    
+
 }

@@ -23,6 +23,7 @@ class Student extends Model
          'campus',
         'course',
         'level',
+        'semester',
         'father',
         'mother',
         'contact',
@@ -79,5 +80,37 @@ class Student extends Model
             return $this->belongsTo(ScholarshipType::class);
         }
 
+        public function getTypeScholarshipAttribute()
+        {
+            $value = $this->attributes['scholarshipType'];
+            switch ($value) {
+                case 0:
+                    return 'Government';
+                case 1:
+                    return 'Private';
+                default:
+                    return 'No info';
+            }
+        }
+        public function getStatusTextAttribute()
+        {
+            $value = $this->attributes['student_status'];
+            switch ($value) {
+                case 0:
+                    return 'Active';
+                case 1:
+                    return 'Inactive';
+                default:
+                    return 'No info';
+            }
+        }
+
+        public static function codes()
+    {
+        return collect([
+            ['scholarshipType' => 0, 'label' => 'Government'],
+            ['scholarshipType' => 1, 'label' => 'Private'],
+        ]);
+    }
 
     }

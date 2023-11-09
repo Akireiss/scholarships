@@ -11,7 +11,7 @@
 
         {{-- message --}}
 
-        <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;"
+        <div id="message" class="alert alert-success" style="display: none; width:50%; margin-top:10px;">
             {{ session('message') }}
         </div>
 

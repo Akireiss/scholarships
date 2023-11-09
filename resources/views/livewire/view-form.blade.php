@@ -1,4 +1,6 @@
 <div>
-    {{-- <livewire:student-table /> --}}
-    <livewire:scholaship-name-table/>
+    {{-- <livewire:student-table/> --}}
+    <livewire:student-table/>
 </div>
+
+

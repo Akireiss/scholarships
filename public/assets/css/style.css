@@ -4338,6 +4338,7 @@ textarea.form-control-lg {
 
 .btn-primary:hover{
   background-color: #0d6efd;
+  color:var(--bs-black);
 }
 
 .btn-secondary {
@@ -4377,6 +4378,8 @@ textarea.form-control-lg {
 }
 .btn-success:hover{
   background-color: #198754;
+  color: var(--bs-black);
+
 }
 
 .btn-info {
@@ -4396,7 +4399,8 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #0dcaf0;
 }
 .btn-info:hover{
-  background-color: #0dcaf0;;
+  background-color: #0dcaf0;
+  color: black;
 }
 
 .btn-warning {
@@ -4417,6 +4421,7 @@ textarea.form-control-lg {
 }
 .btn-warning:hover{
   background-color: #ffc107;
+  color: var(--bs-black);
 }
 
 .btn-danger {
@@ -4437,6 +4442,7 @@ textarea.form-control-lg {
 }
 .btn-danger:hover{
   background-color: #dc3545;
+  color: var(--bs-black);
 }
 /* ends here */
   .btn-check:focus + .btn-primary, .btn-primary:focus {
