@@ -5,47 +5,39 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body shadow-lg">
-                    <form action="" method="POST">
-                        {{-- Display success message --}}
-                        @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                        @endif
-                        {{-- ends here --}}
+                    <form action="{{ url('admin/settings/actions/updateFunds/' .$source_id->source_id ) }}"
+                        method="POST">
                         @csrf
                         @method('put')
-
-
-                        <div class="form-check">
-                            <label for="scholarship_name_id" class="mb-2 fw-bold">Scholarship Name</label>
-                          <input name="fund"  value="" class="form-control form-control-sm mb-2"/>
-                            </select>
-                        </div>
+                        {{-- Display success message --}}
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        {{-- ends here --}}
 
                         <div class="form-check">
                             <label for="fundSource" class="mb-2 fw-bold">Source Funds</label>
-                            <input name="fundSource" class="form-control form-control-sm mb-2"
-                             id="fundSource" value="{{ $scho }}">
+                            <input name="source_name" class="form-control form-control-sm mb-2" id="fundSource"
+                                value="{{ $source_id->source_name }}">
                         </div>
+
 
                         <div class="form-check">
                             <label for="status" class="mb-2 fw-bold">Status</label>
                             <select name="status" id="status" class="form-select form-select-sm mb-2">
-                                <option selected>Select from the follwing</option>
-                                <option value="0">Active</option>
-                                <option value="1">Inactive</option>
+                                <option value="0" {{ $source_id->status == 0 ? 'selected' : '' }}>Active</option>
+                                <option value="1" {{ $source_id->status == 1 ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
-                        {{-- {{ $scholar->status == 0 ? 'selected' : '' }}
-                        {{ $scholar->status == 1 ? 'selected' : '' }} --}}
 
 
                         <div class="row mt-3">
-                            <div class="col-sm-12 d-flex justify-content-start">
+                            <div class="col-sm-12 d-flex justify-content-center gap-3 mt-2">
                                 <button type="submit" class="btn btn-success btn-sm text-dark fw-bold">Update</button>
-                                {{-- <a type="button" class="btn btn-danger btn-sm fw-bold text-dark"
-                                    href="{{ route('scholar.view') }}">Cancel</a> --}}
+                                <a type="button" class="btn btn-danger btn-sm fw-bold text-dark"
+                                href="{{ route('scholar.view', ['scholar' => $source_id->source_id]) }}">Cancel</a>
                             </div>
                         </div>
                     </form>

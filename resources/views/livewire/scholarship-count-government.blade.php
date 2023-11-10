@@ -33,7 +33,35 @@
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple-50px"></i>
+                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                    </h2>
+                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Active Scholarship</span>
+                    </h4>
+                    <h5 class="card-text">{{ $scholarshipActive }}<h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 stretch-card grid-margin">
+            <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
+                <div class="card-body">
+                    <h2 class="font-weight-normal mb-3">
+                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                    </h2>
+                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Inactive Scholarship</span>
+                    </h4>
+                    <h5 class="card-text">{{ $scholarshipInactive }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 stretch-card grid-margin">
+            <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
+                <div class="card-body">
+                    <h2 class="font-weight-normal mb-3">
+                        <i class="mdi mdi-account-multiple mdi-50px"></i>
                     </h2>
                     <h4 class="mb-3 mt-4"><span class="option">Numbers of Grantees in Government</span>
                     </h4>
@@ -46,7 +74,7 @@
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple-50px"></i>
+                        <i class="mdi mdi-account-multiple mdi-50px"></i>
                     </h2>
                     <h4 class="mb-3 mt-4"><span class="option">Numbers of Grantees in Private</span>
                     </h4>
@@ -54,15 +82,12 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
         {{-- active --}}
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="mdi mdi-account-multiple mdi-50px"></i>
                     </h2>
                     <h4 class="mb-3 mt-4"><span class="option">Numbers of Active grantees</span>
                     </h4>
@@ -74,7 +99,7 @@
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="mdi mdi-account-multiple mdi-50px"></i>
                     </h2>
                     <h4 class="mb-3 mt-4"><span class="option">Numbers of Inactive grantees</span>
                     </h4>

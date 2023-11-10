@@ -24,7 +24,7 @@ final class StudentTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
@@ -346,11 +346,11 @@ final class StudentTable extends PowerGridComponent
     public function actions(): array
     {
        return [
-        //    Button::make('view', 'View')
-        //        ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-        //        ->route('student.view', function(\App\Models\Student $model) {
-        //             return ['scholar' => $model->id];
-        //        }),
+           Button::make('view', 'View')
+               ->class('btn btn-sm btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
+               ->route('admin.scholarship.actions.view_more', function(Student $model) {
+                    return ['student' => $model->id];
+               }),
 
         //    Button::make('destroy', 'Delete')
         //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')

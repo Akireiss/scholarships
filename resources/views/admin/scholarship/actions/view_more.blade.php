@@ -1,15 +1,24 @@
 @extends('layouts.includes.admin.index')
 @section('content')
-<section class="p-5">
+<section class="p-2 px-5">
     <div class="row p-3">
         <div class="col-lg-12">
             <div class="card">
+                <div class="row mt-2">
+                    <div class="col-sm-12 d-flex justify-content-end p-2">
+                        <a type="button" class="btn btn-danger btn-sm fw-bold text-dark"
+                        href="{{ route('admin.scholarship.view') }}">Cancel</a>
+                    </div>
                 <div class="card-body shadow-lg">
                     <form>
 
                         <!-- Campus -->
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-md-4">
+                                <label for="campus" class="form-label">Semester</label>
+                                <input class="form-control form-control-sm" value="{{ $student->semester }}" disabled>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="campus" class="form-label">CAMPUS</label>
                                 <input class="form-control form-control-sm" value="{{ $student->course }}" disabled>
                             </div>
@@ -129,6 +138,11 @@
                             <div class="col-md-4 position-relative mt-3">
                                 <label class="form-label">Name of the Scholarship/Grant</label>
                                 <input class="form-control form-control-sm" value="{{ $student->grant ?? 'No info' }}"
+                                    disabled>
+                            </div>
+                            <div class="col-md-4 position-relative mt-3">
+                                <label class="form-label">Scholarship Type</label>
+                                <input class="form-control form-control-sm" value="{{ $student->getTypeScholarshipAttribute()  }}"
                                     disabled>
                             </div>
                         </div>

@@ -8,17 +8,20 @@
 </style>
 
 <section class="p-4">
-    <div class="row mt-3">
-        <div class="col-lg-12">
+    <div class="row mt-3 d-flex align-items-center justify-content-center">
+        <div class="col-lg-10">
             <div class="card">
-                <div class="d-flex align-items-end justify-content-end">
+                <div class="d-flex align-items-end justify-content-end mb-2 gap-2">
                     <!-- Add Button -->
                     <a class="btn btn-sm btn-success text-dark" href="{{ route('admin.settings.addScholar') }}">
                         Add
+                        <i class="mdi mdi-library-plus mdi-20"></i>
                     </a>
                     <!-- Cancel Button -->
-                    <a class="btn btn-sm btn-danger text-dark"
-                        href="{{ route('admin.settings.addScholar') }}">Cancel</a>
+                    <a class="btn btn-sm btn-danger text-dark" href="{{ route('admin.settings.addScholar') }}">
+                        Cancel
+                        <i class="mdi mdi-close-circle mdi-20"></i>
+                    </a>
                 </div>
                 <div class="card-body shadow-lg">
                     <div class="table-responsive">
@@ -36,8 +39,8 @@
                                     <td>{{ $scholarship->source_name }}</td>
                                     <td>
                                         <a class="btn btn-sm btn-primary text-dark" target="_blank"
-                                        href="{{ route('admin.settings.actions.editFunds', ['source_id' => $scholarship->source_id]) }}" >
-                                        Edit</a>
+                                            href="{{ route('admin.settings.actions.editFunds', ['source_id' => $scholarship->source_id]) }}">
+                                            Edit</a>
                                     </td>
                                 </tr>
                                 @endforeach

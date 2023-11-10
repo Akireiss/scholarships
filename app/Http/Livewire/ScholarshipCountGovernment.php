@@ -13,6 +13,7 @@ class ScholarshipCountGovernment extends Component
     public $governmentCount, $privateCount;
     public $governmentStudent, $privateStudent;
     public $active, $inactive;
+    public $scholarshipActive, $scholarshipInactive;
     public $chartData;
 
     public function mount()
@@ -37,6 +38,11 @@ class ScholarshipCountGovernment extends Component
 
         // Count private scholarship names
         $this->privateCount = ScholarshipName::where('scholarship_type', 1)->count();
+
+        // scholarship active and inactiive
+        $this->scholarshipActive = ScholarshipName::where('status', 0)->count();
+        $this->scholarshipInactive = ScholarshipName::where('status', 1)->count();
+        //
 
         // 2nd card
         // Count scholars in government

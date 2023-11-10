@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
 
 // view more
 // admin
-Route::get('admin/scholarship/view_more/{student}', [StudentController::class, 'viewMore'])->name('admin.scholarship.view_more');
+Route::get('admin/scholarship/actions/view_more/{student}', [StudentController::class, 'viewMore'])->name('admin.scholarship.actions.view_more');
 // staff
 Route::get('staff/scholarship/view_more/{student}', [StudentController::class, 'viewMoreStaff'])->name('staff.scholarship.view_more');
 // NLUC
@@ -158,7 +158,6 @@ Route::get('/campus-NLUC/settings/auditTrail', [auditController::class, 'auditNL
 // add scholarship
 // admin
 Route::get('/admin/settings/addScholar', [addScholarController::class, 'showForm'])->name('admin.settings.addScholar');
-
 Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
 
 // staff
@@ -179,15 +178,14 @@ Route::get('/campus-NLUC/settings/backup', [backupController::class, 'nlucBackup
 
 //Other function
 Route::get('admin/settings/scholar/view/{scholar}', [ScholarController::class, 'view'])->name('scholar.view');
-
-
 Route::get('admin/settings/scholar/edit/{scholar}', [ScholarController::class, 'edit'])->name('scholar.edit');
 Route::put('admin/settings/update/{scholar}', [ScholarController::class, 'update'])->name('scholarships.update');
 
 // funds
-// routes/web.php
 
 Route::get('admin/settings/actions/editFunds/{source_id}', [SourcesController::class, 'editFunds'])->name('admin.settings.actions.editFunds');
+//edit
+Route::put('admin/settings/actions/updateFunds/{source_id}', [SourcesController::class, 'updateFunds']);
 
 
 

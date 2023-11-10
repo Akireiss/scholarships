@@ -13857,7 +13857,7 @@ dl {
 .auth .brand-logo {
   margin-bottom: 2rem; }
   .auth .brand-logo img {
-    width: 150px; }
+    width: 200px; }
 
 .auth form .form-group {
   margin-bottom: 1.5rem; }
@@ -13918,7 +13918,7 @@ dl {
         .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
           width: calc(70px - 50px);
           max-width: 100%;
-          width: 150px;
+          width: 250px;
           height: 100px;
           margin: auto; }
   .navbar .navbar-menu-wrapper {

@@ -3,8 +3,20 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
+                    <div class="d-flex align-items-start justify-content-start mb-2 gap-2">
+                        <!-- Add Button -->
+                        <a class="btn btn-sm btn-success text-dark" href="{{ route('admin.settings.addScholar') }}">
+                            Add
+                        <i class="mdi mdi-library-plus mdi-20"></i>
+                        </a>
+                        <!-- Cancel Button -->
+                        <a class="btn btn-sm btn-danger text-dark"
+                            href="{{ route('admin.dashboard') }}">
+                            Cancel
+                            <i class="mdi mdi-close-circle mdi-20"></i></a>
+                    </div>
                     <div class="card-body shadow-lg">
-                        
+
                         <livewire:scholarship-name-table/>
                         {{-- @if ($successMessage)
                             <div class="alert alert-success mt-3" wire:offline.remove>

@@ -24,7 +24,6 @@ final class ScholarshipNameTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
 
         return [
             // Exportable::make('export')
@@ -53,7 +52,7 @@ final class ScholarshipNameTable extends PowerGridComponent
     public function datasource(): Builder
     {
         return ScholarshipName::query()
-        // ->join() FundSources::
+
         ;
     }
 
@@ -89,7 +88,6 @@ final class ScholarshipNameTable extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
-            // ->addColumn('id')
             ->addColumn('name')
 
            /** Example of custom column using a closure **/
@@ -157,22 +155,15 @@ final class ScholarshipNameTable extends PowerGridComponent
     {
        return [
            Button::make('view', 'View')
-               ->class('btn btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
+               ->class('btn btn-sm btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
                ->route('scholar.view', function(ScholarshipName $model) {
                     return ['scholar' => $model->id];
                }),
             Button::make('edit', 'Edit')
-               ->class('btn btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
+               ->class('btn btn-sm btn-warning cursor-pointer text-dark px-2 py-1 rounded text-sm')
                ->route('scholar.edit', function(ScholarshipName $model) {
                     return ['scholar' => $model->id];
                }),
-
-        //    Button::make('destroy', 'Delete')
-        //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-        //        ->route('scholarship-name.destroy', function(ScholarshipName $model) {
-        //             return $model->id;
-        //        })
-        //        ->method('delete')
         ];
     }
 
