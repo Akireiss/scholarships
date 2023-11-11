@@ -14,6 +14,9 @@ class ScholarController extends Controller
         return view('admin.settings.actions.view', compact('scholar'));
     }
 
+
+
+
     // Edit
     public function edit(ScholarshipName $scholar) {
         return view('admin.settings.actions.edit', compact('scholar'));
