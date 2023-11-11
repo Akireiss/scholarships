@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    // View More
     public function viewMore(Student $student)
     {
         return view('admin.scholarship.actions.view_more', ['student' => $student]);
@@ -19,4 +20,12 @@ class StudentController extends Controller
     {
         return view('campus-NLUC.scholarship.view_more', ['student' => $student]);
     }
+
+    // Update
+
+    public function editAdmin(Student $student)
+    {
+        return view('admin.scholarship.actions.edit_student', ['student' => $student]);
+    }
+
 }

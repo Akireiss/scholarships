@@ -17,6 +17,7 @@ class SourcesController extends Controller
         return view('admin.settings.actions.editFunds', compact('source_id'));
     }
 
+
     public function updateFunds(Request $request, FundSource $source_id) {
 
 

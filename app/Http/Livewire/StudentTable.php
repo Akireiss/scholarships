@@ -24,7 +24,6 @@ final class StudentTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
@@ -113,7 +112,7 @@ final class StudentTable extends PowerGridComponent
             ->addColumn('nameSchool')
             ->addColumn('lastYear')
             ->addColumn('grant_status')
-            ->addColumn('grant' ?? "No Data")
+            ->addColumn('grant', fn (Student $model) => $model->grant ?: "No Data")
             ->addColumn('scholarshipType', fn(Student $model) => $model->getTypeScholarshipAttribute() ?? "No Data" )
             // ->addColumn('student_status')
             ->addColumn('student_status', fn(Student $model) => $model->getStatusTextAttribute() ?? "No Data" );
@@ -295,9 +294,6 @@ final class StudentTable extends PowerGridComponent
             Filter::inputText('nameSchool')->operators(['contains']),
             Filter::inputText('lastYear')->operators(['contains']),
             Filter::inputText('grant_status')->operators(['contains']),
-            // Filter::inputText('grant')->operators(['contains']),
-            // Filter::inputText('scholarshipType')->operators(['contains']),
-            // Filter::datetimepicker('created_at'),
 
             // Level
             Filter::select('level', 'level')
@@ -314,11 +310,6 @@ final class StudentTable extends PowerGridComponent
             ->dataSource(Student::select('grant')->distinct()->get())
             ->optionValue('grant')
             ->optionLabel('grant'),
-            // type
-            // Filter::select('scholarshipType', 'scholarshipType')
-            // ->dataSource(Student::select('scholarshipType')->distinct()->get())
-            // ->optionValue('scholarshipType')
-            // ->optionLabel('scholarshipType'),
 
             //
             Filter::select('scholarshipType', 'scholarshipType')
@@ -347,17 +338,16 @@ final class StudentTable extends PowerGridComponent
     {
        return [
            Button::make('view', 'View')
-               ->class('btn btn-sm btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
+               ->class('btn btn-sm btn-primary cursor-pointer px-1 py-1 rounded text-sm')
                ->route('admin.scholarship.actions.view_more', function(Student $model) {
                     return ['student' => $model->id];
                }),
 
-        //    Button::make('destroy', 'Delete')
-        //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-        //        ->route('student.destroy', function(\App\Models\Student $model) {
-        //             return $model->id;
-        //        })
-        //        ->method('delete')
+           Button::make('edit', 'Edit')
+               ->class('btn btn-sm btn-warning cursor-pointer px-1 py-1 rounded text-sm')
+               ->route('admin.scholarship.actions.edit_student', function(Student $model) {
+                    return ['student' => $model->id];
+               })
         ];
     }
 

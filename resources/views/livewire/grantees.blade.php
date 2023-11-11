@@ -472,13 +472,6 @@
                                 @endif
                             </div>
 
-
-
-
-
-
-
-
                             <div class="row mt-3">
                                 <div class="col-md-6 d-flex justify-content-center gap-4">
                                     <button type="reset" class="btn btn-warning btn-md fw-bold text-dark mt-2">

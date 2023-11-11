@@ -5,60 +5,86 @@
                 <div class="card">
                     <div class="d-flex align-items-start justify-content-start mb-2 gap-2">
                         <!-- Add Button -->
-                        <a class="btn btn-sm btn-success text-dark" href="{{ route('admin.settings.addScholar') }}">
-                            Add
-                        <i class="mdi mdi-library-plus mdi-20"></i>
-                        </a>
+                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                            data-bs-target="#modal">
+                            Add <i class="mdi mdi-library-plus mdi-20"></i>
+                        </button>
+
                         <!-- Cancel Button -->
-                        <a class="btn btn-sm btn-danger text-dark"
-                            href="{{ route('admin.dashboard') }}">
-                            Cancel
-                            <i class="mdi mdi-close-circle mdi-20"></i></a>
+                        <a class="btn btn-sm btn-danger" href="{{ route('admin.dashboard') }}">
+                            Cancel <i class="mdi mdi-close-circle mdi-20"></i>
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true"
+                            wire:ignore.self>
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalLabel">Scholarship Name</h1>
+                                        @if (session()->has('message'))
+                                        <div class="alert alert-success">
+                                            {{ session('message') }}
+                                        </div>
+                                        @endif
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form wire:submit.prevent="addScholarship">
+                                            @csrf
+                                            <!-- Your form fields go here -->
+                                            <div class="form-check">
+                                                <label for="scholarship_type_id" class="mb-2 fw-bold">Scholarship
+                                                    Type</label>
+                                                <select wire:model="scholarship_type_id" name="scholarship_type_id"
+                                                    id="scholarship_type_id" class="form-select form-select-sm mb-2">
+                                                    <option selected>Select Scholarship Type</option>
+                                                    <option value="0">Government</option>
+                                                    <option value="1">Private</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-check">
+                                                <label for="scholarship_name" class="mb-2 fw-bold">Scholarship Name
+                                                    <font class="text-danger">*</font>
+                                                </label>
+                                                <input wire:model="scholarship_name"
+                                                    class="form-control form-control-sm mb-2" type="text"
+                                                    id="scholarship_name">
+                                                @error('scholarship_name') <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                            <!-- End of your form fields -->
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success btn-sm"
+                                            wire:click="addScholarship">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- Modal End --}}
+
                     </div>
                     <div class="card-body shadow-lg">
-
-                        <livewire:scholarship-name-table/>
-                        {{-- @if ($successMessage)
-                            <div class="alert alert-success mt-3" wire:offline.remove>
-                                {{ $successMessage }}
-                            </div>
-                        @endif
-                        @if ($errorMessage)
-                            <div class="alert alert-danger mt-3" wire:offline.remove>
-                                {{ $errorMessage }}
-                            </div>
-                        @endif
-                        <form wire:submit.prevent="submit">
-                            <div class="form-check">
-                                <label for="scholarship_type_id" class="mb-2 fw-bold">Scholarship Type</label>
-                                <select wire:model="scholarship_type_id" id="scholarship_type_id"
-                                    class="form-select mb-2">
-                                    <option value="">Select Scholarship Type</option>
-                                    @foreach ($scholarshipTypes as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-check">
-                                <label for="scholarship_name" class="mb-2 fw-bold">Scholarship Name <font class="text-danger">*</font></label>
-                                <input class="form-control form-control-md mb-2" type="text"
-                                    wire:model="scholarship_name" id="scholarship_name">
-                                    <p class="text-danger">Required</p>
-                            </div>
-                            <div class="form-check">
-                                <label class="mb-2 fw-bold" for="fund_sources">Source of Funds <font class="text-danger">*</font></label>
-                                <input type="text" wire:model="fund_sources" id="fund_sources"
-                                    class="form-control form-control-md mb-2">
-                                    <p class="text-danger">Required</p>
-                            </div>
-                            <div class="float-end mt-2 gap-2">
-                                <button type="submit" class="btn btn-success btn-sm text-dark fw-bold">ADD</button>
-                                <a type="button" class="btn btn-danger btn-sm fw-bold text-dark" href="{{ route('admin.dashboard') }}">Cancel</a>
-                            </div>
-                        </form> --}}
+                        <livewire:scholarship-name-table />
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <style>
+        .btn-danger {
+            background-color: red;
+            color: white
+        }
+
+        .btn-success {
+            background-color: green;
+            color: white
+        }
+    </style>
 </div>

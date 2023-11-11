@@ -36,8 +36,8 @@
 
                         <div class="row mt-3">
                             <div class="col-md-8 d-flex justify-content-center gap-4">
-                                <button type="submit" class="btn btn-success btn-sm text-dark fw-bold">Update</button>
-                                <a type="button" class="btn btn-danger btn-sm fw-bold text-dark"
+                                <button type="submit" class="btn btn-success btn-sm  fw-bold">Update</button>
+                                <a type="button" class="btn btn-danger btn-sm fw-bold "
                                     href="{{ route('admin.settings.addScholar') }}">Cancel</a>
                             </div>
                             <div class="col-md-4">
@@ -56,4 +56,15 @@
         </div>
     </div>
 </section>
+<style>
+    .btn-danger {
+        background-color: red;
+        color: white
+    }
+
+    .btn-success {
+        background-color: green;
+        color: white
+    }
+</style>
 @endsection

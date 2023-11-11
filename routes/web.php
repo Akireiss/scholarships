@@ -113,6 +113,8 @@ Route::get('admin/scholarship/actions/view_more/{student}', [StudentController::
 Route::get('staff/scholarship/view_more/{student}', [StudentController::class, 'viewMoreStaff'])->name('staff.scholarship.view_more');
 // NLUC
 Route::get('campus-NLUC/scholarship/view_more/{student}', [StudentController::class, 'viewMoreNLUC'])->name('campus-NLUC.scholarship.view_more');
+// update
+Route::get('admin/scholarship/actions/edit_student/{student}', [StudentController::class, 'editAdmin'])->name('admin.scholarship.actions.edit_student');
 
 
 
@@ -158,14 +160,14 @@ Route::get('/campus-NLUC/settings/auditTrail', [auditController::class, 'auditNL
 // add scholarship
 // admin
 Route::get('/admin/settings/addScholar', [addScholarController::class, 'showForm'])->name('admin.settings.addScholar');
-Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
+// Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
 
 // staff
 Route::get('/staff/settings/addScholar', [addScholarController::class, 'showFormStaff'])->name('staff.settings.addScholar');
-Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit.staff');
+// Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit.staff');
 // nluc
 Route::get('/campus-NLUC/settings/addScholar', [addScholarController::class, 'showFormNLUC'])->name('campus-NLUC.settings.addScholar');
-Route::post('/campus-NLUC/settings/addScholar', [addScholarController::class, 'submitFormNLUC'])->name('scholarship.submit.campus-NLUC');
+// Route::post('/campus-NLUC/settings/addScholar', [addScholarController::class, 'submitFormNLUC'])->name('scholarship.submit.campus-NLUC');
 
 // backup
 // admin
@@ -187,6 +189,8 @@ Route::get('admin/settings/actions/editFunds/{source_id}', [SourcesController::c
 //edit
 Route::put('admin/settings/actions/updateFunds/{source_id}', [SourcesController::class, 'updateFunds']);
 
+// add
+Route::post('/admin/settings/scholar/{scholar}/store-fund-source', [ScholarController::class, 'storeFundSource'])->name('scholar.storeFundSource');
 
 
 

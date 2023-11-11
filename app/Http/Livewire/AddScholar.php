@@ -11,81 +11,46 @@ use Livewire\Component;
 
 class AddScholar extends Component
 {
-    public $scholarshipTypes;
     public $scholarship_type_id;
     public $scholarship_name;
-    public $fund_sources;
-    public $successMessage = null;
-    public $errorMessage = null;
+    public $status;
 
-
-    public function mount()
+    public function render()
     {
-        $this->scholarshipTypes = ScholarshipType::all();
+        return view('livewire.add-scholar');
     }
 
-    public function updatedScholarshipType()
+    public function addScholarship()
     {
-        // Reset scholarship_name and fund_sources when the scholarship type is changed
-        $this->scholarship_name = null;
-        $this->fund_sources = null;
-    }
-
-public function submit()
-{
-        // Validate the form data
-        $validator = Validator::make([
-            'scholarship_type_id' => $this->scholarship_type_id,
-            'scholarship_name' => $this->scholarship_name,
-            'fund_sources' => $this->fund_sources,
-        ], [
-            'scholarship_type_id' => 'required',
+        $this->validate([
+            'scholarship_type_id' => 'required|in:0,1',
             'scholarship_name' => 'required|string',
-            'fund_sources' => 'required|string',
         ]);
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            // Display an error message for validation failures
-            $this->errorMessage = 'Please fill out all fields.';
-            $this->successMessage = null;
-            return;
-        }
-
-        // Create a new scholarship name record with the scholarship_type_id set properly
-        $scholarshipName = ScholarshipName::create([
+        ScholarshipName::create([
+            'scholarship_type' => $this->scholarship_type_id,
             'name' => $this->scholarship_name,
-            'scholarship_type_id' => $this->scholarship_type_id,
+            'status' => 0,
         ]);
 
-        // Create a new fund source record
-        FundSource::create([
-            'source_name' => $this->fund_sources,
-            'scholarship_name_id' => $scholarshipName->id,
+        // Set success message
+        session()->flash('message', 'Scholarship added successfully!');
+
+        // Create an audit log entry
+        $user = auth()->user(); // Assuming you have authentication in place
+        AuditLog::create([
+            'user_id' => $user->id,
+            'action' => 'Create a new scholarship name',
+            'data' => json_encode('Created ' . $this->scholarship_name . ' by ' . $user->name),
         ]);
-        
-                        // Create an audit log entry
-                        $user = auth()->user(); // Assuming you have authentication in place
-                        AuditLog::create([
-                            'user_id' => $user->id,
-                            'action' => 'Create a new scholarship name & new fund source',
-                            'data' => json_encode('Created ' . $this->scholarship_name . ' & ' . $this->fund_sources . ' by ' . $user->name),
-                        ]);
 
-        // Display the success message after successful form submission
-        $this->successMessage = 'Scholarship information added successfully!';
-        $this->errorMessage = null;
+        $this->resetForm();
+        $this->emit('scholarshipAdded'); // Emit an event for updating the Livewire table component
+    }
 
-    // Clear the form fields after submission
-    $this->reset(['scholarship_type_id', 'scholarship_name', 'fund_sources']);
-}
-
-public function render()
-{
-    $scholarshipTypes = ScholarshipType::all();
-
-    return view('livewire.add-scholar', compact('scholarshipTypes'));
-}
-
-
+    private function resetForm()
+    {
+        $this->scholarship_type_id = null;
+        $this->scholarship_name = null;
+    }
 }
