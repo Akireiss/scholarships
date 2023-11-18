@@ -24,13 +24,13 @@ class Student extends Model
         'course',
         'level',
         'semester',
+        'school_year',
         'father',
         'mother',
         'contact',
         'studentType',
         'nameSchool',
         'lastYear',
-        'grant_status',
         'grant',
          'scholarshipType',
          'student_status'
@@ -42,6 +42,11 @@ class Student extends Model
         public function campus()
         {
             return $this->belongsTo(Campus::class);
+        }
+
+        public function years()
+        {
+            return $this->belongsTo(SchoolYear::class);
         }
 
         public function course()

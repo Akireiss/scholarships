@@ -10,7 +10,7 @@ use PowerComponents\LivewirePowerGrid\Traits\{ActionButton, WithExport};
 use PowerComponents\LivewirePowerGrid\Filters\Filter;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridColumns};
 
-final class StudentTable extends PowerGridComponent
+final class ReportsTAble extends PowerGridComponent
 {
     use ActionButton;
     use WithExport;
@@ -24,16 +24,16 @@ final class StudentTable extends PowerGridComponent
     */
     public function setUp(): array
     {
+        // $this->showCheckBox();
 
         return [
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()
-            ->showSearchInput()
-            ->withoutLoading(),
+            Header::make()->showSearchInput(),
             Footer::make()
-                ->showPerPage(),
+                ->showPerPage()
+                ->showRecordCount(),
         ];
     }
 
@@ -50,19 +50,10 @@ final class StudentTable extends PowerGridComponent
      *
      * @return Builder<\App\Models\Student>
      */
-
-     public function datasource(): Builder
-     {
-         if (auth()->user()->role == 1) {
-             return Student::query();
-         } elseif (auth()->user()->role == 0) {
-             return Student::query();
-         } else {
-             // Assuming role is either 2 or some other value
-             return Student::query()->where('campus', 'Don Mariano Marcos Memorial State  University North La Union Campus');
-         }
-     }
-
+    public function datasource(): Builder
+    {
+        return Student::query();
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +87,7 @@ final class StudentTable extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('student_id')
 
            /** Example of custom column using a closure **/
@@ -119,13 +110,13 @@ final class StudentTable extends PowerGridComponent
             ->addColumn('mother')
             ->addColumn('contact')
             ->addColumn('studentType')
-            ->addColumn('nameSchool')
-            ->addColumn('lastYear')
-            // ->addColumn('grant_status')
+            ->addColumn('nameSchool', fn (Student $model) => $model->nameSchool ?: "No Data")
+            ->addColumn('lastYear', fn (Student $model) => $model->lastYear ?: "No Data")
             ->addColumn('grant', fn (Student $model) => $model->grant ?: "No Data")
             ->addColumn('scholarshipType', fn(Student $model) => $model->getTypeScholarshipAttribute() ?? "No Data" )
             // ->addColumn('student_status')
-            ->addColumn('student_status', fn(Student $model) => $model->getStatusTextAttribute() ?? "No Data" );
+            ->addColumn('student_status', fn(Student $model) => $model->getStatusTextAttribute() ?? "No Data" )
+            ->addColumn('created_at_formatted', fn (Student $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -145,12 +136,10 @@ final class StudentTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-
+            // Column::make('Id', 'id'),
             Column::make('Student id', 'student_id')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Lastname', 'lastname')
                 ->sortable()
@@ -160,101 +149,70 @@ final class StudentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Middle Initial', 'initial')
+            Column::make('Initial', 'initial')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Email Address', 'email')
+            Column::make('Email', 'email')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Sex', 'sex')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Status', 'status')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Barangay', 'barangay')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Municipal', 'municipal')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Province', 'province')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Campus', 'campus')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Course/Program', 'course')
-                ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
-
-            Column::make('Year level', 'level')
+            Column::make('Course', 'course')
                 ->sortable()
                 ->searchable(),
 
+            Column::make('Level', 'level'),
             Column::make('Semester', 'semester')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Father Fullname', 'father')
+            Column::make('Father', 'father')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Mother Fullname', 'mother')
+            Column::make('Mother', 'mother')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Contact Number', 'contact')
+            Column::make('Contact', 'contact')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Type of Student', 'studentType')
+            Column::make('Student Type', 'studentType')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Name of School Last Attended', 'nameSchool')
+            Column::make('Name School Last Attended', 'nameSchool')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
-            Column::make('Last School Year Attended', 'lastYear')
+            Column::make('Last Year Attended', 'lastYear')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
             Column::make('Recepient', 'grant')
                 ->sortable()
@@ -264,11 +222,9 @@ final class StudentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Remarks', 'student_status')
-            ->sortable()
-            ->searchable()
-            ->hidden()
-            ->visibleInExport(true),
+            Column::make('Student status', 'student_status'),
+            Column::make('Created at', 'created_at_formatted', 'created_at')
+                ->sortable(),
 
         ];
     }
@@ -285,23 +241,24 @@ final class StudentTable extends PowerGridComponent
             // Filter::inputText('lastname')->operators(['contains']),
             // Filter::inputText('firstname')->operators(['contains']),
             // Filter::inputText('initial')->operators(['contains']),
-            Filter::inputText('email')->operators(['contains']),
-            Filter::inputText('sex')->operators(['contains']),
-            Filter::inputText('status')->operators(['contains']),
-            Filter::inputText('barangay')->operators(['contains']),
-            Filter::inputText('municipal')->operators(['contains']),
-            Filter::inputText('province')->operators(['contains']),
-            Filter::inputText('campus')->operators(['contains']),
-            Filter::inputText('course')->operators(['contains']),
-            Filter::inputText('father')->operators(['contains']),
-            Filter::inputText('mother')->operators(['contains']),
-            Filter::inputText('contact')->operators(['contains']),
-            Filter::inputText('studentType')->operators(['contains']),
-            Filter::inputText('nameSchool')->operators(['contains']),
-            Filter::inputText('lastYear')->operators(['contains']),
-            // Filter::inputText('grant_status')->operators(['contains']),
-
-            // Level
+            // Filter::inputText('email')->operators(['contains']),
+            // Filter::inputText('sex')->operators(['contains']),
+            // Filter::inputText('status')->operators(['contains']),
+            // Filter::inputText('barangay')->operators(['contains']),
+            // Filter::inputText('municipal')->operators(['contains']),
+            // Filter::inputText('province')->operators(['contains']),
+            // Filter::inputText('campus')->operators(['contains']),
+            // Filter::inputText('course')->operators(['contains']),
+            // Filter::inputText('semester')->operators(['contains']),
+            // Filter::inputText('father')->operators(['contains']),
+            // Filter::inputText('mother')->operators(['contains']),
+            // Filter::inputText('contact')->operators(['contains']),
+            // Filter::inputText('studentType')->operators(['contains']),
+            // Filter::inputText('nameSchool')->operators(['contains']),
+            // Filter::inputText('lastYear')->operators(['contains']),
+            // Filter::inputText('grant')->operators(['contains']),
+            // Filter::inputText('scholarshipType')->operators(['contains']),
+            Filter::datetimepicker('created_at'),
             Filter::select('level', 'level')
             ->dataSource(Student::select('level')->distinct()->get())
             ->optionValue('level')
@@ -339,56 +296,50 @@ final class StudentTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
+    /*
+    public function actions(): array
+    {
+       return [
+           Button::make('edit', 'Edit')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('student.edit', function(\App\Models\Student $model) {
+                    return $model->id;
+               }),
 
-     public function actions(): array
-     {
-         $userRole = auth()->user()->role;
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('student.destroy', function(\App\Models\Student $model) {
+                    return $model->id;
+               })
+               ->method('delete')
+        ];
+    }
+    */
 
-         if ($userRole == 1) {
-             return [
-                 Button::make('view', 'View')
-                     ->class('btn btn-sm btn-primary cursor-pointer px-1 py-1 rounded text-sm')
-                     ->route('admin.scholarship.actions.view_more', function (Student $model) {
-                         return ['student' => $model->id];
-                     }),
+    /*
+    |--------------------------------------------------------------------------
+    | Actions Rules
+    |--------------------------------------------------------------------------
+    | Enable the method below to configure Rules for your Table and Action Buttons.
+    |
+    */
 
-                 Button::make('edit', 'Edit')
-                     ->class('btn btn-sm btn-warning cursor-pointer px-1 py-1 rounded text-sm')
-                     ->route('admin.scholarship.edit', function (Student $model) {
-                         return ['student' => $model->id];
-                     })
-             ];
-         } elseif ($userRole == 0) {
-             return [
-                Button::make('view', 'View')
-                ->class('btn btn-sm btn-primary cursor-pointer px-1 py-1 rounded text-sm')
-                ->route('staff.scholarship.actions.view_more', function (Student $model) {
-                    return ['student' => $model->id];
-                }),
+    /**
+     * PowerGrid Student Action Rules.
+     *
+     * @return array<int, RuleActions>
+     */
 
-                Button::make('edit', 'Edit')
-                    ->class('btn btn-sm btn-warning cursor-pointer px-1 py-1 rounded text-sm')
-                    ->route('staff.scholarship.actions.edit', function (Student $model) {
-                        return ['student' => $model->id];
-                    })
-             ];
-         } else {
-             return [
-                 Button::make('view', 'View')
-                     ->class('btn btn-sm btn-primary cursor-pointer px-1 py-1 rounded text-sm')
-                     ->route('campus-NLUC.scholarship.actions.view_more', function (Student $model) {
-                         return ['student' => $model->id];
-                     }),
+    /*
+    public function actionRules(): array
+    {
+       return [
 
-                 Button::make('edit', 'Edit')
-                     ->class('btn btn-sm btn-warning cursor-pointer px-1 py-1 rounded text-sm')
-                     ->route('campus-NLUC.scholarship.actions.edit', function (Student $model) {
-                         return ['student' => $model->id];
-                     })
-             ];
-         }
-     }
-
-
+           //Hide button edit for ID 1
+            Rule::button('edit')
+                ->when(fn($student) => $student->id === 1)
+                ->hide(),
+        ];
+    }
+    */
 }
-

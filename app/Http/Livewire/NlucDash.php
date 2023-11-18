@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Campus;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\ScholarshipName;
@@ -10,53 +11,60 @@ use Illuminate\Support\Facades\DB;
 class NlucDash extends Component
 {
 
-
-    public $selectedType = 'Government';  // Default to 'Government'
-    public $governmentCount = 0;
-    public $privateCount = 0;
-
-    public $selectedTypeScholar = 'Government';  // Default to 'Government'
-    public $governmentScholar = 0;
-    public $privateScholar = 0;
-    public $chartData = [];
+    public $governmentCount, $privateCount;
+    public $governmentStudent, $privateStudent;
+    public $active, $inactive;
+    public $scholarshipActive, $scholarshipInactive;
+    public $chartData;
 
     public function mount()
     {
-                // 2nd card
-                if ($this->selectedTypeScholar === 'Government') {
-                    $this->governmentScholar = Student::where('scholarshipType', 'Government')->count();
-                } elseif ($this->selectedTypeScholar === 'Private') {
-                    $this->privateScholar = Student::where('scholarshipType', 'Private')->count();
-                } else {
-                    $this->governmentScholar = 0;
-                    $this->privateScholar = 0;
-                }
-                // linechart
-                $this->chartData = Student::select('campus', DB::raw('count(*) as total'))
-                ->groupBy('campus')
-                ->get()
-                ->toArray();
+        $campus = Campus::where('campus_name', 'NLUC')->first();
+        // $data = [];
+
+        if ($campus) {
+            $studentCount = Student::where('campus', $campus->campusDesc)->count();
+            $data[] = [
+                'campus' => $campus->campus_name,
+                'studentCount' => $studentCount,
+            ];
+
+            // Continue with other data gathering based on $campus
+        }
+
+        $this->chartData = $data;
+
+
+        // 1st card
+        // Count government scholarship names
+        $this->governmentCount = ScholarshipName::where('scholarship_type', 0)->count();
+
+        // Count private scholarship names
+        $this->privateCount = ScholarshipName::where('scholarship_type', 1)->count();
+
+        // scholarship active and inactiive
+        $this->scholarshipActive = ScholarshipName::where('status', 0)->count();
+        $this->scholarshipInactive = ScholarshipName::where('status', 1)->count();
+        //
+
+     // 2nd card
+    // Count scholars in government
+    $this->governmentStudent = Student::where('campus', 'Don Mariano Marcos Memorial State  University North La Union Campus')->where('scholarshipType', 0)->count();
+
+    // Count scholars in private
+    $this->privateStudent = Student::where('campus', 'Don Mariano Marcos Memorial State  University North La Union Campus')->where('scholarshipType', 1)->count();
+
+    // active and inactive
+    $this->active = Student::where('campus', 'Don Mariano Marcos Memorial State  University North La Union Campus')->where('student_status', 0)->distinct('student_id')->count();
+    $this->inactive = Student::where('campus', 'Don Mariano Marcos Memorial State  University North La Union Campus')->where('student_status', 1)->distinct('student_id')->count();
+
+
+
 
     }
 
     public function render()
     {
-
-               // 1st card
-               if ($this->selectedType === 'Government') {
-                $this->governmentCount = ScholarshipName::whereHas('scholarshipType', function ($query) {
-                    $query->where('name', 'Government');
-                })->count();
-            } elseif ($this->selectedType === 'Private') {
-                $this->privateCount = ScholarshipName::whereHas('scholarshipType', function ($query) {
-                    $query->where('name', 'Private');
-                })->count();
-            } else {
-                $this->governmentCount = 0;
-                $this->privateCount = 0;
-            }
-
-
         return view('livewire.nluc-dash');
     }
 }

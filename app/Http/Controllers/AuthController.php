@@ -41,6 +41,7 @@ class AuthController extends Controller
             ]);
 
     // Record audit trail for user registration
+    $user = Auth::user();
     AuditLog::create([
         'user_id' => $user->id,
         'action' => 'Created an account',

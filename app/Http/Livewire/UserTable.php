@@ -23,13 +23,13 @@ final class UserTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
+        // $this->showCheckBox();
 
         return [
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
-                ->showRecordCount(),
+                // ->showRecordCount(),
         ];
     }
 
@@ -83,12 +83,11 @@ final class UserTable extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
-            ->addColumn('id')
+            // ->addColumn('id')
             ->addColumn('name')
-
            /** Example of custom column using a closure **/
             ->addColumn('name_lower', fn (User $model) => strtolower(e($model->name)))
-            ->addColumn('role')
+            ->addColumn('role', fn(User $model) => $model->getRoleText())
             ->addColumn('email')
             ->addColumn('username');
 
@@ -111,7 +110,7 @@ final class UserTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
+            // Column::make('Id', 'id'),
             Column::make('Name', 'name')
                 ->searchable(),
 

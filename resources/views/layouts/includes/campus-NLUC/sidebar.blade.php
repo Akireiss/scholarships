@@ -20,11 +20,11 @@
                 <ul class="nav flex-column sub-menu">
                     <!-- View -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">View</a>
+                        <a class="nav-link" href="{{ route('campus-NLUC.scholarship.view') }}">View</a>
                     </li>
                     <!-- Add grantees -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Grantee</a>
+                        <a class="nav-link" href="{{ route('campus-NLUC.scholarship.grantees') }}">Grantee</a>
                     </li>
                 </ul>
             </div>

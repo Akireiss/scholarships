@@ -1,9 +1,14 @@
 <div>
-    <livewire:student-table/>
+
+    <livewire:student-table />
     <style>
         .btn-primary {
             background-color: blue;
             color: white
+        }
+        .btn-primary:hover{
+            background-color: rgb(0, 0, 168);
+            color: wheat;
         }
 
         .btn-warning {
@@ -12,5 +17,3 @@
         }
     </style>
 </div>
-
-

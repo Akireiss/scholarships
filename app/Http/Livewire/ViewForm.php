@@ -2,17 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Fund;
-use App\Models\Student;
 use Livewire\Component;
-use App\Models\FundSource;
-use App\Models\ScholarshipName;
+// use Livewire\WithFileUploads;
+// use App\Imports\StudentsImport;
+
 
 class ViewForm extends Component
 {
+
+
     public function render()
     {
         return view('livewire.view-form');
     }
+
 }
 

@@ -21,15 +21,7 @@ return new class extends Migration
 
 // insert here
 
-        $courses =
-        [
-            ['course_name' => 'Bachelor of Science in Information System', 'campus_id' => 1],
-            ['course_name' => 'Bachelor of Science in Information Technology', 'campus_id' => 2],
-            ['course_name' => 'Bachelor of Science in Fish', 'campus_id' => 3],
-            ['course_name' => 'Bachelor of Science in ML', 'campus_id' => 4],
-        ];
-
-        DB::table('courses')->insert($courses);
+       
 
 
 // it ends here

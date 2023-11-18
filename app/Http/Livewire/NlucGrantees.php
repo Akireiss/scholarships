@@ -1,26 +1,54 @@
 <?php
 
+namespace App\Http\Livewire;
 
-    namespace App\Http\Livewire;
-    use App\Traits\Variables;
-    use App\Models\AuditLog;
-    use App\Models\Fund;
-    use App\Models\Campus;
-    use App\Models\Course;
-    use App\Models\FundSource;
-    use App\Models\Student;
-    use Illuminate\Support\Facades\Auth;
-    use Livewire\Component;
-    use App\Models\Barangay;
-    use App\Models\Province;
-    use App\Models\Municipal;
-    use App\Models\ScholarshipName;
-    use App\Models\SchoolYear;
+use App\Models\Fund;
+use App\Models\Campus;
+use App\Models\Course;
+use App\Models\Student;
+use Livewire\Component;
+use App\Models\AuditLog;
+use App\Models\Barangay;
+use App\Models\Province;
+use App\Models\Municipal;
+use App\Models\FundSource;
+use App\Models\ScholarshipName;
+use Illuminate\Support\Facades\Auth;
 
+class NlucGrantees extends Component
+{
 
-    class Grantees extends Component
-    {
-        use Variables;
+            public $selectedScholarship;
+            // campus & course
+            public $selectedCampus, $campuses;
+            public $selectedCourse, $courses = [];
+
+            public $governmentScholars = [],  $selectedScholarshipType, $scholarshipType;
+            public $privateScholars = [];
+            public $selectedGovernmentScholarship, $selectedPrivateFundSources = [];
+            public $selectedPrivateScholarship, $selectedGovernmentFundSources = []; // Update the property name
+            public $governmentFundSources = [], $privateFundSources = [], $selectedFunds;
+
+            // Personal Information
+            public $lastname, $firstname, $initial;
+            public $sex, $status, $contact, $email, $level, $semester;
+            public $nameSchool, $lastYear;
+            public $student_id,  $scholarshipLimitExceeded = false;
+
+            public $studentType;
+            public $father, $mother;
+
+            // Address
+            public $selectedProvince;
+            public $selectedMunicipality;
+            public $selectedBarangay;
+            public $provinces = [];
+            public $municipalities = [];
+            public $barangays = [];
+
+            // show&hide
+            public $showNewInput = false;
+
 
 
             protected $rules = [
@@ -39,7 +67,6 @@
                 'student_id' => 'required',
                 'level' => 'required',
                 'semester' => 'required',
-                'selectedYear' => 'required',
                 'studentType' => 'required',
                 'father' => 'required',
                 'mother' => 'required',
@@ -84,10 +111,6 @@
             }
         }
 
-        public function fetchSchoolYears()
-        {
-            $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
-        }
 
 
         public function saveStudent()
@@ -101,7 +124,7 @@
             // Determine the private scholarship and scholarship type based on the selected private scholarship
             list($privateScholarship, $privateScholarshipType) = $this->selectPrivateScholarshipAndType();
 
-                $campus = Campus::findOrFail($this->selectedCampus);
+              $campus = Campus::findOrFail($this->selectedCampus);
                 $course = Course::findOrFail($this->selectedCourse);
 
                 // Get the province, municipal, and barangay names based on their IDs
@@ -128,7 +151,6 @@
                     'student_id' => $this->student_id,
                     'level' => $this->level,
                     'semester' => $this->semester,
-                    'school_year' => $this->selectedYear,
                     'studentType' => $this->studentType,
                     'nameSchool' => $this->nameSchool,
                     'lastYear' => $this->lastYear,
@@ -147,7 +169,7 @@
                 }
 
 
-    // If private scholarship is selected, create a separate Student record for the private scholarship
+                  // If private scholarship is selected, create a separate Student record for the private scholarship
     if ($this->selectedPrivateScholarship) {
         // Determine the source and source type based on the selected private funds
         list($privateSelectedFunds, $privateSourceName) = $this->selectPrivateFundsAndSource();
@@ -168,7 +190,6 @@
             'student_id' => $this->student_id,
             'level' => $this->level,
             'semester' => $this->semester,
-            'school_year' => $this->selectedYear,
             'studentType' => $this->studentType,
             'nameSchool' => $this->nameSchool,
             'lastYear' => $this->lastYear,
@@ -288,16 +309,16 @@
             // Call the methods to fetch scholarship data
             $this->fetchGovernmentScholarships();
             $this->fetchPrivateScholarships();
-            $this->fetchSchoolYears();
 
 
             // Fetch campuses and courses
-            $this->campuses = Campus::all();
+            $this->campuses = Campus::where('campus_name', 'NLUC')->get();
 
             if ($this->selectedCampus) {
                 $campus = Campus::findOrFail($this->selectedCampus);
                 $this->courses = $campus->courses;
             } else {
+                // $this->campuses = [];
                 $this->courses = [];
             }
 
@@ -318,13 +339,11 @@
             }
 
             // $fund_sources = FundSource::all();
-            return view('livewire.grantees', [
+            return view('livewire.nluc-grantees', [
                 'campuses' => $this->campuses,
                 'provinces' => $this->provinces,
                 'governmentScholars' => $this->governmentScholars,
                 'privateScholars' => $this->privateScholars,
-                'years' => $this->years, // Pass the years data to the view
-
 
             ]);
         }
@@ -360,3 +379,5 @@
             }
 
     }
+
+

@@ -16,15 +16,8 @@ class Campus extends Model
         return $this->hasMany(Course::class);
     }
 
-    protected $fillable = [];
+    protected $fillable = ['campus_name', 'campusDesc'];
 
-    // public function getCampus()
-    // {
-    //     $value = $this->attributes['campus'];
-    //     switch ($value)
-    //     {
-    //         cas
-    //     }
-    // }
+
 
 }

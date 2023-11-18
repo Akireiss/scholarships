@@ -48,7 +48,14 @@
                             Accounts </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.auditTrail') }}"> Audit
                             Trail </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.backup') }}"> Data back-up </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.backup') }}"> Data back-up
+                        </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.reports') }}"> Reports </a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.program') }}"> Program </a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.school-year') }}"> School Year </a>
+                    </li>
                 </ul>
             </div>
         </li>

@@ -12,12 +12,9 @@ class ScholarshipName extends Model
     protected $fillable = [
         'name',
          'scholarship_type',
-         'status']; // fillable attributes
+         'status'];
 
-    // public function scholarshipType()
-    // {
-    //     return $this->belongsTo(ScholarshipType::class, 'scholarship_type_id', 'id');
-    // }
+
 
     public function fundSources()
     {

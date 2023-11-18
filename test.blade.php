@@ -1686,3 +1686,147 @@ final class ScholashipNameTable extends PowerGridComponent
             </div>
         </div>
 </section>
+
+
+
+ $campuses = [
+            ['campus_name' => 'NLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University North La Union Campus'],
+            ['campus_name' => 'MLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University Mid La Union Campus'],
+            ['campus_name' => 'SLUC', 'campusDesc' => 'Don Mariano Marcos Memorial State  University South La Union Campus'],
+            ['campus_name' => 'OUS', 'campusDesc' => 'Don Mariano Marcos Memorial State  University Open University System'],
+        ];
+
+        DB::table('campuses')->insert($campuses);
+
+
+         $courses =
+        [
+            ['course_name' => 'Bachelor of Science in Information System', 'campus_id' => 1],
+            ['course_name' => 'Bachelor of Science in Information Technology', 'campus_id' => 2],
+            ['course_name' => 'Bachelor of Science in Fish', 'campus_id' => 3],
+            ['course_name' => 'Bachelor of Science in ML', 'campus_id' => 4],
+        ];
+
+        DB::table('courses')->insert($courses);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="row mt-0 mb-1 justify-content-center">
+                                <!-- Logo Column -->
+                                <div class="col-12 col-md-6 col-lg-6 text-center">
+                                    {{-- Add an additional div for the image and label --}}
+                                    <div class="d-flex flex-column align-items-center">
+                                        <img src="{{ asset('assets/images/updated.png') }}" class="img-fluid" style="width: 150px; height: 150px;" alt="dmmmsu-logo">
+                                        <label class="form-check-label fw-bold mb-1" for="semester">Semester</label>
+                                        <select class="form-select form-select-sm text-center mb-2 @error('semester') is-invalid @enderror" wire:model="semester">
+                                            <option value="1" selected>1st</option>
+                                            <option value="2">2nd</option>
+                                        </select>
+                                        @error('semester')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Add another column for the School Year select -->
+                                <div class="col-12 col-md-6 col-lg-6 text-center">
+                                    {{-- Add an additional div for the School Year select --}}
+                                    <div class="d-flex flex-column align-items-center">
+                                        <label class="form-check-label fw-bold mb-1" for="year">School Year</label>
+                                        <select class="form-select form-select-sm text-center @error('year') is-invalid @enderror" wire:model="year">
+                                            <option selected>Choose below...</option>
+                                            <option value=""></option>
+                                        </select>
+                                        @error('year')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+{{-- Line chart --}}
+<div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Students per Campus</h4>
+                    <canvas id="student" width="300" height="200" class="p-2"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Line chart ends --}}
+
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+ document.addEventListener('livewire:load', function () {
+            // Get the chart data from Livewire component
+            var chartData = @this.chartData;
+
+            // Extract data for the chart
+            var campuses = chartData.map(function (item) {
+                return item.campus;
+            });
+
+            // Extract student counts for the chart
+            var studentCounts = chartData.map(function (item) {
+                return item.studentCount;
+            });
+
+            // Create a unique color for the chart line
+            var chartColor = 'rgba(75, 192, 192, 1';
+
+            var ctx = document.getElementById('student').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: campuses,
+                    datasets: [
+                        {
+                            label: 'Students per Campus',
+                            data: studentCounts,
+                            borderColor: chartColor,
+                            borderWidth: 2,
+                            fill: false,
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Students'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+</script>
