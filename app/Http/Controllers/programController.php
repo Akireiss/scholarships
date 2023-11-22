@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class programController extends Controller
 {
     public $campuses;
-
+    public $nlucCampuses;
+// admin
     public function adminProgram()
     {
         $campuses = Campus::all();
@@ -18,6 +19,7 @@ class programController extends Controller
             'campuses' => $campuses,
         ]);
     }
+
     public function saveCampus(Request $request)
     {
         // Validation logic here if needed
@@ -40,4 +42,33 @@ class programController extends Controller
 
         return redirect()->back()->with('success', 'Course saved successfully');
     }
+
+    // staff
+
+
+    // campusNLUC
+    public function nlucProgram()
+    {
+        $nlucCampuses = Campus::where('campus_name', 'NLUC' )->get();
+
+        return view('campus-NLUC.settings.program', [
+            'nlucCampuses' => $nlucCampuses,
+        ]);
+    }
+    public function nlucsaveCourse(Request $request)
+    {
+        $request->validate([
+            'campus_select' => 'required',
+            'course_program' => 'required',
+        ]);
+
+        $course = new Course();
+        $course->campus_id = $request->input('campus_select');
+        $course->course_name = $request->input('course_program');
+        $course->save();
+
+        return redirect()->back()->with('success', 'Course saved successfully');
+    }
+
+
 }

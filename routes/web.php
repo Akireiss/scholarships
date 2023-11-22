@@ -170,7 +170,11 @@ Route::get('/staff/settings/backup', [backupController::class, 'staffBackup'])->
 // NLUC
 Route::get('/campus-NLUC/settings/backup', [backupController::class, 'nlucBackup'])->name('campus-NLUC.settings.backup');
 // reports
+// admin
 Route::get('/admin/settings/reports', [reportController::class, 'adminReport'])->name('admin.settings.reports');
+// staff
+// nluc
+Route::get('/campus-NLUC/settings/reports', [reportController::class, 'nlucReport'])->name('campus-NLUC.settings.reports');
 
 // Program
 // admin
@@ -178,6 +182,11 @@ Route::get('/admin/settings/program', [programController::class, 'adminProgram']
 // submit
 Route::post('/save-campus', [programController::class, 'saveCampus'])->name('saveCampus');
 Route::post('/save-course', [programController::class, 'saveCourse'])->name('saveCourse');
+// staff
+// nluc
+Route::get('/campus-NLUC/settings/program', [programController::class, 'nlucProgram'])->name('campus-NLUC.settings.program');
+// submit
+Route::post('/save-course', [programController::class, 'nlucsaveCourse'])->name('nlucsaveCourse');
 
 // schoolyear
 Route::get('/admin/settings/school-year', [schoolyearController::class, 'yearAdmin'])->name('admin.settings.school-year');

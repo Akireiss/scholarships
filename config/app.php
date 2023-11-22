@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\BackupDatabase;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -165,12 +166,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         PowerComponents\LivewirePowerGrid\Providers\PowerGridServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
-        // PowerGrid\Models\PowerGrid::class,
     ])->toArray(),
 
     /*
@@ -192,7 +192,7 @@ return [
         'class' => \Livewire\Livewire::class,
         'viewPath' => resource_path('views/livewire'),
         'aliases' => [
-            'BackupDatabase' => \App\Http\Livewire\BackupDatabaseComponent::class,
+            'BackupDatabase' => App\Http\Livewire\BackupDatabase::class,
         ],
     ],
 ];

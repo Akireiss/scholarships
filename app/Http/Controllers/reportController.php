@@ -9,4 +9,8 @@ class reportController extends Controller
     {
         return view('admin.settings.reports');
     }
+    public function nlucReport()
+    {
+        return view('campus-NLUC.settings.reports');
+    }
 }

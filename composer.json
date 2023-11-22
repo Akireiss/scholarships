@@ -29,7 +29,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "App\\Http\\Controllers\\": "app/Http/Controllers/",
-            "PowerGrid\\": "vendor/power-components/livewire-powergrid/src/"
+            "PowerGrid\\": "vendor/power-components/livewire-powergrid/src/",
+            "App\\Exports\\": "app/Exports/"
         }
     },
     "autoload-dev": {
@@ -69,7 +70,7 @@
     ],
     "github-oauth": {
 
-        "github.com": "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"
+        "github.com": "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"
     },
 
     "config": {

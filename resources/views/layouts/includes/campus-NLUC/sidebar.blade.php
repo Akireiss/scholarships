@@ -40,9 +40,8 @@
             </a>
             <div class="collapse" id="settings">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('campus-NLUC.settings.addScholar') }}"> Add Scholarships </a></li>
-                    <li class="nav-item"> <a class="nav-link" href="'{{ route('campus-NLUC.settings.auditTrail') }}"> Audit Trail </a></li>
-                    <li class="nav-item"> <a class="nav-link" href=""> Data back-up </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('campus-NLUC.settings.reports') }}"> Report </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('campus-NLUC.settings.program') }}"> Program </a></li>
                 </ul>
             </div>
         </li>

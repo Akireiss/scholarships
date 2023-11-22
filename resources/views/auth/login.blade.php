@@ -62,9 +62,9 @@
                         <label for="showPass">Show password</label>
                     </div>
 
-                    <div class="mt-1 mb-2 float-end" style="cursor:pointer;">
+                    {{-- <div class="mt-1 mb-2 float-end" style="cursor:pointer;">
                         <a href="{{ route('password.request') }}">forgot password?</a>
-                    </div>
+                    </div> --}}
                     {{-- script here --}}
                     <script>
                         function showPassword() {

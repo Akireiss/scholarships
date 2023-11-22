@@ -111,10 +111,10 @@
         </div>
     </div>
 
-    <div class="container ">
+    <div class="container">
         <div class="row justify-content-start">
             <div class="col-md-3">
-                <label for="fundSources" class="form-label">Recepient</label>
+                <label for="fundSources" class="form-label">Recipient</label>
                 <select id="selectedSources" name="selectedSources" wire:model="selectedSources"
                     class="form-select form-select-sm mb-3">
                     <option selected value="All">All</option>
@@ -126,79 +126,75 @@
             <div class="col-md-3">
                 <label for="year" class="form-label">Select Year</label>
                 <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
-                    <option selected value="Choose from below...">Choose from below...</option>
+                    <option value="allYear">All</option>
                     @foreach($years as $year)
                     <option value="{{ $year }}">{{ $year }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="col-md-3">
+                <label for="applyFilters" class="form-label">Filter</label>
+                <button wire:click="applyFilters" class="btn btn-sm btn-primary form-control">Apply Filters</button>
             </div>
         </div>
 
         {{-- line chart --}}
         <div class="row">
             <div class="col-md-12">
-                <div class="card" height="300px">
+                <div class="card">
                     <div class="card-body">
-                        <canvas id="myChart"></canvas>
+                        <canvas id="myChart" wire:ignore></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-                document.addEventListener("livewire:load", function () {
-                const chartData = @json($chartData);
 
-            // Create the line chart
-                const chart = new Chart(document.getElementById('myChart'), {
-                    type: 'line',
-                    data: {
-                        labels: chartData.campusLabels,
-                        datasets: [{
-                            label: 'Students per Campus',
-                            data: chartData.studentCounts,
-                            fill: false,
-                            borderColor: '#333',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'Students per Campus by Source: {{ $selectedSources }} and Year: {{ $selectedYear }}'
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Campus'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Student Count'
-                                }
-                            }
+        <script defer src="{{ asset('assets/js/lib.js') }}"></script>
+
+        <script>
+            document.addEventListener('livewire:load', function () {
+        Livewire.on('renderChart', function (data) {
+            renderChart(data);
+        });
+
+        function renderChart(data) {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Students Count',
+                        data: data.values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
                     }
-                });
-
-                Livewire.on('filterChanged', () => {
-            // Fetch new data when the filters change
-            Livewire.reload();
-        });
-
-        Livewire.on('chartDataUpdated', (newChartData) => {
-            // Update the chart data when it changes
-            chart.data.labels = newChartData.campusLabels;
-            chart.data.datasets[0].data = newChartData.studentCounts;
-            chart.update();
-        });
+                }
+            });
+        }
     });
         </script>
+
+
     </div>
 
+    <style>
+        .btn-primary {
+            background-color: #17a2b8 !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #148697 !important;
+        }
+    </style>
 
 </div>

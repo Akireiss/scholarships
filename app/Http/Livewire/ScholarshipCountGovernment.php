@@ -1,7 +1,8 @@
 <?php
+
+
         namespace App\Http\Livewire;
 
-        use App\Models\Campus;
         use App\Models\Student;
         use Livewire\Component;
         use App\Models\ScholarshipName;
@@ -15,8 +16,8 @@
             public $active, $inactive;
             public $scholarshipActive, $scholarshipInactive;
             public $fundSources, $years;
-            public $selectedSources, $selectedYear;
-            public $chartData;
+            public $selectedSources = 'All';
+            public $selectedYear = 'allYear';
 
             public function mount()
             {
@@ -44,25 +45,16 @@
                 $this->active = Student::where('student_status', 0)->distinct('student_id')->count();
                 $this->inactive = Student::where('student_status', 1)->distinct('student_id')->count();
 
-                // Set default values for selectedSources and selectedYear
-                $this->selectedSources = 'All';
-                $this->selectedYear = Student::orderBy('school_year', 'desc')->first()->school_year;
-
                 $this->fetchFilterOptions();
-                // Initialize chart data
-                 $this->chartData = $this->countStudentsByCampus();
+
             }
 
             public function render()
             {
-                $campusLabels = $this->chartData['campusLabels'];
-                $studentCounts = $this->chartData['studentCounts'];
-                $escapedCampusLabels = htmlspecialchars(implode(', ', $campusLabels));
+                $data = $this->getChartData();
 
                 return view('livewire.scholarship-count-government', [
-                    'campusLabels' => $escapedCampusLabels,
-                    'studentCounts' => $studentCounts,
-                    'chartData' => $this->chartData,
+                    'data' => $data,
                 ]);
             }
 
@@ -75,48 +67,39 @@
                 $this->years = Student::orderBy('school_year', 'desc')->distinct()->take(5)->pluck('school_year');
             }
 
-            public function countStudentsByCampus()
-                {
-                    $selectedSource = $this->selectedSources;
-                    $selectedYear = $this->selectedYear;
+            public function applyFilters()
+            {
+                $this->emit('renderChart', ['labels' => $this->dataLabels(), 'values' => $this->dataValues()]);
+            }
 
-                    $query = DB::table('students')
-                        ->join('campuses', 'students.campus', '=', 'campuses.campusDesc')
-                        ->select('campuses.campus_name', DB::raw('COUNT(*) as student_count'))
-                        ->where('students.school_year', $selectedYear);
+            private function getChartData()
+            {
+                $query = Student::query();
 
-                    if ($selectedSource != 'All') {
-                        $query->where('students.grant', $selectedSource);
-                    }
-
-                    $studentCountByCampus = $query->groupBy('campuses.campus_name')->orderBy('student_count', 'desc')->get();
-
-                    $campusLabels = $studentCountByCampus->pluck('campus_name')->toArray();
-                    $studentCounts = $studentCountByCampus->pluck('student_count')->toArray();
-
-                    return [
-                        'campusLabels' => $campusLabels,
-                        'studentCounts' => $studentCounts
-                    ];
-                }
-                public function updatedSelectedSources()
-                {
-                    $this->fetchFilterOptions();
-                    $this->emit('filterChanged'); // Emit an event to trigger a Livewire refresh
+                if ($this->selectedSources != 'All') {
+                    $query->where('grant', $this->selectedSources);
                 }
 
-                public function updatedSelectedYear()
-                {
-                    $this->fetchFilterOptions();
-                    $this->emit('filterChanged'); // Emit an event to trigger a Livewire refresh
+                if ($this->selectedYear != 'allYear') {
+                    $query->where('school_year', $this->selectedYear);
                 }
 
-                public function hydrate()
-                {
-                    // Update chart data during hydration
-                    $this->chartData = $this->countStudentsByCampus();
-                    $this->emit('chartDataUpdated', $this->chartData);
-                }
+                $data = $query->select('campus', DB::raw('count(*) as count'))
+                    ->groupBy('campus')
+                    ->get();
+
+                return $data;
+            }
+
+            private function dataLabels()
+            {
+                return $this->getChartData()->pluck('campus')->toArray();
+            }
+
+            private function dataValues()
+            {
+                return $this->getChartData()->pluck('count')->toArray();
+            }
 
 
         }
