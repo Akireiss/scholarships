@@ -1830,3 +1830,59 @@ final class ScholashipNameTable extends PowerGridComponent
             });
         });
 </script>
+
+
+
+
+
+make a function for this//         public function generateReport()
+        {
+            // Validate the selectedYear and other fields if needed
+            $this->validate([
+                'selectedYear' => 'required',
+            ]);
+
+            // Fetch data based on the selected input fields
+            $data = Student::query();
+
+            if ($this->selectedProvince) {
+                $data->where('province', $this->selectedProvince);
+            }
+
+            if ($this->selectedMunicipality) {
+                $data->where('municipality', $this->selectedMunicipality);
+            }
+
+            if ($this->selectedBarangay) {
+                $data->where('barangay', $this->selectedBarangay);
+            }
+
+            if ($this->selectedCampus) {
+                $data->where('campus', $this->selectedCampus);
+            }
+
+            if ($this->semester) {
+                $data->where('semester', $this->semester);
+            }
+
+            if ($this->selectedYear) {
+                $data->where('school_year', $this->selectedYear);
+            }
+
+            // Add more conditions based on other input fields
+
+            // Get the final result
+            $data = $data->get();
+
+            // Your logic to generate and export the Excel file using Maatwebsite Excel package
+            Excel::create('students_report', function($excel) use ($data) {
+                $excel->sheet('Sheet1', function($sheet) use ($data) {
+                    $sheet->fromArray($data);
+                });
+            })->export('xlsx');
+
+            // Optionally, you can add a success message
+            session()->flash('success', 'Report generated successfully');
+
+
+        } // without using this //composer require maatwebsite/excel

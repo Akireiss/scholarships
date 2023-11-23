@@ -10,8 +10,6 @@
                     @endif
                     <div class="card-body shadow-lg">
                         <div class="container">
-                        <form>
-                            @csrf
                                 <div class="col-md-12 mb-2">
                                     <h2>Students Reports</h2>
 
@@ -117,8 +115,6 @@
                                     </button>
                                     <span wire:loading class="text-dark fw-bold">Loading...</span>
                                 </div>
-
-                        </form>
                         </div>
                     </div>
                 </div>
