@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Fund;
+use App\Models\User;
 use App\Models\Campus;
 use App\Models\Course;
 use App\Models\Student;
@@ -14,40 +15,14 @@ use App\Models\Municipal;
 use App\Models\FundSource;
 use App\Models\ScholarshipName;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\NlucNotification;
+use App\Models\SchoolYear;
+ use App\Traits\Variables;
 
 class NlucGrantees extends Component
 {
 
-            public $selectedScholarship;
-            // campus & course
-            public $selectedCampus, $campuses;
-            public $selectedCourse, $courses = [];
-
-            public $governmentScholars = [],  $selectedScholarshipType, $scholarshipType;
-            public $privateScholars = [];
-            public $selectedGovernmentScholarship, $selectedPrivateFundSources = [];
-            public $selectedPrivateScholarship, $selectedGovernmentFundSources = []; // Update the property name
-            public $governmentFundSources = [], $privateFundSources = [], $selectedFunds;
-
-            // Personal Information
-            public $lastname, $firstname, $initial;
-            public $sex, $status, $contact, $email, $level, $semester;
-            public $nameSchool, $lastYear;
-            public $student_id,  $scholarshipLimitExceeded = false;
-
-            public $studentType;
-            public $father, $mother;
-
-            // Address
-            public $selectedProvince;
-            public $selectedMunicipality;
-            public $selectedBarangay;
-            public $provinces = [];
-            public $municipalities = [];
-            public $barangays = [];
-
-            // show&hide
-            public $showNewInput = false;
+    use Variables;
 
 
 
@@ -67,6 +42,7 @@ class NlucGrantees extends Component
                 'student_id' => 'required',
                 'level' => 'required',
                 'semester' => 'required',
+                'selectedYear' => 'required',
                 'studentType' => 'required',
                 'father' => 'required',
                 'mother' => 'required',
@@ -111,7 +87,10 @@ class NlucGrantees extends Component
             }
         }
 
-
+        public function fetchSchoolYears()
+        {
+            $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
+        }
 
         public function saveStudent()
       {
@@ -151,6 +130,7 @@ class NlucGrantees extends Component
                     'student_id' => $this->student_id,
                     'level' => $this->level,
                     'semester' => $this->semester,
+                    'school_year' => $this->selectedYear,
                     'studentType' => $this->studentType,
                     'nameSchool' => $this->nameSchool,
                     'lastYear' => $this->lastYear,
@@ -190,6 +170,7 @@ class NlucGrantees extends Component
             'student_id' => $this->student_id,
             'level' => $this->level,
             'semester' => $this->semester,
+            'school_year' => $this->selectedYear,
             'studentType' => $this->studentType,
             'nameSchool' => $this->nameSchool,
             'lastYear' => $this->lastYear,
@@ -210,11 +191,15 @@ class NlucGrantees extends Component
         }
     }
 
+//Notif
+
 
 
         session()->flash('success', 'Student data saved successfully!');
             // Reset the form fields
             $this->resetForm();
+
+
 
         $user = Auth::user();
         AuditLog::create([
@@ -309,6 +294,7 @@ class NlucGrantees extends Component
             // Call the methods to fetch scholarship data
             $this->fetchGovernmentScholarships();
             $this->fetchPrivateScholarships();
+            $this->fetchSchoolYears();
 
 
             // Fetch campuses and courses
@@ -344,6 +330,7 @@ class NlucGrantees extends Component
                 'provinces' => $this->provinces,
                 'governmentScholars' => $this->governmentScholars,
                 'privateScholars' => $this->privateScholars,
+                'years' => $this->years,
 
             ]);
         }

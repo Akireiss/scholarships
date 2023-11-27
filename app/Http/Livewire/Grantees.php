@@ -143,6 +143,9 @@
                     Fund::create([
                         'student_id' => $this->student_id,
                         'source_id' => $selectedFunds->source_id,
+                        // 'campus' => $campus->campus_name,
+                        // 'school_year' => $this->selectedYear,
+
                     ]);
                 }
 
@@ -185,6 +188,8 @@
             Fund::create([
                 'student_id' => $this->student_id,
                 'source_id' => $privateSelectedFunds->source_id,
+                // 'campus' => $campus->campus_name,
+                // 'school_year' => $this->selectedYear,
             ]);
         }
     }

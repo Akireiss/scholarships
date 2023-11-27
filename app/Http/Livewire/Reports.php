@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-
 use App\Models\Campus;
 use App\Models\Student;
 use Livewire\Component;
@@ -11,21 +10,16 @@ use App\Models\Province;
 use App\Models\Municipal;
 use App\Models\FundSource;
 use App\Models\SchoolYear;
-use App\Exports\StudentsExport;
 use App\Models\ScholarshipName;
+use App\Exports\StudentsExport;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-
-
 
 class Reports extends Component
 {
-
     public $selectedProvince;
     public $selectedMunicipality;
-    public $selectedBarangay, $years;
+    public $selectedBarangay;
     public $selectedCampus;
     public $semester;
     public $selectedYear;
@@ -37,8 +31,7 @@ class Reports extends Component
     public $municipalities;
     public $barangays;
     public $sourceFunds;
-
-
+    public $years;
 
     public function mount()
     {
@@ -62,118 +55,104 @@ class Reports extends Component
             'sourceFunds' => $this->sourceFunds,
         ]);
     }
+
     public function generateReport()
-{
-    // Validate the selectedYear and other fields if needed
-    $this->validate([
-        'selectedYear' => 'required',
-    ]);
+    {
+        // Validate the selectedYear and other fields if needed
+        $this->validate([
+            'selectedYear' => 'required',
+        ]);
 
-    // Fetch data based on the selected input fields
-    $data = Student::query();
 
-    if ($this->selectedProvince) {
-        $data->where('province', $this->selectedProvince);
-    }
+        // Fetch data based on the selected input fields
+        $data = Student::query();
+     
 
-    if ($this->selectedMunicipality) {
-        $data->where('municipality', $this->selectedMunicipality);
-    }
+        $this->applyFilters($data);
 
-    if ($this->selectedBarangay) {
-        $data->where('barangay', $this->selectedBarangay);
-    }
-
-    if ($this->selectedCampus) {
-        $data->where('campus', $this->selectedCampus);
-    }
-
-    if ($this->semester) {
-        $data->where('semester', $this->semester);
-    }
-
-    if ($this->selectedYear) {
+        // Required condition for school_year
         $data->where('school_year', $this->selectedYear);
+
+        // Get the final result
+        $data = $data->get();
+        // dd($data); 
+
+       // Generate a more descriptive filename
+    $filename = 'student.xlsx';
+
+    // Create a unique filename for the export
+    $export = new StudentsExport($data);
+
+    // Provide the download response directly to the user's browser
+    return Excel::download($export, $filename);
     }
 
-    // Add more conditions based on other input fields
 
-    // Get the final result
-    $data = $data->get();
 
-    // Create a CSV file with the data
-    $csvFileName = 'students_report.csv';
-    $csvFile = fopen($csvFileName, 'w');
 
-    // Add headers to the CSV file
-    fputcsv($csvFile, array_keys($data->first()->toArray()));
+    private function applyFilters($data)
+    {
+        if ($this->selectedProvince) {
+            $data->where('province', $this->selectedProvince);
+        }
 
-    // Add data to the CSV file
-    foreach ($data as $row) {
-        fputcsv($csvFile, $row->toArray());
+        if ($this->selectedMunicipality) {
+            $data->where('municipal', $this->selectedMunicipality);
+        }
+
+        if ($this->selectedBarangay) {
+            $data->where('barangay', $this->selectedBarangay);
+        }
+
+        if ($this->selectedCampus) {
+            $data->where('campus', $this->selectedCampus);
+        }
+
+        if ($this->semester) {
+            $data->where('semester', $this->semester);
+        }
+
+        if ($this->source_funds) {
+            $data->where('grant', $this->source_funds);
+        }
     }
 
-    fclose($csvFile);
+    public function fetchSchoolYears()
+    {
+        $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
+    }
 
-    // Set the headers for the download
-    $headers = [
-        'Content-Type' => 'text/csv',
-        'Content-Disposition' => 'attachment;filename="' . $csvFileName . '"',
-        'Cache-Control' => 'max-age=0',
-    ];
+    public function fetchCampuses()
+    {
+        $users = auth()->user()->role;
+        $this->campuses = ($users == 1 || $users == 0) ? Campus::all() : Campus::where('campus_name', 'NLUC')->get();
+    }
 
-      session()->flash('success', 'Report generated successfully');
-    // Download the file
-    return response()->download($csvFileName, $csvFileName, $headers);
+    public function fetchProvinces()
+    {
+        $this->provinces = Province::where('regCode', 1)->get();
+    }
 
-    // Optionally, you can add a success message
+    public function fetchMunicipalities()
+    {
+        $this->municipalities = $this->selectedProvince ? Municipal::where('provCode', $this->selectedProvince)->get() : [];
+    }
 
+    public function fetchBarangays()
+    {
+        $this->barangays = $this->selectedMunicipality ? Barangay::where('citymunCode', $this->selectedMunicipality)->get() : [];
+    }
+
+    public function fetchSourceFunds()
+    {
+        if ($this->scholarship_type !== null) {
+            $scholarshipIds = ScholarshipName::where('scholarship_type', $this->scholarship_type)->pluck('id');
+
+            if ($scholarshipIds->isNotEmpty()) {
+                $this->sourceFunds = FundSource::whereIn('scholarship_name_id', $scholarshipIds)->get();
+            }
+        } else {
+            $this->sourceFunds = collect(); // Empty collection if no scholarship type selected
+        }
+    }
 }
-
-
-
-
-                private function fetchSchoolYears()
-                {
-                    $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
-                }
-
-                private function fetchCampuses()
-                {
-                    $users = auth()->user()->role;
-                    $this->campuses = ($users == 1 || $users == 0) ? Campus::all() : Campus::where('campus_name', 'NLUC')->get();
-                }
-
-                private function fetchProvinces()
-                {
-                    $this->provinces = Province::where('regCode', 1)->get();
-                }
-
-                private function fetchMunicipalities()
-                {
-                    $this->municipalities = $this->selectedProvince ? Municipal::where('provCode', $this->selectedProvince)->get() : [];
-                }
-
-                private function fetchBarangays()
-                {
-                    $this->barangays = $this->selectedMunicipality ? Barangay::where('citymunCode', $this->selectedMunicipality)->get() : [];
-                }
-
-                private function fetchSourceFunds()
-                {
-                    if ($this->scholarship_type !== null) {
-                        $scholarshipIds = ScholarshipName::where('scholarship_type', $this->scholarship_type)->pluck('id');
-
-                        if ($scholarshipIds->isNotEmpty()) {
-                            $this->sourceFunds = FundSource::whereIn('scholarship_name_id', $scholarshipIds)->get();
-                        }
-                    } else {
-                        $this->sourceFunds = collect(); // Empty collection if no scholarship type selected
-                    }
-                }
-
-
-
-
-}
-

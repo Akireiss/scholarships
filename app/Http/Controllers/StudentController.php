@@ -35,12 +35,12 @@ class StudentController extends Controller
     public function editAdmin(Student $student)
     {
 
-        return view('admin.scholarship.actions.edit');
+        return view('admin.scholarship.actions.edit', ['student' => $student]);
     }
     public function editNLUC(Student $student)
     {
 
-        return view('campus-NLUC.scholarship.actions.edit');
+        return view('campus-NLUC.scholarship.actions.edit', ['student' => $student]);
     }
 
 }

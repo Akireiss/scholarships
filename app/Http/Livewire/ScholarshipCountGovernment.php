@@ -1,12 +1,12 @@
 <?php
 
-
         namespace App\Http\Livewire;
 
         use App\Models\Student;
         use Livewire\Component;
         use App\Models\ScholarshipName;
         use Illuminate\Support\Facades\DB;
+        use App\Models\Fund;
 
 
         class ScholarshipCountGovernment extends Component
@@ -61,11 +61,15 @@
             public function fetchFilterOptions()
             {
                 // Fetch all unique fund sources from the grant column
-                $this->fundSources = Student::distinct()->pluck('grant');
-
+                $this->fundSources = Student::groupBy('grant')->pluck('grant');
+            
                 // Fetch the top 5 recent years from the school_year column
-                $this->years = Student::orderBy('school_year', 'desc')->distinct()->take(5)->pluck('school_year');
+                $this->years = Student::orderBy('school_year', 'desc')
+                                    ->groupBy('school_year')
+                                    ->take(5)
+                                    ->pluck('school_year');
             }
+            
 
             public function applyFilters()
             {
@@ -74,22 +78,21 @@
 
             private function getChartData()
             {
-                $query = Student::query();
-
-                if ($this->selectedSources != 'All') {
-                    $query->where('grant', $this->selectedSources);
-                }
-
-                if ($this->selectedYear != 'allYear') {
-                    $query->where('school_year', $this->selectedYear);
-                }
-
-                $data = $query->select('campus', DB::raw('count(*) as count'))
-                    ->groupBy('campus')
-                    ->get();
-
-                return $data;
+                $query = Student::join('campuses', 'students.campus', '=', 'campuses.campus_name')
+                                ->when($this->selectedSources != 'All', function ($query) {
+                                    return $query->where('students.grant', $this->selectedSources);
+                                })
+                                ->when($this->selectedYear != 'allYear', function ($query) {
+                                    return $query->where('students.school_year', $this->selectedYear);
+                                })
+                                ->select('campuses.campus_name as campus', DB::raw('count(*) as count'))
+                                ->groupBy('campuses.campus_name')
+                                ->get();
+        dd($query);
+                return $query;
             }
+
+            
 
             private function dataLabels()
             {

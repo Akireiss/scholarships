@@ -4912,7 +4912,7 @@ textarea.form-control-lg {
     margin-top: 0.125rem; }
 
 .dropdown-menu-start {
-  --bs-position: start; }
+  --bs-position: center; }
   .dropdown-menu-start[data-bs-popper] {
     right: auto;
     left: 0; }

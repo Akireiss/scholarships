@@ -43,9 +43,10 @@
                                         <input type="text" id="course_program" name="course_program"
                                             class="form-control form-control-sm" required>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="row align-items-start justify-content-start m-2">
+                                    <div class="row m-2">
+                                        <div class="col-md-6 d-flex justify-content-start gap-2 m-2">
                                             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                                            <a href="{{ route('campus-NLUC.dashboardCamp') }}" class="btn btn-sm btn-danger">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -61,6 +62,10 @@
 <style>
     .btn-primary {
         background-color: blue;
+        color: black;
+    }
+    .btn-danger {
+        background-color: rgb(248, 72, 72);
         color: black;
     }
 </style>

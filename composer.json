@@ -12,7 +12,9 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "livewire/livewire": "^2.12",
+        "maatwebsite/excel": "^3.1",
         "openspout/openspout": "^4.19",
+        "phpoffice/phpspreadsheet": "1.29",
         "power-components/livewire-powergrid": "^4.8"
     },
     "require-dev": {
@@ -62,15 +64,19 @@
             "dont-discover": []
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/livewire/livewire"
-        }
-    ],
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/livewire/livewire"
+    },
+    {
+        "type": "vcs",
+        "url": "https://github.com/PHPOffice/PhpSpreadsheet.git"
+    }
+],
     "github-oauth": {
 
-        "github.com": "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"
+        "github.com": "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"
     },
 
     "config": {

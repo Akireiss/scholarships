@@ -17,6 +17,7 @@ use App\Http\Livewire\Admin\EditStudent;
 // view
 use App\Http\Controllers\auditController;
 use App\Http\Controllers\backupController;
+use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\reportController;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\ScholarController;
@@ -93,6 +94,9 @@ Route::middleware('auth')->group(function () {
     Route::get('campus-NLUC/scholarship/view', [AdminGovernmentController::class, 'viewNLUC'])->name('campus-NLUC.scholarship.view');
 
 });
+// Route::get('layouts/includes/admin/navbar', [NavbarController::class, 'notification'])
+//     ->name('layouts.includes.admin.navbar');
+
 
 
 // view more
@@ -153,14 +157,14 @@ Route::get('/campus-NLUC/settings/auditTrail', [auditController::class, 'auditNL
 // add scholarship
 // admin
 Route::get('/admin/settings/addScholar', [addScholarController::class, 'showForm'])->name('admin.settings.addScholar');
-// Route::post('/admin/settings/addScholar', [addScholarController::class, 'submitForm'])->name('scholarship.submit');
+
 
 // staff
 Route::get('/staff/settings/addScholar', [addScholarController::class, 'showFormStaff'])->name('staff.settings.addScholar');
-// Route::post('/staff/settings/addScholar', [addScholarController::class, 'submitFormStaff'])->name('scholarship.submit.staff');
+
 // nluc
 Route::get('/campus-NLUC/settings/addScholar', [addScholarController::class, 'showFormNLUC'])->name('campus-NLUC.settings.addScholar');
-// Route::post('/campus-NLUC/settings/addScholar', [addScholarController::class, 'submitFormNLUC'])->name('scholarship.submit.campus-NLUC');
+
 
 // backup
 // admin
@@ -186,7 +190,7 @@ Route::post('/save-course', [programController::class, 'saveCourse'])->name('sav
 // nluc
 Route::get('/campus-NLUC/settings/program', [programController::class, 'nlucProgram'])->name('campus-NLUC.settings.program');
 // submit
-Route::post('/save-course', [programController::class, 'nlucsaveCourse'])->name('nlucsaveCourse');
+Route::post('/nluc  save-course', [programController::class, 'nlucsaveCourse'])->name('nlucsaveCourse');
 
 // schoolyear
 Route::get('/admin/settings/school-year', [schoolyearController::class, 'yearAdmin'])->name('admin.settings.school-year');
@@ -195,9 +199,16 @@ Route::post('/school-year', [schoolyearController::class, 'saveYear'])->name('sc
 
 
 //Other function
+// admin
 Route::get('admin/settings/scholar/view/{scholar}', [ScholarController::class, 'view'])->name('scholar.view');
 Route::get('admin/settings/scholar/edit/{scholar}', [ScholarController::class, 'edit'])->name('scholar.edit');
 Route::put('admin/settings/update/{scholar}', [ScholarController::class, 'update'])->name('scholarships.update');
+// staff
+// nluc
+Route::get('campus-NLUC/settings/scholar/view/{scholar}', [ScholarController::class, 'nlucView'])->name('scholar.view');
+Route::get('campus-NLUC/settings/scholar/edit/{scholar}', [ScholarController::class, 'editNluc'])->name('scholar.edit');
+Route::put('campus-NLUC/settings/update/{scholar}', [ScholarController::class, 'updateNluc'])->name('scholarships.update');
+
 
 // funds
 
@@ -206,6 +217,15 @@ Route::get('admin/settings/actions/editFunds/{source_id}', [SourcesController::c
 Route::put('admin/settings/actions/updateFunds/{source_id}', [SourcesController::class, 'updateFunds']);
 // add
 Route::post('/admin/settings/scholar/{scholar}/store-fund-source', [ScholarController::class, 'storeFundSource'])->name('scholar.storeFundSource');
+
+// staff
+// nluc
+
+Route::get('campus-NLUC/settings/actions/editFunds/{source_id}', [SourcesController::class, 'editFundsnluc'])->name('campus-NLUC.settings.actions.editFunds');
+//edit
+Route::put('campus-NLUC/settings/actions/updateFunds/{source_id}', [SourcesController::class, 'updateFundsNluc']);
+// add
+Route::post('/campus-NLUC/settings/scholar/{scholar}/store-fund-source', [ScholarController::class, 'storeFundSourcenluc'])->name('scholar.storeFundSource');
 
 
 //Admin Edit Stden

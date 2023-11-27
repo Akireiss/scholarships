@@ -10,10 +10,20 @@
                             Add <i class="mdi mdi-library-plus mdi-20"></i>
                         </button>
 
-                        <!-- Cancel Button -->
+                        <!-- Cancel Button based on user role -->
+                        @if(auth()->user()->role == 0)
+                        <a class="btn btn-sm btn-danger" href="{{ route('staff.dashboardStaff') }}">
+                            Cancel <i class="mdi mdi-close-circle mdi-20"></i>
+                        </a>
+                        @elseif(auth()->user()->role == 1)
                         <a class="btn btn-sm btn-danger" href="{{ route('admin.dashboard') }}">
                             Cancel <i class="mdi mdi-close-circle mdi-20"></i>
                         </a>
+                        @elseif(auth()->user()->role == 2)
+                        <a class="btn btn-sm btn-danger" href="{{ route('campus-NLUC.dashboardCamp') }}">
+                            Cancel <i class="mdi mdi-close-circle mdi-20"></i>
+                        </a>
+                        @endif
 
                         <!-- Modal -->
                         <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true"

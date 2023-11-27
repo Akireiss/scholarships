@@ -126,7 +126,7 @@
             <div class="col-md-3">
                 <label for="year" class="form-label">Select Year</label>
                 <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
-                    <option value="allYear">All</option>
+                    <option selected value="allYear">All</option>
                     @foreach($years as $year)
                     <option value="{{ $year }}">{{ $year }}</option>
                     @endforeach
@@ -151,38 +151,38 @@
 
 
         <script defer src="{{ asset('assets/js/lib.js') }}"></script>
-
         <script>
             document.addEventListener('livewire:load', function () {
-        Livewire.on('renderChart', function (data) {
-            renderChart(data);
-        });
-
-        function renderChart(data) {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Students Count',
-                        data: data.values,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                Livewire.on('renderChart', function (data) {
+                    renderChart(data);
+                });
+        
+                function renderChart(data) {
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Grantees per Campus',
+                                data: data.values,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
                         }
-                    }
+                    });
                 }
             });
-        }
-    });
         </script>
+        
 
 
     </div>

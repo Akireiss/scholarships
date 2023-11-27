@@ -1,196 +1,200 @@
 <div>
     <div class="row">
+
+        <!-- Government Scholarships -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="fas fa-graduation-cap fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Number of Scholarships in Government</span></h4>
-                    <h5 class="card-text">
-                        {{ $governmentCount }}
-                    </h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Government Scholarships</span></h4>
+                    <h5 class="card-text fs-4">{{ $governmentCount }}</h5>
                 </div>
             </div>
         </div>
+
+        <!-- Private Scholarships -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="fas fa-university fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Number of Scholarships in Private</span></h4>
-                    <h5 class="card-text">
-                        {{ $privateCount }}
-                    </h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Private Scholarships</span></h4>
+                    <h5 class="card-text fs-4">{{ $privateCount }}</h5>
                 </div>
             </div>
         </div>
 
-
-
+        <!-- Active Scholarship -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="fas fa-check-circle fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Active Scholarship</span>
-                    </h4>
-                    <h5 class="card-text">{{ $scholarshipActive }}<h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Active Scholarship</span></h4>
+                    <h5 class="card-text fs-4">{{ $scholarshipActive }}</h5>
                 </div>
             </div>
         </div>
 
+        <!-- Inactive Scholarship -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
+                <!-- Use an appropriate icon for inactive scholarships -->
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-book-open-page-variant mdi-50px"></i>
+                        <i class="fas fa-times-circle fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Inactive Scholarship</span>
-                    </h4>
-                    <h5 class="card-text">{{ $scholarshipInactive }}</h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Inactive Scholarship</span></h4>
+                    <h5 class="card-text fs-4">{{ $scholarshipInactive }}</h5>
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="row">
+        <!-- Government Grantees -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple mdi-50px"></i>
+                        <i class="fas fa-user-graduate fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Grantees in Government</span>
-                    </h4>
-                    <h5 class="card-text">{{ $governmentStudent }}<h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Government Grantees</span></h4>
+                    <h5 class="card-text fs-4">{{ $governmentStudent }}</h5>
                 </div>
             </div>
         </div>
 
+        <!-- Private Grantees -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple mdi-50px"></i>
+                        <i class="fas fa-users fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Grantees in Private</span>
-                    </h4>
-                    <h5 class="card-text">{{ $privateStudent }}</h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Private Grantees</span></h4>
+                    <h5 class="card-text fs-4">{{ $privateStudent }}</h5>
                 </div>
             </div>
         </div>
-        {{-- active --}}
+
+        <!-- Active Grantees -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple mdi-50px"></i>
+                        <i class="fas fa-user-check fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Active grantees</span>
-                    </h4>
-                    <h5 class="card-text">{{ $active }}</h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Active Grantees</span></h4>
+                    <h5 class="card-text fs-4">{{ $active }}</h5>
                 </div>
             </div>
         </div>
+
+        <!-- Inactive Grantees -->
         <div class="col-md-3 stretch-card grid-margin">
             <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
+                <!-- Use an appropriate icon for inactive grantees -->
                 <div class="card-body">
                     <h2 class="font-weight-normal mb-3">
-                        <i class="mdi mdi-account-multiple mdi-50px"></i>
+                        <i class="fas fa-user-times fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Numbers of Inactive grantees</span>
-                    </h4>
-                    <h5 class="card-text">{{ $inactive }}</h5>
+                    <h4 class="mb-3 mt-4"><span class="option">Inactive Grantees</span></h4>
+                    <h5 class="card-text fs-4">{{ $inactive }}</h5>
                 </div>
             </div>
         </div>
     </div>
-    {{-- inactive --}}
 
+    <div class="container">
+        <div class="row justify-content-start">
+            <div class="col-md-3">
+                <label for="fundSources" class="form-label">Recipient</label>
+                <select id="selectedSources" name="selectedSources" wire:model="selectedSources"
+                    class="form-select form-select-sm mb-3">
+                    <option selected value="All">All</option>
+                    @foreach($fundSources as $source)
+                    <option value="{{ $source }}">{{ $source }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="year" class="form-label">Select Year</label>
+                <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
+                    <option selected value="allYear">All</option>
+                    @foreach($years as $year)
+                    <option value="{{ $year }}">{{ $year }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="applyFilters" class="form-label">Filter</label>
+                <button wire:click="applyFilters" class="btn btn-sm btn-primary form-control">Apply Filters</button>
+            </div>
+        </div>
 
-{{-- Line chart --}}
-<div>
-    <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Students in Campus NLUC</h4>
-                    <canvas id="studentChart" class="p-2"></canvas>
+        {{-- line chart --}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="myChart" wire:ignore></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{{-- Line chart ends --}}
 
-<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('livewire:load', function () {
-        // Get the chart data from Livewire component
-        var chartData = @json($chartData);
 
-        // Extract data for the chart
-        var campuses = chartData.map(function (item) {
-            return item.campus;
+        <script defer src="{{ asset('assets/js/lib.js') }}"></script>
+
+        <script>
+            document.addEventListener('livewire:load', function () {
+        Livewire.on('renderChart', function (data) {
+            renderChart(data);
         });
 
-        // Extract student counts for the chart
-        var studentCounts = chartData.map(function (item) {
-            return item.studentCount;
-        });
-
-        // Create a unique color for the chart line
-        var chartColor = 'rgba(75, 192, 192, 1)';
-
-        var ctx = document.getElementById('studentChart').getContext('2d');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: campuses,
-                datasets: [{
-                    label: 'Students in NLUC',
-                    data: studentCounts,
-                    borderColor: chartColor,
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    fill: false,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    x: {
-                        grid: {
-                            display: false,
-                        },
-                        title: {
-                            display: true,
-                            text: 'Campus',
-                        },
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Number of Students',
-                        },
-                    },
+        function renderChart(data) {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Grantees per Campus',
+                        data: data.values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
                 },
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                },
-            },
-        });
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
     });
-</script>
+        </script>
 
 
+    </div>
+
+    <style>
+        .btn-primary {
+            background-color: #17a2b8 !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #148697 !important;
+        }
+    </style>
 
 </div>

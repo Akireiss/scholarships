@@ -62,5 +62,10 @@ class User extends Authenticatable
             }
         }
 
+        public function isAdminOrCampusInCharge()
+        {
+            return in_array($this->role, [1, 2]);
+        }
+
 
 }

@@ -16,7 +16,8 @@
                                     <select
                                         class="form-select form-select-sm mb-2 @error('semester') is-invalid @enderror"
                                         wire:model="semester">
-                                        <option value="1" selected>1st</option>
+                                        <option selected>Choose semester</option>
+                                        <option value="1" >1st</option>
                                         <option value="2">2nd</option>
                                     </select>
                                     @error('semester')
@@ -42,11 +43,6 @@
                                     @enderror
                                 </div>
                             </div>
-
-
-
-
-
 
                             <div class="row align-items-center">
                                 <label for="campus" class="fw-bold fs-5 col-sm-2">CAMPUS:</label>

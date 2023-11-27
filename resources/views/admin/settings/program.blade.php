@@ -7,7 +7,7 @@
             <div class="card-header text-center">
                 <h3>Campus & Courses/Program</h3>
             </div>
-            <div class="row p-1 align-items-center justify-content-center">
+            <div class="row p-2 align-items-center justify-content-center">
                 <div class="col-md-6">
                     @if (session('success'))
                     <div class="alert alert-success text-center" id="success">

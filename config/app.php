@@ -171,6 +171,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         PowerComponents\LivewirePowerGrid\Providers\PowerGridServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
+        App\Providers\NavbarServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -193,6 +195,7 @@ return [
         'viewPath' => resource_path('views/livewire'),
         'aliases' => [
             'BackupDatabase' => App\Http\Livewire\BackupDatabase::class,
+            'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         ],
     ],
 ];

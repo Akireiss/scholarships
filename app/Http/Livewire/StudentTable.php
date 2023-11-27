@@ -354,7 +354,7 @@ final class StudentTable extends PowerGridComponent
 
                  Button::make('edit', 'Edit')
                      ->class('btn btn-sm btn-warning cursor-pointer px-1 py-1 rounded text-sm')
-                     ->route('admin.scholarship.edit', function (Student $model) {
+                     ->route('admin.scholarship.actions.edit', function (Student $model) {
                          return ['student' => $model->id];
                      })
              ];
