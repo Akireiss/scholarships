@@ -46,7 +46,7 @@
 
 
                         <hr>
-                        
+
                         <div class="row mt-2 mb-3 mx-2">
                             <div class="col-12 col-md-6 col-lg-6" style="margin-inline-start: 20px;">
                                 <div class="d-flex align-items-start">

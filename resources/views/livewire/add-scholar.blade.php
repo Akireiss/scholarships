@@ -35,15 +35,18 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="modalLabel">Scholarship Name</h1>
+
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
+
                                         @if (session()->has('message'))
                                         <div class="alert alert-success">
                                             {{ session('message') }}
                                         </div>
                                         @endif
+
                                         <form wire:submit.prevent="addScholarship">
                                             @csrf
                                             <!-- Your form fields go here -->
@@ -70,12 +73,21 @@
                                             <!-- End of your form fields -->
                                         </form>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success btn-sm"
-                                            wire:click="addScholarship">Add</button>
+                                    <div class="modal-footer d-flex justify-content-end align-items-center">
+                                        @if (session()->has('message'))
+                                            <div class="text-success">
+                                                {{ session('message') }}
+                                            </div>
+                                        @endif
+
+                                        <div>
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-success btn-sm" wire:click="addScholarship">Add</button>
+                                        </div>
                                     </div>
+
+
+
                                 </div>
                             </div>
                         </div>
