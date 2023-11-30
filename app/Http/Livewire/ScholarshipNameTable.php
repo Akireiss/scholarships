@@ -26,9 +26,9 @@ final class ScholarshipNameTable extends PowerGridComponent
     {
 
         return [
-            // Exportable::make('export')
-            //     ->striped()
-            //     ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            Exportable::make('export')
+                ->striped()
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
@@ -92,12 +92,12 @@ final class ScholarshipNameTable extends PowerGridComponent
 
            /** Example of custom column using a closure **/
             ->addColumn('name_lower', fn (ScholarshipName $model) => strtolower(e($model->name)))
-
-            ->addColumn('scholarship_type',  fn(ScholarshipName $model) => $model->getTypeScholarshipNameAttribute() ?? "No Data" );
-            // ->addColumn('created_at_formatted', fn (ScholarshipName $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('scholarship_type',  fn(ScholarshipName $model) => $model->getTypeScholarshipNameAttribute() ?? "No Data" )
+            ->addColumn('status',  fn(ScholarshipName $model) => $model->getStatusScholarshipNameAttribute());
     }
 
     /*
+    getStatusScholarshipNameAttribute
     |--------------------------------------------------------------------------
     |  Include Columns
     |--------------------------------------------------------------------------
@@ -118,6 +118,8 @@ final class ScholarshipNameTable extends PowerGridComponent
             Column::make('Scholarship Name', 'name')
                 ->searchable(),
             Column::make('Scholarship type', 'scholarship_type')
+                ->searchable(),
+            Column::make('Status', 'status')
                 ->searchable(),
 
         ];
@@ -153,18 +155,32 @@ final class ScholarshipNameTable extends PowerGridComponent
 
     public function actions(): array
     {
-       return [
-           Button::make('view', 'View')
-               ->class('btn btn-sm btn-primary cursor-pointer text-dark px-2 py-1 rounded text-sm')
-               ->route('scholar.view', function(ScholarshipName $model) {
-                    return ['scholar' => $model->id];
-               }),
-            Button::make('edit', 'Edit')
-               ->class('btn btn-sm btn-warning cursor-pointer text-dark px-2 py-1 rounded text-sm')
-               ->route('scholar.edit', function(ScholarshipName $model) {
-                    return ['scholar' => $model->id];
-               }),
-        ];
+        $userRole = auth()->user()->role;
+        if($userRole == 1){
+            return [
+                 Button::make('edit', 'Edit')
+                    ->class('btn btn-sm btn-warning cursor-pointer text-dark px-2 py-1 rounded text-sm')
+                    ->route('scholar.edit', function(ScholarshipName $model) {
+                         return ['scholar' => $model->id];
+                    }),
+             ];
+        } elseif ($userRole == 0) {
+            return [
+               Button::make('edit', 'Edit')
+                   ->class('btn btn-sm btn-warning cursor-pointer text-dark px-2 py-1 rounded text-sm')
+                   ->route('staff.scholarship.actions.edit', function (ScholarshipName $model) {
+                       return ['scholar' => $model->id];
+                   })
+            ];
+        } else {
+            return [
+                Button::make('edit', 'Edit')
+                    ->class('btn btn-sm btn-warning cursor-pointer text-dark px-2 py-1 rounded text-sm')
+                    ->route('nlucscholar.edit', function (ScholarshipName $model) {
+                        return ['scholar' => $model->id];
+                    })
+            ];
+        }
     }
 
 

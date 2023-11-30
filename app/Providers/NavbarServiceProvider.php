@@ -26,12 +26,15 @@ class NavbarServiceProvider extends ServiceProvider
         View::composer('layouts.includes.admin.navbar', function ($view) {
             $today = Carbon::now(new \DateTimeZone('Asia/Manila'))->startOfDay();
             $tomorrow = $today->copy()->endOfDay();
-
-            $dailyCount = DB::table('students')
-                ->whereBetween('created_at', [$today, $tomorrow])
-                ->count();
-
+    
+            $query = DB::table('students')
+                ->select('created_at')
+                ->whereBetween('created_at', [$today, $tomorrow]);
+    
+            $dailyCount = $query->count();
+    
             $view->with('dailyCount', $dailyCount);
         });
     }
+
 }

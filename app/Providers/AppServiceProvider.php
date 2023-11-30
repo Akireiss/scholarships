@@ -27,12 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        ScholarshipType::observe(AuditLogObserver::class);
+        // ScholarshipType::observe(AuditLogObserver::class);
         ScholarshipName::observe(AuditLogObserver::class);
         User::observe(AuditLogObserver::class);
 
         Livewire::component('addScholar', AddScholar::class);
-        Livewire::component('student-data', StudentData::class);
+        // Livewire::component('student-data', StudentData::class);
     }
 
 }

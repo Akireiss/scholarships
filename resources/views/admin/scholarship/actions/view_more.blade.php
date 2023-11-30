@@ -18,7 +18,11 @@
                                 <label for="campus" class="form-label">Semester</label>
                                 <input class="form-control form-control-sm" value="{{ $student->semester }}" disabled>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="school_year" class="form-label">School year</label>
+                                <input class="form-control form-control-sm" value="{{ $student->school_year }}" disabled>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="campus" class="form-label">CAMPUS</label>
                                 <input class="form-control form-control-sm" value="{{ $student->campus }}" disabled>
                             </div>

@@ -2,52 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campus;
 use App\Models\AuditLog;
+use App\Models\Barangay;
+use App\Models\Province;
+use App\Models\Municipal;
+use App\Traits\Variables;
 use App\Models\FundSource;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Models\ScholarshipName;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 
 class ScholarController extends Controller
 {
+    use Variables;
+
     // admin
-    public function view(ScholarshipName $scholar) {
-        return view('admin.settings.actions.view', compact('scholar'));
-    }
-
-
-    public function storeFundSource(Request $request, ScholarshipName $scholar)
-    {
-        // Validate the request
-        $request->validate([
-            'source_name' => 'required|string',
-            // Add any other validation rules as needed
-        ]);
-
-        // Create a new fund source
-        $fundSource = FundSource::create([
-            'source_name' => $request->input('source_name'),
-            'scholarship_name_id' => $scholar->id,
-            'status' => $request->input('status', 0), // Default to 0 if not provided
-        ]);
-
-        // Create an audit log entry
-        $user = Auth::user();
-        AuditLog::create([
-            'user_id' => $user->id,
-            'action' => 'Create a new fund source',
-            'data' => json_encode('Created ' . $fundSource->source_name . ' by ' . $user->name),
-        ]);
-
-        return redirect()->back()->with('success', 'Fund source added successfully');
-    }
-
-    // Edit
     public function edit(ScholarshipName $scholar) {
         return view('admin.settings.actions.edit', compact('scholar'));
     }
-
 
 
     public function update(Request $request, ScholarshipName $scholar)
@@ -80,38 +56,6 @@ class ScholarController extends Controller
 
 // staff
 // nluc
-
-public function nlucView(ScholarshipName $scholar) {
-    return view('campus-NLUC.settings.actions.view', compact('scholar'));
-}
-
-
-public function storeFundSourcenluc(Request $request, ScholarshipName $scholar)
-{
-    // Validate the request
-    $request->validate([
-        'source_name' => 'required|string',
-        // Add any other validation rules as needed
-    ]);
-
-    // Create a new fund source
-    $fundSource = FundSource::create([
-        'source_name' => $request->input('source_name'),
-        'scholarship_name_id' => $scholar->id,
-        'status' => $request->input('status', 0), // Default to 0 if not provided
-    ]);
-
-    // Create an audit log entry
-    $user = Auth::user();
-    AuditLog::create([
-        'user_id' => $user->id,
-        'action' => 'Create a new fund source',
-        'data' => json_encode('Created ' . $fundSource->source_name . ' by ' . $user->name),
-    ]);
-
-    return redirect()->back()->with('success', 'Fund source added successfully');
-}
-
 // Edit
 public function editNluc(ScholarshipName $scholar) {
     return view('campus-NLUC.settings.actions.edit', compact('scholar'));

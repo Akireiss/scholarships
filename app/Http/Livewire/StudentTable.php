@@ -115,12 +115,13 @@ final class StudentTable extends PowerGridComponent
             ->addColumn('course')
             ->addColumn('level')
             ->addColumn('semester')
+            ->addColumn('school_year')
             ->addColumn('father')
             ->addColumn('mother')
             ->addColumn('contact')
             ->addColumn('studentType')
-            ->addColumn('nameSchool')
-            ->addColumn('lastYear')
+            ->addColumn('nameSchool', fn (Student $model) => $model->nameSchool ?: "No Data")
+            ->addColumn('lastYear', fn (Student $model) => $model->lastYear ?: "No Data")
             // ->addColumn('grant_status')
             ->addColumn('grant', fn (Student $model) => $model->grant ?: "No Data")
             ->addColumn('scholarshipType', fn(Student $model) => $model->getTypeScholarshipAttribute() ?? "No Data" )
@@ -219,6 +220,12 @@ final class StudentTable extends PowerGridComponent
             Column::make('Semester', 'semester')
                 ->sortable()
                 ->searchable(),
+
+                Column::make('School year', 'school_year')
+                ->sortable()
+                ->searchable()
+                ->hidden()
+                ->visibleInExport(true),
 
             Column::make('Father Fullname', 'father')
                 ->sortable()

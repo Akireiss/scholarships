@@ -4,6 +4,12 @@
     <div class="row d-flex align-items-center justify-content-center">
         <div class="col-lg-6">
             <div class="card">
+                 {{-- Display success message --}}
+                 @if(session('success'))
+                 <div class="alert alert-success">
+                     {{ session('success') }}
+                 </div>
+                 @endif
                 <div class="card-body shadow-lg">
                     <form action="{{ route('scholarships.update', ['scholar' => $scholar]) }}" method="POST">
                         @csrf
@@ -39,15 +45,6 @@
                                 <button type="submit" class="btn btn-success btn-sm  fw-bold">Update</button>
                                 <a type="button" class="btn btn-danger btn-sm fw-bold "
                                     href="{{ route('admin.settings.addScholar') }}">Cancel</a>
-                            </div>
-                            <div class="col-md-4">
-                                {{-- Display success message --}}
-                                @if(session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                                @endif
-                                {{-- ends here --}}
                             </div>
                         </div>
                     </form>

@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
         // Auth::loginUsingId(1);
 
         // Call ScholarshipTypeSeeder first
-        $this->call(ScholarshipTypeSeeder::class);
+        // $this->call(ScholarshipTypeSeeder::class);
 
-        // Call ScholarshipNameSeeder next
-        $this->call(ScholarshipNameSeeder::class);
+        // // Call ScholarshipNameSeeder next
+        // $this->call(ScholarshipNameSeeder::class);
 
-        // Call FundSourceSeeder last
-        $this->call(FundSourceSeeder::class);
+        // // Call FundSourceSeeder last
+        // $this->call(FundSourceSeeder::class);
 
         // // Log out the user after seeding
         // Auth::logout();

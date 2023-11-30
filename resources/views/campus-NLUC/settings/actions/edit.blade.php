@@ -5,7 +5,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body shadow-lg">
-                    <form action="{{ route('scholarships.update', ['scholar' => $scholar]) }}" method="POST">
+                    <form action="{{ route('scholarships.nlucupdate', ['scholar' => $scholar]) }}" method="POST">
                         @csrf
                         @method('put')
 
@@ -38,7 +38,7 @@
                             <div class="col-md-8 d-flex justify-content-center gap-4">
                                 <button type="submit" class="btn btn-success btn-sm  fw-bold">Update</button>
                                 <a type="button" class="btn btn-danger btn-sm fw-bold "
-                                    href="{{ route('admin.settings.addScholar') }}">Cancel</a>
+                                    href="{{ route('campus-NLUC.settings.addScholar') }}">Cancel</a>
                             </div>
                             <div class="col-md-4">
                                 {{-- Display success message --}}

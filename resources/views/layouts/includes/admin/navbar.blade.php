@@ -29,7 +29,12 @@
                     <a class="dropdown-item preview-item">
                         <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
                             {{-- <h6 class="preview-subject font-weight-bold mb-1">Event today</h6> --}}
-                            <p class="text-dark  mb-0"> A total of <span class="fw-bold">{{ $dailyCount }}</span> have been added this day</p>
+                            @if($dailyCount > 0)
+                            <p class="text-dark mb-0"> A total of <span class="fw-bold">{{ $dailyCount }}</span> have been added this day</p>
+                        @else
+                            <p class="text-dark mb-0"> No students added today</p>
+                        @endif
+                        
                         </div>
                     </a>
                     {{-- <div class="dropdown-divider"></div>

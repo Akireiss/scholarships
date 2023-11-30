@@ -8,6 +8,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.student') }}">
+                <span class="menu-title">Students</span>
+                <i class="mdi mdi-account-multiple-plus menu-icon"></i>
+            </a>
+        </li>
+
         <!-- Scholarships -->
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
@@ -54,7 +61,8 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.program') }}"> Program </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.school-year') }}"> School Year </a>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.school-year') }}"> School
+                            Year </a>
                     </li>
                 </ul>
             </div>

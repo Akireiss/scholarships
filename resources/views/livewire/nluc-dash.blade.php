@@ -117,7 +117,7 @@
                 <label for="fundSources" class="form-label">Recipient</label>
                 <select id="selectedSources" name="selectedSources" wire:model="selectedSources"
                     class="form-select form-select-sm mb-3">
-                    <option selected value="All">All</option>
+                    <option  value="All"  {{ $selectedSources === 'All' ? 'selected' : '' }}>All</option>
                     @foreach($fundSources as $source)
                     <option value="{{ $source }}">{{ $source }}</option>
                     @endforeach
@@ -126,7 +126,7 @@
             <div class="col-md-3">
                 <label for="year" class="form-label">Select Year</label>
                 <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
-                    <option selected value="allYear">All</option>
+                    <option value="allYear" {{ $selectedYear === 'allYear' ? 'selected' : '' }}>All</option>
                     @foreach($years as $year)
                     <option value="{{ $year }}">{{ $year }}</option>
                     @endforeach
@@ -134,7 +134,7 @@
             </div>
             <div class="col-md-3">
                 <label for="applyFilters" class="form-label">Filter</label>
-                <button wire:click="applyFilters" class="btn btn-sm btn-primary form-control">Apply Filters</button>
+                <button wire:click="initializeChart" class="btn btn-sm btn-primary form-control">Apply Filters</button>
             </div>
         </div>
 
@@ -151,38 +151,55 @@
 
 
         <script defer src="{{ asset('assets/js/lib.js') }}"></script>
-
         <script>
             document.addEventListener('livewire:load', function () {
-        Livewire.on('renderChart', function (data) {
-            renderChart(data);
-        });
+                Livewire.on('renderChart', function (data) {
+                    renderChart(data);
+                });
 
-        function renderChart(data) {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Grantees per Campus',
-                        data: data.values,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
                     }
+                    return color;
+                }
+
+                function renderChart(data) {
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var backgroundColors = data.labels.map(function () {
+                        return getRandomColor();
+                    });
+
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Grantees per Campus',
+                                data: data.values,
+                                backgroundColor: backgroundColors,
+                                borderColor: backgroundColors,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    // Log the chart instance to the console for debugging
+                    console.log(myChart);
                 }
             });
-        }
-    });
         </script>
+
+
 
 
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+// use Illuminate\Support\Facades\Facade\Log;
 use App\Models\Campus;
 use App\Models\Student;
 use Livewire\Component;
@@ -10,10 +11,13 @@ use App\Models\Province;
 use App\Models\Municipal;
 use App\Models\FundSource;
 use App\Models\SchoolYear;
-use App\Models\ScholarshipName;
 use App\Exports\StudentsExport;
-use Illuminate\Support\Facades\Storage;
+use App\Models\ScholarshipName;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class Reports extends Component
 {
@@ -57,27 +61,30 @@ class Reports extends Component
     }
 
     public function generateReport()
-    {
-        // Validate the selectedYear and other fields if needed
-        $this->validate([
-            'selectedYear' => 'required',
-        ]);
+{
+    // Validate the selectedYear and other fields if needed
+    $this->validate([
+        'selectedYear' => 'required',
+    ]);
 
+    $user = Auth::user();
 
-        // Fetch data based on the selected input fields
-        $data = Student::query();
-     
+    $data = Student::query();
 
-        $this->applyFilters($data);
+    // Add a condition to restrict downloads based on user role and campus
+    if ($user->role == 2 && $this->selectedCampus == 'Don Mariano Marcos Memorial State University North La Union Campus') {
+        $data->where('campus', $this->selectedCampus);
+    }
 
-        // Required condition for school_year
-        $data->where('school_year', $this->selectedYear);
+    $this->applyFilters($data);
 
-        // Get the final result
-        $data = $data->get();
-        // dd($data); 
+    // Required condition for school_year
+    $data->where('school_year', $this->selectedYear);
 
-       // Generate a more descriptive filename
+    // Get the final result
+    $data = $data->get();
+
+    // Generate a more descriptive filename
     $filename = 'student.xlsx';
 
     // Create a unique filename for the export
@@ -85,7 +92,8 @@ class Reports extends Component
 
     // Provide the download response directly to the user's browser
     return Excel::download($export, $filename);
-    }
+}
+
 
 
 

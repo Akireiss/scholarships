@@ -1981,3 +1981,424 @@ class NavbarController extends Controller
                                 Cancel <i class="mdi mdi-close-circle mdi-20"></i>
                             </a>
                         }
+
+
+
+
+                        what i want here in report is if the user role is 2 it will automatically it can only downloaded a data which the campus is Don Mariano Marcos Memorial State  University North La Union Campus//<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Campus;
+use App\Models\Student;
+use Livewire\Component;
+use App\Models\Barangay;
+use App\Models\Province;
+use App\Models\Municipal;
+use App\Models\FundSource;
+use App\Models\SchoolYear;
+use App\Models\ScholarshipName;
+use App\Exports\StudentsExport;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+
+class Reports extends Component
+{
+    public $selectedProvince;
+    public $selectedMunicipality;
+    public $selectedBarangay;
+    public $selectedCampus;
+    public $semester;
+    public $selectedYear;
+    public $scholarship_type;
+    public $source_funds;
+    public $students;
+    public $campuses;
+    public $provinces;
+    public $municipalities;
+    public $barangays;
+    public $sourceFunds;
+    public $years;
+
+    public function mount()
+    {
+        $this->fetchSchoolYears();
+        $this->fetchCampuses();
+        $this->fetchProvinces();
+    }
+
+    public function render()
+    {
+        $this->fetchMunicipalities();
+        $this->fetchBarangays();
+        $this->fetchSourceFunds();
+
+        return view('livewire.reports', [
+            'provinces' => $this->provinces,
+            'municipalities' => $this->municipalities,
+            'barangays' => $this->barangays,
+            'campuses' => $this->campuses,
+            'years' => $this->years,
+            'sourceFunds' => $this->sourceFunds,
+        ]);
+    }
+
+    public function generateReport()
+    {
+        // Validate the selectedYear and other fields if needed
+        $this->validate([
+            'selectedYear' => 'required',
+        ]);
+
+
+        // Fetch data based on the selected input fields
+        $data = Student::query();
+
+
+        $this->applyFilters($data);
+
+        // Required condition for school_year
+        $data->where('school_year', $this->selectedYear);
+
+        // Get the final result
+        $data = $data->get();
+        // dd($data);
+
+       // Generate a more descriptive filename
+    $filename = 'student.xlsx';
+
+    // Create a unique filename for the export
+    $export = new StudentsExport($data);
+
+    // Provide the download response directly to the user's browser
+    return Excel::download($export, $filename);
+    }
+
+
+
+
+    private function applyFilters($data)
+    {
+        if ($this->selectedProvince) {
+            $data->where('province', $this->selectedProvince);
+        }
+
+        if ($this->selectedMunicipality) {
+            $data->where('municipal', $this->selectedMunicipality);
+        }
+
+        if ($this->selectedBarangay) {
+            $data->where('barangay', $this->selectedBarangay);
+        }
+
+        if ($this->selectedCampus) {
+            $data->where('campus', $this->selectedCampus);
+        }
+
+        if ($this->semester) {
+            $data->where('semester', $this->semester);
+        }
+
+        if ($this->source_funds) {
+            $data->where('grant', $this->source_funds);
+        }
+    }
+
+    public function fetchSchoolYears()
+    {
+        $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
+    }
+
+    public function fetchCampuses()
+    {
+        $users = auth()->user()->role;
+        $this->campuses = ($users == 1 || $users == 0) ? Campus::all() : Campus::where('campus_name', 'NLUC')->get();
+    }
+
+    public function fetchProvinces()
+    {
+        $this->provinces = Province::where('regCode', 1)->get();
+    }
+
+    public function fetchMunicipalities()
+    {
+        $this->municipalities = $this->selectedProvince ? Municipal::where('provCode', $this->selectedProvince)->get() : [];
+    }
+
+    public function fetchBarangays()
+    {
+        $this->barangays = $this->selectedMunicipality ? Barangay::where('citymunCode', $this->selectedMunicipality)->get() : [];
+    }
+
+    public function fetchSourceFunds()
+    {
+        if ($this->scholarship_type !== null) {
+            $scholarshipIds = ScholarshipName::where('scholarship_type', $this->scholarship_type)->pluck('id');
+
+            if ($scholarshipIds->isNotEmpty()) {
+                $this->sourceFunds = FundSource::whereIn('scholarship_name_id', $scholarshipIds)->get();
+            }
+        } else {
+            $this->sourceFunds = collect(); // Empty collection if no scholarship type selected
+        }
+    }
+}
+//
+
+
+no what i want if a user role is 2 it can only download a students where has this  campus  saved Don Mariano Marcos Memorial State University North La Union Campus  in students table
+
+
+
+<?php
+
+namespace App\Models;
+
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Student extends Model
+{
+    protected $table = "students";
+    protected $fillable = [
+         'student_id',
+         'lastname',
+        'firstname',
+         'initial',
+        'email',
+        'sex',
+        'status',
+        'barangay',
+        'municipal',
+        'province',
+         'campus',
+        'course',
+        'level',
+        'semester',
+        'school_year',
+        'father',
+        'mother',
+        'contact',
+        'studentType',
+        'nameSchool',
+        'lastYear',
+        'grant',
+         'scholarshipType',
+         'student_status'
+    ];
+
+  // Define the relationships if there are any
+    // For example, if a student belongs to a campus and a course, you can define the relationships like this:
+
+        public function campus()
+        {
+            return $this->belongsTo(Campus::class);
+        }
+
+        public function years()
+        {
+            return $this->belongsTo(SchoolYear::class);
+        }
+
+        public function course()
+        {
+            return $this->belongsTo(Course::class);
+        }
+
+        // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
+        public function province()
+        {
+            return $this->belongsTo(Province::class, 'id');
+        }
+
+        // Define the relationship with the Municipal model (assuming the "addresses" table has a foreign key "municipal_id")
+        public function municipal()
+        {
+            return $this->belongsTo(Municipal::class, 'id');
+        }
+
+        // Define the relationship with the Barangay model (assuming the "addresses" table has a foreign key "barangay_id")
+        public function barangay()
+        {
+            return $this->belongsTo(Barangay::class, 'id');
+        }
+
+        public function funds()
+        {
+            return $this->hasMany(Fund::class);
+        }
+        public function scholarshipName()
+        {
+             return $this->belongsTo(ScholarshipName::class);
+        }
+        public function scholarshipType()
+        {
+            return $this->belongsTo(ScholarshipType::class);
+        }
+
+        public function getTypeScholarshipAttribute()
+        {
+            $value = $this->attributes['scholarshipType'];
+            switch ($value) {
+                case 0:
+                    return 'Government';
+                case 1:
+                    return 'Private';
+                default:
+                    return 'No info';
+            }
+        }
+        public function getStatusTextAttribute()
+        {
+            $value = $this->attributes['student_status'];
+            switch ($value) {
+                case 0:
+                    return 'Active';
+                case 1:
+                    return 'Inactive';
+                default:
+                    return 'No info';
+            }
+        }
+
+        public static function codes()
+    {
+        return collect([
+            ['scholarshipType' => 0, 'label' => 'Government'],
+            ['scholarshipType' => 1, 'label' => 'Private'],
+        ]);
+    }
+
+    }
+
+
+
+    {{-- modal --}}
+                        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true"
+                            wire:ignore.self>
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Student</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="">
+                                            @csrf
+                                            {{-- input field --}}
+                                            <div class="row m-1">
+                                                <div class="col-md-4">
+                                                    <label for="student_id" class="form-label">Student Id</label>
+                                                    <input type="text" id="student_id"
+                                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror"
+                                                        wire:model="student_id" maxlength="10">
+                                                    @error('student_id')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                    <script>
+                                                        document.addEventListener("DOMContentLoaded", function()
+                                                        {
+                                                            const studentIdInput = document.getElementById("student_id");
+                                                                studentIdInput.addEventListener("input", function() {
+                                                                let inputText = this.value.replace(/\D/g, "").substring(0, 10);
+                                                                 let formattedText = inputText.replace(/(\d{3})(\d{4})(\d{1,2})/, "$1-$2-$3");
+                                                                this.value = formattedText;
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            {{-- ends --}}
+                                            <div class="row">
+                                                <div class="col-md-3 m-1">
+                                                    <label class="form-label" for="lastname" name="lastname">Last
+                                                        name</label>
+                                                    <input type="text" id="lastname"
+                                                        class="form-control form-control-sm @error('lastname') is-invalid @enderror"
+                                                        wire:model="lastname" />
+                                                    @error('lastname')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-3 m-1">
+                                                    <label class="form-label" for="firstname" name="firstname">First
+                                                        name</label>
+                                                    <input type="text" id="firstname"
+                                                        class="form-control form-control-sm @error('firstname') is-invalid @enderror"
+                                                        wire:model="firstname" />
+                                                    @error('firstname')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-3 m-1">
+                                                    <label class="form-label" for="initial" name="initial">Middle
+                                                        Initial</label>
+                                                    <input type="text" id="initial"
+                                                        class="form-control form-control-sm @error('initial') is-invalid @enderror"
+                                                        wire:model="initial" />
+                                                    @error('initial')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- modal end --}}
+
+
+                        $table->id();
+            $table->string('student_id');
+            $table->string('lastname');
+            $table->string('firstname');
+            $table->string('initial');
+            $table->string('email');
+            $table->string('sex');
+            $table->string('status');
+            $table->string('barangay');
+            $table->string('municipal');
+            $table->string('province');
+            $table->unsignedBigInteger('campus');
+            $table->string('course');
+            $table->integer('level');
+            $table->string('father');
+            $table->string('mother');
+            $table->string('contact', 11);
+            $table->string('nameSchool')->nullable();
+            $table->string('lastYear')->nullable();
+            $table->string('student_status')->comment('0: Active, 1: Inactive');
+            $table->timestamps();
+
+            // Define the foreign key constraint
+            $table->foreign('campus')->references('id')->on('campuses');
+
+
+
+
+
+            $table->id();
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->string('semester');
+            $table->string('school_year');
+            $table->tinyInteger('scholarship_type')->comment('0: Government, 1: Private');
+            $table->string('scholarship_name');
+            $table->timestamps();
+
+
+

@@ -9,17 +9,13 @@ class ScholarshipName extends Model
 {
     protected $table = 'scholarship_name';
     protected $primaryKey = 'id';
-    protected $fillable = [
-        'name',
-         'scholarship_type',
-         'status'];
+    protected $fillable =
+    [
+            'name',
+            'scholarship_type',
+            'status'
+    ];
 
-
-
-    public function fundSources()
-    {
-        return $this->hasMany(FundSource::class, 'scholarship_name_id', 'id');
-    }
 
     public function getTypeScholarshipNameAttribute()
     {
@@ -29,6 +25,18 @@ class ScholarshipName extends Model
                 return 'Government';
             case 1:
                 return 'Private';
+            default:
+                return 'No info';
+        }
+    }
+    public function getStatusScholarshipNameAttribute()
+    {
+        $value = $this->attributes['status'];
+        switch ($value) {
+            case 0:
+                return 'Active';
+            case 1:
+                return 'Inactive';
             default:
                 return 'No info';
         }

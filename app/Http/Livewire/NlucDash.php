@@ -18,8 +18,8 @@ class NlucDash extends Component
     public $active, $inactive;
     public $scholarshipActive, $scholarshipInactive;
     public $fundSources, $years;
-    public $selectedSources = 'All';
-    public $selectedYear = 'allYear';
+    public $selectedSources;
+    public $selectedYear;
 
     public function mount()
     {
@@ -27,7 +27,6 @@ class NlucDash extends Component
         // 1st card
         // Count government scholarship names
         $this->governmentCount = ScholarshipName::where('scholarship_type', 0)->count();
-
         // Count private scholarship names
         $this->privateCount = ScholarshipName::where('scholarship_type', 1)->count();
 
@@ -39,7 +38,6 @@ class NlucDash extends Component
         // 2nd card
         // Count scholars in government
         $this->governmentStudent = Student::where('scholarshipType', 0)->distinct('student_id')->count();
-
         // Count scholars in private
         $this->privateStudent = Student::where('scholarshipType', 1 )->distinct('student_id')->count();
 
@@ -48,12 +46,15 @@ class NlucDash extends Component
         $this->inactive = Student::where('student_status', 1)->distinct('student_id')->count();
 
         $this->fetchFilterOptions();
+        $this->initializeChart();
 
     }
 
     public function render()
     {
         $data = $this->getChartData();
+                // Initialize the chart when rendering the component
+                $this->initializeChart();
 
         return view('livewire.nluc-dash', [
             'data' => $data,
@@ -63,35 +64,41 @@ class NlucDash extends Component
     public function fetchFilterOptions()
     {
         // Fetch all unique fund sources from the grant column
-        $this->fundSources = FundSource::pluck('source_name');
+        $this->fundSources = Student::groupBy('grant')->pluck('grant');
 
         // Fetch the top 5 recent years from the school_year column
-        $this->years = Student::orderBy('school_year', 'desc')->distinct()->take(5)->pluck('school_year');
+        $this->years = Student::orderBy('school_year', 'desc')
+                            ->groupBy('school_year')
+                            ->take(5)
+                            ->pluck('school_year');
+        // Set default values
+        $this->selectedSources = 'All';
+        $this->selectedYear = 'allYear';
     }
 
-    public function applyFilters()
-    {
-        $this->emit('renderChart', ['labels' => $this->dataLabels(), 'values' => $this->dataValues()]);
-    }
+    public function initializeChart()
+            {
+                $this->emit('renderChart', ['labels' => $this->dataLabels(), 'values' => $this->dataValues()]);
+            }
 
-    private function getChartData()
-    {
-        $query = Student::query();
 
-        if ($this->selectedSources != 'All') {
-            $query->where('grant', $this->selectedSources);
-        }
+            private function getChartData()
+            {
+                $data = Student::join('campuses', 'students.campus', '=', 'campuses.campusDesc')
+                ->where('campuses.campus_name', 'NLUC') // Filter for NLUC campus
+                ->when($this->selectedSources != 'All', function ($query) {
+                    return $query->where('students.grant', $this->selectedSources);
+                })
+                ->when($this->selectedYear != 'allYear', function ($query) {
+                    return $query->where('students.school_year', $this->selectedYear);
+                })
+                ->select('campuses.campus_name as campus', DB::raw('count(*) as count'))
+                ->groupBy('campuses.campus_name')
+                ->get();
 
-        if ($this->selectedYear != 'allYear') {
-            $query->where('school_year', $this->selectedYear);
-        }
+            return $data;
 
-        $data = $query->select('campus', DB::raw('count(*) as count'))
-            ->groupBy('campus')
-            ->get();
-
-        return $data;
-    }
+            }
 
     private function dataLabels()
     {

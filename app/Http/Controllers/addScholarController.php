@@ -24,4 +24,9 @@ class addScholarController extends Controller
         return view('campus-NLUC.settings.addScholar');
     }
 
+    public function government() {
+        return view('admin.settings.scholar.government');
+    }
+  
+
 }

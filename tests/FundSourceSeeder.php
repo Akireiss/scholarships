@@ -66,7 +66,7 @@ class FundSourceSeeder extends Seeder
         FundSource::create(['source_name' => 'Answering the Cry of the Poor', 'scholarship_name_id' => 19]);
         FundSource::create(['source_name' => 'BASA Scholarship', 'scholarship_name_id' => 19]);
         FundSource::create(['source_name' => 'La Union Vibrant Women Incorporation', 'scholarship_name_id' => 19]);
-        FundSource::create(['source_name' => 'National Corporation of the philippines', 'scholarship_name_id' => 19]);
+        FundSource::create(['source_name' => 'National Corporation of the Philippines', 'scholarship_name_id' => 19]);
         FundSource::create(['source_name' => 'Unbound Foundation', 'scholarship_name_id' => 19]);
         FundSource::create(['source_name' => 'Vigor Lending', 'scholarship_name_id' => 19]);
         FundSource::create(['source_name' => 'Rotary Club', 'scholarship_name_id' => 19]);

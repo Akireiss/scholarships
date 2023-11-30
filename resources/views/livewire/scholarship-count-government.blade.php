@@ -8,8 +8,13 @@
                     <h2 class="font-weight-normal mb-3">
                         <i class="fas fa-graduation-cap fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Government Scholarships</span></h4>
-                    <h5 class="card-text fs-4">{{ $governmentCount }}</h5>
+
+                    <h4 class="mb-3 mt-4">
+                        <a href="{{ url('/admin/settings/addScholar/government') }}">
+                            <span class="option">Government Scholarships</span>
+                        </a>
+                    </h4>
+                    <h5 class="card-text fs-4">{{ $governmentScholarships }}</h5>
                 </div>
             </div>
         </div>
@@ -21,8 +26,13 @@
                     <h2 class="font-weight-normal mb-3">
                         <i class="fas fa-university fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Private Scholarships</span></h4>
-                    <h5 class="card-text fs-4">{{ $privateCount }}</h5>
+                    <h4 class="mb-3 mt-4">
+                        <a href="{{ url('/admin/settings/addScholar/private') }}">
+                            <span class="option">Private Scholarships</span>
+                        </a>
+                    </h4>
+                    <h5 class="card-text fs-4">{{ $privateScholarships }}</h5>
+
                 </div>
             </div>
         </div>
@@ -34,8 +44,12 @@
                     <h2 class="font-weight-normal mb-3">
                         <i class="fas fa-check-circle fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Active Scholarship</span></h4>
-                    <h5 class="card-text fs-4">{{ $scholarshipActive }}</h5>
+                    <h4 class="mb-3 mt-4">
+                        <a href="{{ url('/admin/settings/addScholar/government') }}">
+                            <span class="option">Active Goverment Scholarships</span>
+                        </a>
+                    </h4>
+                    <h5 class="card-text fs-4">{{ $govermentActive }}</h5>
                 </div>
             </div>
         </div>
@@ -48,8 +62,12 @@
                     <h2 class="font-weight-normal mb-3">
                         <i class="fas fa-times-circle fa-2x"></i>
                     </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Inactive Scholarship</span></h4>
-                    <h5 class="card-text fs-4">{{ $scholarshipInactive }}</h5>
+                    <h4 class="mb-3 mt-4">
+                        <a href="{{ url('/admin/settings/addScholar/private') }}">
+                            <span class="option">Active Private Scholarships</span>
+                        </a>
+                    </h4>
+                    <h5 class="card-text fs-4">{{ $privateActive }}</h5>
                 </div>
             </div>
         </div>
@@ -82,33 +100,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Active Grantees -->
-        <div class="col-md-3 stretch-card grid-margin">
-            <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
-                <div class="card-body">
-                    <h2 class="font-weight-normal mb-3">
-                        <i class="fas fa-user-check fa-2x"></i>
-                    </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Active Grantees</span></h4>
-                    <h5 class="card-text fs-4">{{ $active }}</h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- Inactive Grantees -->
-        <div class="col-md-3 stretch-card grid-margin">
-            <div class="card bg-gradient-light card-img-holder text-dark shadow-lg">
-                <!-- Use an appropriate icon for inactive grantees -->
-                <div class="card-body">
-                    <h2 class="font-weight-normal mb-3">
-                        <i class="fas fa-user-times fa-2x"></i>
-                    </h2>
-                    <h4 class="mb-3 mt-4"><span class="option">Inactive Grantees</span></h4>
-                    <h5 class="card-text fs-4">{{ $inactive }}</h5>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="container">
@@ -117,16 +108,16 @@
                 <label for="fundSources" class="form-label">Recipient</label>
                 <select id="selectedSources" name="selectedSources" wire:model="selectedSources"
                     class="form-select form-select-sm mb-3">
-                    <option selected value="All">All</option>
+                    <option value="All" {{ $selectedSources==='All' ? 'selected' : '' }}>All</option>
                     @foreach($fundSources as $source)
-                    <option value="{{ $source }}">{{ $source }}</option>
+                    <option value="{{ $source->source_id }}">{{ $source->source_name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-3">
                 <label for="year" class="form-label">Select Year</label>
                 <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
-                    <option selected value="allYear">All</option>
+                    <option value="allYear" {{ $selectedYear==='allYear' ? 'selected' : '' }}>All</option>
                     @foreach($years as $year)
                     <option value="{{ $year }}">{{ $year }}</option>
                     @endforeach
@@ -134,8 +125,9 @@
             </div>
             <div class="col-md-3">
                 <label for="applyFilters" class="form-label">Filter</label>
-                <button wire:click="applyFilters" class="btn btn-sm btn-primary form-control">Apply Filters</button>
+                <button class="btn btn-sm btn-primary form-control">Apply Filters</button>
             </div>
+            {{-- wire:click="initializeChart" --}}
         </div>
 
         {{-- line chart --}}
@@ -150,15 +142,28 @@
         </div>
 
 
-        <script defer src="{{ asset('assets/js/lib.js') }}"></script>
+        {{-- <script defer src="{{ asset('assets/js/lib.js') }}"></script>
         <script>
             document.addEventListener('livewire:load', function () {
                 Livewire.on('renderChart', function (data) {
                     renderChart(data);
                 });
-        
+
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+
                 function renderChart(data) {
                     var ctx = document.getElementById('myChart').getContext('2d');
+                    var backgroundColors = data.labels.map(function () {
+                        return getRandomColor();
+                    });
+
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -166,8 +171,8 @@
                             datasets: [{
                                 label: 'Grantees per Campus',
                                 data: data.values,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: backgroundColors,
+                                borderColor: backgroundColors,
                                 borderWidth: 1
                             }]
                         },
@@ -179,10 +184,14 @@
                             }
                         }
                     });
+
+                    // Log the chart instance to the console for debugging
+
                 }
             });
         </script>
-        
+        --}}
+
 
 
     </div>
@@ -194,6 +203,10 @@
 
         .btn-primary:hover {
             background-color: #148697 !important;
+        }
+        a{
+            color: black;
+            text-decoration: none;
         }
     </style>
 

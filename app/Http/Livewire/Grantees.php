@@ -143,18 +143,16 @@
                     Fund::create([
                         'student_id' => $this->student_id,
                         'source_id' => $selectedFunds->source_id,
-                        // 'campus' => $campus->campus_name,
-                        // 'school_year' => $this->selectedYear,
+                        'campus' => $campus->campus_name,
+                        'schoolYear' => $this->selectedYear,
 
                     ]);
                 }
 
 
-    // If private scholarship is selected, create a separate Student record for the private scholarship
-    if ($this->selectedPrivateScholarship) {
+
         // Determine the source and source type based on the selected private funds
         list($privateSelectedFunds, $privateSourceName) = $this->selectPrivateFundsAndSource();
-
         $privateStudentData = [
             'campus' => $campus->campusDesc,
             'course' => $course->course_name,
@@ -188,11 +186,10 @@
             Fund::create([
                 'student_id' => $this->student_id,
                 'source_id' => $privateSelectedFunds->source_id,
-                // 'campus' => $campus->campus_name,
-                // 'school_year' => $this->selectedYear,
+                'campus' => $campus->campus_name,
+                'schoolYear' => $this->selectedYear,
             ]);
         }
-    }
 
 
 
@@ -322,7 +319,6 @@
                 $this->barangays = [];
             }
 
-            // $fund_sources = FundSource::all();
             return view('livewire.grantees', [
                 'campuses' => $this->campuses,
                 'provinces' => $this->provinces,

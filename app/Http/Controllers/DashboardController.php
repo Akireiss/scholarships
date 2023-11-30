@@ -12,13 +12,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // $today = Carbon::now(new \DateTimeZone('Asia/Manila'))->startOfDay();
-        // $tomorrow = $today->copy()->endOfDay();
-
-        // $dailyCount = DB::table('students')
-        // ->whereBetween('created_at', [$today, $tomorrow])
-        // ->count();
-
         return view('admin.dashboard');
     }
     public function index1()

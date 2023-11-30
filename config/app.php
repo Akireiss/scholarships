@@ -1,6 +1,9 @@
 <?php
 
+use Maatwebsite\Excel\Facades;
+use App\Http\Livewire\Livewire;
 use App\Http\Livewire\BackupDatabase;
+use Livewire\LivewireServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -71,7 +74,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Manila',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -173,6 +177,7 @@ return [
         Illuminate\Database\DatabaseServiceProvider::class,
         App\Providers\NavbarServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        // LivewireServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -191,11 +196,12 @@ return [
     ])->toArray(),
 
     'livewire' => [
-        'class' => \Livewire\Livewire::class,
-        'viewPath' => resource_path('views/livewire'),
-        'aliases' => [
-            'BackupDatabase' => App\Http\Livewire\BackupDatabase::class,
-            'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    'class' => \Livewire\Livewire::class,
+    'viewPath' => resource_path('views/livewire'),
+    'aliases' => [
+        'BackupDatabase' => App\Http\Livewire\BackupDatabase::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        // 'Livewire' => App\Http\Livewire\Livewire::class,
         ],
     ],
 ];

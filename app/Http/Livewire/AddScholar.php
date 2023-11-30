@@ -2,22 +2,45 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\AuditLog;
-use App\Models\FundSource;
-use App\Models\ScholarshipName;
-use App\Models\ScholarshipType;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
+use App\Models\AuditLog;
+use App\Models\ScholarshipName;
+use Illuminate\Support\Facades\Route;
 
 class AddScholar extends Component
 {
     public $scholarship_type_id;
     public $scholarship_name;
     public $status;
+    public $search = '';
+    public $perPage = 10;
+    public $data = [];
+
 
     public function render()
     {
-        return view('livewire.add-scholar');
+        if(Route::is('admin.settings.addScholar')) {
+            $scholarships = ScholarshipName::orderBy('name', 'asc')
+            ->get();
+            return view('livewire.add-scholar', ['scholarships' => $scholarships]);
+        }elseif(Route::is('scholar.government')){
+            $scholarships = ScholarshipName::orderBy('name', 'asc')->where('scholarship_type', 0)
+            ->get();
+            return view('livewire.add-scholar', ['scholarships' => $scholarships]);
+        }elseif(Route::is('scholar.private')){
+            $scholarships = ScholarshipName::orderBy('name', 'asc')->where('scholarship_type', 1)
+            ->get();
+            return view('livewire.add-scholar', ['scholarships' => $scholarships]);
+        }elseif(Route::is('scholar.govermentActive')){
+            $scholarships = ScholarshipName::orderBy('name', 'asc')->where('status', 0)->where('scholarship_type', 0)
+            ->get();
+            return view('livewire.add-scholar', ['scholarships' => $scholarships]);
+        }elseif(Route::is('scholar.privateActive')){
+            $scholarships = ScholarshipName::orderBy('name', 'asc')->where('status', 0)->where('scholarship_type', 1)
+            ->get();
+            return view('livewire.add-scholar', ['scholarships' => $scholarships]);
+        }
+
     }
 
     public function addScholarship()

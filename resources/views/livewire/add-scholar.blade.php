@@ -1,9 +1,12 @@
 <div>
-    <section class="mt-2 p-4">
+    <section class="mt-2 p-3">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="d-flex align-items-start justify-content-start mb-2 gap-2">
+                    <div class="d-flex align-items-end justify-content-end mb-2 gap-2">
+                        <a href="{{ url('/admin/settings/addScholar') }}" class="btn btn-sm btn-warning">
+                            Reset <i class="mdi mdi-rotate-left mdi-20"></i>
+                        </a>
                         <!-- Add Button -->
                         <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
                             data-bs-target="#modal">
@@ -32,15 +35,15 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="modalLabel">Scholarship Name</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         @if (session()->has('message'))
                                         <div class="alert alert-success">
                                             {{ session('message') }}
                                         </div>
                                         @endif
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
                                         <form wire:submit.prevent="addScholarship">
                                             @csrf
                                             <!-- Your form fields go here -->
@@ -80,15 +83,47 @@
 
                     </div>
                     <div class="card-body shadow-lg">
-                        <livewire:scholarship-name-table />
+                        <div id="datatable">
+                            <!-- DataTable with export buttons -->
+                            <table id="example" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Scholarship Name</th>
+                                        <th>Scholarship Type</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($scholarships as $scholarship)
+                                    <tr>
+                                        <td>{{ $scholarship->name }}</td>
+                                        <td>{{ $scholarship->getTypeScholarshipNameAttribute() }}</td>
+                                        <td>{{ $scholarship->getStatusScholarshipNameAttribute() }}</td>
+                                        <td>
+                                            <a href="{{ route('scholar.edit', ['scholar' => $scholarship->id]) }}">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">No records found</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
     <style>
         .btn-danger {
-            background-color: red;
+            background-color: rgb(192, 39, 39);
             color: white
         }
 
@@ -96,5 +131,38 @@
             background-color: green;
             color: white
         }
+
+        .btn-warning {
+            background-color: rgb(161, 161, 35);
+            color: white
+        }
+
+        .btn-primary {
+            background-color: rgb(93, 57, 223);
+            color: white
+        }
     </style>
+    <!-- Initialize DataTable with export buttons -->
+    <script>
+        $('#example').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+    {
+      extend: 'excel',
+      text: 'Excel',
+      className: 'btn btn-sm btn-success'
+    },
+    {
+      extend: 'pdf',
+      text: 'PDF',
+      className: 'btn btn-sm btn-danger'
+    }
+  ]
+});
+    </script>
+
+
+
 </div>
+{{--
+<livewire:scholarship-name-table /> --}}
