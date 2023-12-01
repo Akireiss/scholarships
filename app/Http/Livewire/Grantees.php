@@ -24,65 +24,13 @@
 
 
             protected $rules = [
-                'selectedCampus' => 'required',
-                'selectedCourse' => 'required',
-                'lastname' => 'required',
-                'firstname' => 'required',
-                'initial' => 'required',
-                'sex' => 'required',
-                'status' => 'required',
-                'selectedProvince' => 'required',
-                'selectedMunicipality' => 'required',
-                'selectedBarangay' => 'required',
-                'contact' => 'required|min:11|max:11',
-                'email' => 'required|email',
                 'student_id' => 'required',
-                'level' => 'required',
                 'semester' => 'required',
                 'selectedYear' => 'required',
-                'studentType' => 'required',
-                'father' => 'required',
-                'mother' => 'required',
             ];
 
-            public function updatedStudentType($value)
-            {
-                if ($value === 'New') {
-                    $this->showNewInput = true;
-                    $this->rules['nameSchool'] = 'required';
-                    $this->rules['lastYear'] = 'required|numeric';
-                } else {
-                    $this->showNewInput = false;
-                    $this->rules['nameSchool'] = 'nullable';
-                    $this->rules['lastYear'] = 'nullable';
-                }
-            }
-
-            public function showNewInput()
-            {
-                $this->showNewInput = true;
-            }
-
-            public function hideNewInput()
-            {
-                $this->showNewInput = false;
-            }
 
 
-        public function checkScholarshipLimit()
-        {
-            // Count the occurrences of the student_id in the funds table
-            $studentIdCount = Fund::where('student_id', $this->student_id)->count();
-
-            // Define the maximum limit for scholarship
-            $maxLimit = 2;
-
-            if ($studentIdCount >= $maxLimit) {
-                $this->scholarshipLimitExceeded = true;
-            } else {
-                $this->scholarshipLimitExceeded = false;
-            }
-        }
 
         public function fetchSchoolYears()
         {
@@ -95,12 +43,6 @@
 
             $this->validate();
 
-            // Determine the government scholarship and scholarship type based on the selected government scholarship
-            list($governmentScholarship, $governmentScholarshipType) = $this->selectGovernmentScholarshipAndType();
-
-            // Determine the private scholarship and scholarship type based on the selected private scholarship
-            list($privateScholarship, $privateScholarshipType) = $this->selectPrivateScholarshipAndType();
-
                 $campus = Campus::findOrFail($this->selectedCampus);
                 $course = Course::findOrFail($this->selectedCourse);
 
@@ -109,50 +51,6 @@
                 $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
                 $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
 
-            // Determine the source and source type based on the selected funds
-            list($selectedFunds, $sourceName) = $this->selectFundsAndSource();
-
-            $governmentStudentData = [
-                    'campus' => $campus->campusDesc,
-                    'course' => $course->course_name,
-                    'lastname' => $this->lastname,
-                    'firstname' => $this->firstname,
-                    'initial' => $this->initial,
-                    'province' => $province->provDesc,
-                    'municipal' => $municipality->citymunDesc,
-                    'barangay' => $barangay->brgyDesc,
-                    'sex' => $this->sex,
-                    'status' => $this->status,
-                    'contact' => $this->contact,
-                    'email' => $this->email,
-                    'student_id' => $this->student_id,
-                    'level' => $this->level,
-                    'semester' => $this->semester,
-                    'school_year' => $this->selectedYear,
-                    'studentType' => $this->studentType,
-                    'nameSchool' => $this->nameSchool,
-                    'lastYear' => $this->lastYear,
-                    'grant' => $sourceName,
-                    'father' => $this->father,
-                    'mother' => $this->mother,
-                    'scholarshipType' => $governmentScholarshipType,
-                ];
-
-                $governmentStudent = Student::create($governmentStudentData);
-                if ($selectedFunds) {
-                    Fund::create([
-                        'student_id' => $this->student_id,
-                        'source_id' => $selectedFunds->source_id,
-                        'campus' => $campus->campus_name,
-                        'schoolYear' => $this->selectedYear,
-
-                    ]);
-                }
-
-
-
-        // Determine the source and source type based on the selected private funds
-        list($privateSelectedFunds, $privateSourceName) = $this->selectPrivateFundsAndSource();
         $privateStudentData = [
             'campus' => $campus->campusDesc,
             'course' => $course->course_name,
@@ -160,36 +58,9 @@
             'firstname' => $this->firstname,
             'initial' => $this->initial,
             'province' => $province->provDesc,
-            'municipal' => $municipality->citymunDesc,
-            'barangay' => $barangay->brgyDesc,
-            'sex' => $this->sex,
-            'status' => $this->status,
-            'contact' => $this->contact,
-            'email' => $this->email,
-            'student_id' => $this->student_id,
-            'level' => $this->level,
-            'semester' => $this->semester,
-            'school_year' => $this->selectedYear,
-            'studentType' => $this->studentType,
-            'nameSchool' => $this->nameSchool,
-            'lastYear' => $this->lastYear,
-            'grant' => $privateSourceName,
-            'father' => $this->father,
-            'mother' => $this->mother,
-            'scholarshipType' => $privateScholarshipType,
         ];
 
         $privateStudent = Student::create($privateStudentData);
-
-        // Create Fund record based on the selected funds for the private scholarship
-        if ($privateSelectedFunds) {
-            Fund::create([
-                'student_id' => $this->student_id,
-                'source_id' => $privateSelectedFunds->source_id,
-                'campus' => $campus->campus_name,
-                'schoolYear' => $this->selectedYear,
-            ]);
-        }
 
 
 
@@ -205,82 +76,6 @@
         ]);
         }
 
-     // Helper function to select the appropriate government scholarship and scholarship type
-        private function selectGovernmentScholarshipAndType()
-        {
-            $governmentScholarship = ScholarshipName::findOrFail($this->selectedGovernmentScholarship);
-            $governmentScholarshipType = $governmentScholarship->scholarship_type;
-            return [$governmentScholarship, $governmentScholarshipType];
-        }
-
-        // Helper function to select the appropriate private scholarship and scholarship type
-        private function selectPrivateScholarshipAndType()
-        {
-            if ($this->selectedPrivateScholarship) {
-                $privateScholarship = ScholarshipName::findOrFail($this->selectedPrivateScholarship);
-                $privateScholarshipType = $privateScholarship->scholarship_type;
-            } else {
-                $privateScholarship = null;
-                $privateScholarshipType = null;
-            }
-            return [$privateScholarship, $privateScholarshipType];
-        }
-
-            // Helper function to select the appropriate funds and source
-    private function selectFundsAndSource()
-    {
-        if ($this->selectedGovernmentScholarship) {
-            $selectedFunds = FundSource::findOrFail($this->selectedGovernmentScholarship);
-        } else {
-            $selectedFunds = null;
-        }
-        $sourceName = $selectedFunds ? $selectedFunds->source_name : null;
-        return [$selectedFunds, $sourceName];
-    }
-        // Helper function to select the appropriate private funds and source
-        private function selectPrivateFundsAndSource()
-        {
-            if ($this->selectedPrivateFundSources) {
-                $privateSelectedFunds = FundSource::findOrFail($this->selectedPrivateFundSources);
-            } else {
-                $privateSelectedFunds = null;
-            }
-            $privateSourceName = $privateSelectedFunds ? $privateSelectedFunds->source_name : null;
-            return [$privateSelectedFunds, $privateSourceName];
-        }
-
-
-        public function updatedSelectedGovernmentScholarship($value)
-        {
-            // When the selected government scholarship changes, fetch associated fund sources
-            if ($value) {
-                $this->selectedGovernmentFundSources = ScholarshipName::find($value)->fundSources->pluck('id')->toArray();
-            } else {
-                $this->selectedGovernmentFundSources = [];
-            }
-        }
-
-        public function updatedSelectedPrivateScholarship($value)
-        {
-            // When the selected private scholarship changes, fetch associated fund sources
-            if ($value) {
-                $this->selectedPrivateFundSources = ScholarshipName::find($value)->fundSources->pluck('id')->toArray();
-            } else {
-                $this->selectedPrivateFundSources = [];
-            }
-        }
-
-        public function fetchGovernmentScholarships()
-        {
-            // Fetch government scholarships
-            $this->governmentScholars = ScholarshipName::where('scholarship_type', 0)->where('status', 0)->get();
-        }
-
-        public function fetchPrivateScholarships()
-        {
-            // Fetch private scholarships
-            $this->privateScholars = ScholarshipName::where('scholarship_type', 1)->where('status', 0)->get();
-        }
 
 
 
@@ -288,8 +83,6 @@
         {
 
             // Call the methods to fetch scholarship data
-            $this->fetchGovernmentScholarships();
-            $this->fetchPrivateScholarships();
             $this->fetchSchoolYears();
 
 
@@ -322,8 +115,6 @@
             return view('livewire.grantees', [
                 'campuses' => $this->campuses,
                 'provinces' => $this->provinces,
-                'governmentScholars' => $this->governmentScholars,
-                'privateScholars' => $this->privateScholars,
                 'years' => $this->years, // Pass the years data to the view
 
 
@@ -333,31 +124,12 @@
             // Method to reset the form fields
             public function resetForm()
             {
-                $this->selectedCampus = "";
-                $this->selectedCourse = "";
-                $this->lastname = "";
-                $this->firstname = "";
-                $this->initial = "";
-                $this->sex = "";
-                $this->status = "";
-                $this->selectedProvince = "";
-                $this->selectedMunicipality = "";
-                $this->selectedBarangay = "";
-                $this->contact = "";
-                $this->email = "";
-                $this->student_id = "";
-                $this->level = "";
                 $this->semester = "";
                 $this->studentType = "";
                 $this->nameSchool = "";
                 $this->lastYear = "";
-                $this->selectedGovernmentScholarship = "";
-                $this->selectedPrivateScholarship = "";
-                $this->selectedGovernmentFundSources = [];
-                $this->selectedPrivateFundSources = [];
                 $this->father = "";
                 $this->mother = "";
-                $this->showNewInput = false;
             }
 
     }

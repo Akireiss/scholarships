@@ -60,6 +60,10 @@ class Student extends Model
     {
          return $this->belongsTo(ScholarshipName::class);
     }
+    public function grantee()
+    {
+        return $this->hasOne(Grantee::class, 'student_id', 'id');
+    }
 
     public function getStatusTextAttribute()
     {

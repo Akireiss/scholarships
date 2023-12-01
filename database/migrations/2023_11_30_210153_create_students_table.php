@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('email');
             $table->string('sex');
             $table->string('status');
-            $table->string('barangay');
-            $table->string('municipal');
-            $table->string('province');
+            $table->unsignedBigInteger('barangay');
+            $table->unsignedBigInteger('municipal');
+            $table->unsignedBigInteger('province');
             $table->unsignedBigInteger('campus');
-            $table->string('course');
+            $table->unsignedBigInteger('course');
             $table->integer('level');
             $table->string('father');
             $table->string('mother');
@@ -32,11 +32,15 @@ return new class extends Migration
             $table->string('studentType');
             $table->string('nameSchool')->nullable();
             $table->string('lastYear')->nullable();
-            $table->string('student_status')->comment('0: Active, 1: Inactive');
+            $table->string('student_status')->comment('0: Active, 1: Inactive')->default(0);
             $table->timestamps();
 
             // Define the foreign key constraint
             $table->foreign('campus')->references('id')->on('campuses');
+            $table->foreign('barangay')->references('id')->on('barangays')->onDelete('cascade');
+            $table->foreign('municipal')->references('id')->on('municipals')->onDelete('cascade');
+            $table->foreign('province')->references('id')->on('provinces')->onDelete('cascade');
+            $table->foreign('course')->references('course_id')->on('courses')->onDelete('cascade');
         });
     }
 

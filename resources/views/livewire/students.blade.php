@@ -60,44 +60,49 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse ($students as $student)
                                 <tr>
-                                    <td hidden></td> <!-- Student Id -->
-                                    <td></td> <!-- Last Name -->
-                                    <td></td> <!-- First Name -->
-                                    <td></td> <!-- Middle Initial -->
-                                    <td hidden></td> <!-- Email Address -->
-                                    <td hidden></td> <!-- Sex -->
-                                    <td hidden></td> <!-- Status -->
-                                    <td hidden></td> <!-- Barangay -->
-                                    <td hidden></td> <!-- Municipal -->
-                                    <td hidden></td> <!-- Province -->
-                                    <td hidden></td> <!-- Campus -->
-                                    <td hidden></td> <!-- Course/Program -->
-                                    <td></td> <!-- Year Level -->
-                                    <td></td> <!-- Semester -->
-                                    <td hidden></td> <!-- School year -->
-                                    <td hidden></td> <!-- Father's Full name -->
-                                    <td hidden></td> <!-- Mother's Full name -->
-                                    <td hidden></td> <!-- Contact Number -->
-                                    <td hidden></td> <!-- Type of Student -->
-                                    <td hidden></td> <!-- Name of School Last Attended -->
-                                    <td hidden></td> <!-- Last School Year Attended -->
-                                    <td></td> <!-- Recipient -->
-                                    <td></td> <!-- Type of Scholarship -->
-                                    <td hidden></td> <!-- Remarks -->
-                                    <td class="m-5">
-                                        <a href="">
+                                    <td hidden>{{  $student->student_id }}</td> <!-- Student Id -->
+                                    <td>{{  $student->lastname }}</td> <!-- Last Name -->
+                                    <td>{{  $student->firstname }}</td> <!-- First Name -->
+                                    <td>{{  $student->initial }}</td> <!-- Middle Initial -->
+                                    <td hidden>{{  $student->email }}</td> <!-- Email Address -->
+                                    <td hidden>{{  $student->sex }}</td> <!-- Sex -->
+                                    <td hidden>{{  $student->status }}</td> <!-- Status -->
+                                    <td hidden>{{  $student->barangay }}</td> <!-- Barangay -->
+                                    <td hidden>{{  $student->municipal }}</td> <!-- Municipal -->
+                                    <td hidden>{{  $student->province }}</td> <!-- Province -->
+                                    <td hidden>{{  $student->campus }}</td> <!-- Campus -->
+                                    <td hidden>{{  $student->course }}</td> <!-- Course/Program -->
+                                    <td>{{  $student->level }}</td> <!-- Year Level -->
+                                    <td>{{  $student->grantee->semester ?? 'No Data' }}</td> <!-- Semester -->
+                                    <td hidden>{{ $student->grantee->school_year ?? 'No Data' }}</td> <!-- School year -->
+                                    <td hidden>{{ $student->father }}</td> <!-- Father's Full name -->
+                                    <td hidden>{{ $student->mother }}</td> <!-- Mother's Full name -->
+                                    <td hidden>{{ $student->contact }}</td> <!-- Contact Number -->
+                                    <td hidden>{{ $student->studentType }}</td> <!-- Type of Student -->
+                                    <td hidden>{{ $student->nameSchool ?? 'No Data' }}</td> <!-- Name of School Last Attended -->
+                                    <td hidden>{{ $student->lastYear ?? 'No Data' }}</td> <!-- Last School Year Attended -->
+                                    <td>{{ $student->grantee->scholarship_name ?? 'No Data' }}</td> <!-- Recipient -->
+                                    <td>{{ $student->grantee->scholarship_type ?? 'No Data' }}</td> <!-- Type of Scholarship -->
+                                    <td hidden>{{ $student->student_status }}</td> <!-- Remarks -->
+                                    <td class="m-2">
+                                        {{-- <a href="{{ route('admin.scholarship.grantees', ['id' => $student->id]) }}" title="Add">
                                             <i class="fas fa-plus fa-lg"></i>
                                         </a>
-                                        <a href="">
-                                            <i class="fas fa-eye" fa-lg></i>
+                                        <a href="" title="View" class="m-2">
+                                            <i class="fas fa-eye fa-lg"></i>
                                         </a>
-                                        <a href="">
+                                        <a href="" title="Edit" class="m-2">
                                             <i class="fas fa-edit fa-lg"></i>
-                                        </a>
+                                        </a> --}}
                                     </td>
                                 </tr>
-
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No Students record found</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -127,21 +132,31 @@
         }
     </style>
     <!-- Initialize DataTable with export buttons -->
-    <script>
-        $('#example').DataTable({
-  dom: 'Bfrtip',
-  buttons: [
-    {
-      extend: 'excel',
-      text: 'Excel',
-      className: 'btn btn-sm btn-success'
-    },
-    {
-      extend: 'pdf',
-      text: 'PDF',
-      className: 'btn btn-sm btn-danger'
-    }
-  ]
-});
-    </script>
+  <!-- livewire/students.blade.php -->
+
+<script>
+    $('#example').DataTable({
+        // responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel me-1"></i>Excel',
+                className: 'btn btn-sm btn-success mb-3',
+                exportOptions: {
+                    columns: ':all'
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf me-1"></i>PDF',
+                className: 'btn btn-sm btn-danger mb-3',
+                exportOptions: {
+                    columns: ':all'
+                }
+            }
+        ]
+    });
+</script>
+
 </div>

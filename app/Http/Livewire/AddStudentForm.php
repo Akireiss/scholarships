@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 
 use App\Models\Campus;
+use App\Models\Grantee;
+use App\Models\Student;
 use Livewire\Component;
 use App\Models\AuditLog;
 use App\Models\Barangay;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class AddStudentForm extends Component
 {
     use Variables;
+
 
     protected $rules = [
         'student_id' => 'required',
@@ -35,6 +38,8 @@ class AddStudentForm extends Component
         'father' => 'required',
         'mother' => 'required',
     ];
+
+
     public function updatedStudentType($value)
     {
         if ($value === 'New') {
@@ -59,12 +64,12 @@ class AddStudentForm extends Component
     }
 
 
-    public function saveStudent()
+    public function saveStudent(Student $studentModel, Grantee $granteeModel)
     {
         $this->validate();
 
                 // Save the student data to the database
-                $student = new \App\Models\Student([
+                $student = $studentModel->create([
                     'student_id' => $this->student_id,
                     'lastname' => $this->lastname,
                     'firstname' => $this->firstname,
@@ -89,8 +94,9 @@ class AddStudentForm extends Component
                     $student->save();
 
                     // Save the student ID in the grantees table as a foreign key
-                    $grantee = new \App\Models\Grantee([
-                        'student_id' => $student->student_id,
+                    $grantee = $granteeModel->create([
+                        'student_id' => $student
+                        
                     ]);
 
                     $grantee->save();
@@ -143,10 +149,7 @@ class AddStudentForm extends Component
         } else {
             $this->barangays = [];
         }
-        return view('livewire.add-student-form',[
-            'campuses' => $this->campuses,
-            'provinces' => $this->provinces,
-        ]);
+        return view('livewire.add-student-form');
     }
 
     private function resetForm()

@@ -116,7 +116,6 @@
                                             <a href="{{ route('scholar.edit', ['scholar' => $scholarship->id]) }}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-
                                         </td>
                                     </tr>
                                     @empty

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('grantees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->string('student_id');
+            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->string('semester');
             $table->string('school_year');
             $table->tinyInteger('scholarship_type')->comment('0: Government, 1: Private');

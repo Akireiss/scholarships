@@ -12,7 +12,7 @@ class Municipal extends Model
 
     protected $table = 'municipals';
     protected $primaryKey = 'id';
-    protected $fillable = ['psgcCode', 'citynumDesc', 'regCode', 'provCode', 'citynumCode'];
+    protected $fillable = ['psgcCode', 'citymunDesc', 'regCode', 'provCode', 'citymunCode'];
 
     public function province()
     {

@@ -6,42 +6,30 @@
                     <div class="card-body shadow-lg">
                         <form wire:submit.prevent="saveStudent">
                             @csrf
-                            <div class="row justify-content-center">
-                                <div class="d-flex flex-column align-items-center">
-                                    <img src="{{ asset('assets/images/updated.png') }}" class="img-fluid"
-                                        style="width: 150px; height: 150px;" alt="dmmmsu-logo">
-                                </div>
-                                <div class="col-md-4 text-center">
-                                    <label class="form-check-label fw-bold mb-1" for="semester">Semester</label>
-                                    <select
-                                        class="form-select form-select-sm mb-2 @error('semester') is-invalid @enderror"
-                                        wire:model="semester">
-                                        <option selected>Choose semester</option>
-                                        <option value="1">1st</option>
-                                        <option value="2">2nd</option>
-                                    </select>
-                                    @error('semester')
+                            <div class="row">
+                                <!-- Student ID -->
+                                <div class="col-md-3 position-relative mt-0">
+                                    <label class="form-label" for="student_id">Student ID</label>
+                                    <input type="text" id="student_id" value=""
+                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror" wire:model="student_id" name="student_id"
+                                        maxlength="10" />
+                                    @error('student_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4 text-center">
-                                    <label class="form-check-label fw-bold mb-1" for="selectedYear">School Year</label>
-                                    <select
-                                        class="form-select form-select-sm @error('selectedYear') is-invalid @enderror"
-                                        wire:model="selectedYear">
-                                        <option selected>Choose below...</option>
-                                        @foreach($years as $year)
-                                        <option value="{{ $year->school_year }}">{{ $year->school_year }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('selectedYear')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function()
+                                    {
+                                        const studentIdInput = document.getElementById("student_id");
+                                        studentIdInput.addEventListener("input", function() {
+                                        let inputText = this.value.replace(/\D/g, "").substring(0, 10);
+                                        let formattedText = inputText.replace(/(\d{3})(\d{4})(\d{1,2})/, "$1-$2-$3");
+                                        this.value = formattedText;
+                                        });
+                                    });
+                                </script>
                             </div>
 
                             <div class="row align-items-center">
@@ -67,8 +55,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input @error('studentType') is-invalid @enderror"
                                                 type="radio" name="studentType" id="check{{ $type }}"
-                                                value="{{ $type }}" wire:model="studentType"
-                                                wire:click="{{ $type === 'New' ? 'showNewInput' : 'hideNewInput' }}">
+                                                value="{{ $type }}" wire:model="studentType">
                                             <label class="form-check-label" style="margin-left: 0%; margin-right:20px;"
                                                 for="check{{ $type }}">{{ $type
                                                 }}</label>
@@ -84,8 +71,7 @@
                             </div>
                             {{-- end --}}
 
-                            <div class="col-12 col-md-6 col-lg-6 mx-3 my-3" id="newInput"
-                                style="display: {{ $showNewInput ? 'block' : 'none' }}">
+                            <div class="col-12 col-md-6 col-lg-6 mx-3 my-3">
                                 <p><span class="text-danger">*</span>
                                     If new, indicate name of school last attended:
                                 </p>
@@ -99,18 +85,6 @@
                                     wire:model.defer="lastYear">
                             </div>
 
-                            <script>
-                                // Livewire component initialization
-                                        Livewire.on('hideNewInput', () => {
-                                            document.getElementById('newInput').style.display = 'none';
-                                        });
-
-                                        Livewire.on('showNewInput', () => {
-                                            document.getElementById('newInput').style.display = 'block';
-                                        });
-                            </script>
-                            {{-- end --}}
-
 
                             <div class="row">
                                 <p class="fw-bold fs-5">I. STUDENT INFORMATION</p>
@@ -118,8 +92,7 @@
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label" for="lastname" name="lastname">Last name</label>
                                     <input type="text" id="lastname"
-                                        class="form-control form-control-sm @error('lastname') is-invalid @enderror"
-                                        wire:model="lastname" />
+                                        class="form-control form-control-sm @error('lastname') is-invalid @enderror"/>
                                     @error('lastname')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -130,8 +103,7 @@
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label" for="firstname" name="firstname">First name</label>
                                     <input type="text" id="firstname"
-                                        class="form-control form-control-sm @error('firstname') is-invalid @enderror"
-                                        wire:model="firstname" />
+                                        class="form-control form-control-sm @error('firstname') is-invalid @enderror"/>
                                     @error('firstname')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -160,7 +132,8 @@
                                     <label class="form-label">Province</label>
                                     <select class="form-select" aria-label="Default select example"
                                         wire:model="selectedProvince">
-                                        <option value="" selected>Select Province</option>
+                                        <option value="" selected></option>
+                                        <option value="" >Select Province</option>
                                         @foreach ($provinces as $province)
                                         <option value="{{ $province->provCode }}">{{ $province->provDesc }}</option>
                                         @endforeach
@@ -281,37 +254,6 @@
                             {{-- courses here --}}
 
                             <div class="row mt-3 mb-3">
-                                <!-- Student ID -->
-                                <div class="col-md-3 position-relative mt-0">
-                                    <label class="form-label" for="student_id">Student ID</label>
-                                    <input type="text" id="student_id"
-                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror"
-                                        wire:keydown="checkScholarshipLimit" wire:model="student_id" name="student_id"
-                                        maxlength="10" />
-                                    @error('student_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                    @if ($scholarshipLimitExceeded)
-                                    <div class="alert alert-danger mt-2">
-                                        The student has reached the maximum scholarship limit.
-                                    </div>
-                                    @endif
-                                </div>
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function()
-                                                        {
-                                                            const studentIdInput = document.getElementById("student_id");
-                                                                studentIdInput.addEventListener("input", function() {
-                                                                    let inputText = this.value.replace(/\D/g, "").substring(0, 10);
-                                                                    let formattedText = inputText.replace(/(\d{3})(\d{4})(\d{1,2})/, "$1-$2-$3");
-                                                                    this.value = formattedText;
-                                                            });
-                                                        });
-                                </script>
-
-                                {{-- id end --}}
                                 <!-- Level -->
                                 <div class="col-md-3 position-relative mt-0">
                                     <label class="form-label">Year level</label>
@@ -352,7 +294,7 @@
 
                             {{-- family --}}
                             <div class="row mb-4">
-                                <p class="fw-bold fs-5">I. FAMILY INFORMATION</p>
+                                <p class="fw-bold fs-5">II. FAMILY INFORMATION</p>
 
                                 <div class="col-md-6 position-relative mt-0">
                                     <label class="form-label" for="father" name="father">Father's Full
@@ -383,16 +325,47 @@
                             {{-- end --}}
 
 
+                            <div class="row justify-content-center">
+                                <div class="col-md-4 text-center">
+                                    <label class="form-check-label fw-bold mb-1" for="semester">Semester</label>
+                                    <select
+                                        class="form-select form-select-sm mb-2 @error('semester') is-invalid @enderror"
+                                        wire:model="semester">
+                                        <option selected>Choose semester</option>
+                                        <option value="1">1st</option>
+                                        <option value="2">2nd</option>
+                                    </select>
+                                    @error('semester')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <label class="form-check-label fw-bold mb-1" for="selectedYear">School Year</label>
+                                    <select
+                                        class="form-select form-select-sm @error('selectedYear') is-invalid @enderror"
+                                        wire:model="selectedYear">
+                                        <option selected>Choose below...</option>
+                                        @foreach($years as $year)
+                                        <option value="{{ $year->school_year }}">{{ $year->school_year }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('selectedYear')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
                             {{-- start --}}
-
                             <div class="row mt-2 mx-3 mb-3">
-
-
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-                                        {{-- Scholarship 1 (Government Scholarship) --}}
+                                        <h5>Scholarships</h5>
                                         <div class="mb-4">
-                                            <h5>Scholarship 1 (Government Scholarship)</h5>
                                             <div class="grid col-6 col-md-12">
                                                 <div class="mb-2">
                                                     <label for="government_scholarship" class="mb-2">Government

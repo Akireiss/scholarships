@@ -12,7 +12,7 @@ class Barangay extends Model
 
     protected $table = 'barangays';
     protected $primaryKey = 'id';
-    protected $fillable = ['brgyCode', 'brgyDesc', 'regCode', 'provCode', 'citynumCode'];
+    protected $fillable = ['brgyCode', 'brgyDesc', 'regCode', 'provCode', 'citymunCode'];
 
     public function municipal()
     {
