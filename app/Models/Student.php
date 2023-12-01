@@ -34,32 +34,29 @@ class Student extends Model
 
     public function campus()
     {
-        return $this->belongsTo(Campus::class);
+        return $this->belongsTo(Campus::class, 'campus');
     }
 
-
-    // Define the relationship with the Province model (assuming the "addresses" table has a foreign key "province_id")
     public function province()
     {
-        return $this->belongsTo(Province::class, 'id');
+        return $this->belongsTo(Province::class, 'province', 'provCode');
     }
 
-    // Define the relationship with the Municipal model (assuming the "addresses" table has a foreign key "municipal_id")
     public function municipal()
     {
-        return $this->belongsTo(Municipal::class, 'id');
+        return $this->belongsTo(Municipal::class, 'municipal', 'citymunCode');
     }
 
-    // Define the relationship with the Barangay model (assuming the "addresses" table has a foreign key "barangay_id")
     public function barangay()
     {
-        return $this->belongsTo(Barangay::class, 'id');
+        return $this->belongsTo(Barangay::class, 'barangay', 'brgyCode');
     }
 
     public function scholarshipName()
     {
-         return $this->belongsTo(ScholarshipName::class);
+        return $this->belongsTo(ScholarshipName::class);
     }
+
     public function grantee()
     {
         return $this->hasOne(Grantee::class, 'student_id', 'id');

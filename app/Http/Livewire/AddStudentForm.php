@@ -95,8 +95,12 @@ class AddStudentForm extends Component
 
                     // Save the student ID in the grantees table as a foreign key
                     $grantee = $granteeModel->create([
-                        'student_id' => $student
-                        
+                        'student_id' => $student->student_id,
+                        'semester' => '',
+                        'school_year' => '',
+                        'scholarship_type' => '',
+                        'scholarship_name' => '',
+
                     ]);
 
                     $grantee->save();
@@ -110,7 +114,7 @@ class AddStudentForm extends Component
                     $user = Auth::user();
                     AuditLog::create([
                         'user_id' => $user->id,
-                        'action' => 'Added ' .$this->firstname .$this->lastname. ' as a new scholars',
+                        'action' => 'Added a new student',
                         'data' => json_encode('Added by '. $user->name),
                     ]);
 

@@ -10,13 +10,11 @@ class Students extends Component
 {
     public $students;
 
-    public function mount()
-    {
-        $this->students = Student::with('grantee')->get();
-    }
-
     public function render()
     {
-        return view('livewire.students');
+        $this->students = Student::with('grantee')->get();
+        return view('livewire.students',[
+            'students' => $this->students,
+        ]);
     }
 }

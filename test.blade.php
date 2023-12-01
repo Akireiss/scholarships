@@ -2402,3 +2402,67 @@ class Student extends Model
 
 
 
+
+
+
+            <th hidden>Email Address</th>
+                                    <th hidden>Sex</th>
+                                    <th hidden>Status</th>
+                                    <th hidden>Barangay</th>
+                                    <th hidden>Municipal</th>
+                                    <th hidden>Province</th>
+                                    <th hidden>Campus</th>
+                                    <th hidden>Course/Program</th>
+                                    <th>Year Level</th>
+                                    <th>Semester</th>
+                                    <th hidden>School year</th>
+                                    <th hidden>Father's Full name</th>
+                                    <th hidden>Mother's Full name</th>
+                                    <th hidden>Contact Number</th>
+                                    <th hidden>Type of Student</th>
+                                    <th hidden>Name of School Last Attended</th>
+                                    <th hidden>Last School Year Attended</th>
+                                    <th>Recepient</th>
+                                    <th>Type of Scholarship</th>
+                                    <th hidden>Remarks</th>
+                                    <th>Action</th>
+
+
+
+
+
+                                    <td hidden>{{ $student->email }}</td> <!-- Email Address -->
+                                    <td hidden>{{ $student->sex }}</td> <!-- Sex -->
+                                    <td hidden>{{ $student->status }}</td> <!-- Status -->
+                                    <td hidden>{{ $student->barangay }}</td> <!-- Barangay -->
+                                    <td hidden>{{ $student->municipal }}</td> <!-- Municipal -->
+                                    <td hidden>{{ $student->province }}</td> <!-- Province -->
+                                    <td hidden>{{ $student->campus }}</td> <!-- Campus -->
+                                    <td hidden>{{ $student->course }}</td> <!-- Course/Program -->
+                                    <td>{{ $student->level }}</td> <!-- Year Level -->
+                                    <td>{{ $student->grantee->semester ?? 'No Data' }}</td> <!-- Semester -->
+                                    <td hidden>{{ $student->grantee->school_year ?? 'No Data' }}</td>
+                                    <!-- School year -->
+                                    <td hidden>{{ $student->father }}</td> <!-- Father's Full name -->
+                                    <td hidden>{{ $student->mother }}</td> <!-- Mother's Full name -->
+                                    <td hidden>{{ $student->contact }}</td> <!-- Contact Number -->
+                                    <td hidden>{{ $student->studentType }}</td> <!-- Type of Student -->
+                                    <td hidden>{{ $student->nameSchool ?? 'No Data' }}</td>
+                                    <!-- Name of School Last Attended -->
+                                    <td hidden>{{ $student->lastYear ?? 'No Data' }}</td>
+                                    <!-- Last School Year Attended -->
+                                    <td>{{ $student->grantee->scholarship_name ?? 'No Data' }}</td> <!-- Recipient -->
+                                    <td>{{ $student->grantee->scholarship_type ?? 'No Data' }}</td>
+                                    <!-- Type of Scholarship -->
+                                    <td hidden>{{ $student->student_status }}</td> <!-- Remarks -->
+                                    <td class="m-2">
+                                        <a href="{{ route('admin.scholarship.grantees')}}" title="Add">
+                                            <i class="fas fa-plus fa-lg"></i>
+                                        </a>
+                                        <a href="" title="View" class="m-2">
+                                            <i class="fas fa-eye fa-lg"></i>
+                                        </a>
+                                        <a href="" title="Edit" class="m-2">
+                                            <i class="fas fa-edit fa-lg"></i>
+                                        </a>
+                                    </td>

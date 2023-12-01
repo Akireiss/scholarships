@@ -4,15 +4,15 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body shadow-lg">
-                        <form wire:submit.prevent="saveStudent">
+                        <form>
                             @csrf
                             <div class="row">
                                 <!-- Student ID -->
                                 <div class="col-md-3 position-relative mt-0">
                                     <label class="form-label" for="student_id">Student ID</label>
                                     <input type="text" id="student_id" value=""
-                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror" wire:model="student_id" name="student_id"
-                                        maxlength="10" />
+                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror"
+                                        wire:model="student_id" name="student_id" maxlength="10" />
                                     @error('student_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -92,7 +92,7 @@
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label" for="lastname" name="lastname">Last name</label>
                                     <input type="text" id="lastname"
-                                        class="form-control form-control-sm @error('lastname') is-invalid @enderror"/>
+                                        class="form-control form-control-sm @error('lastname') is-invalid @enderror" />
                                     @error('lastname')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -103,7 +103,7 @@
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label" for="firstname" name="firstname">First name</label>
                                     <input type="text" id="firstname"
-                                        class="form-control form-control-sm @error('firstname') is-invalid @enderror"/>
+                                        class="form-control form-control-sm @error('firstname') is-invalid @enderror" />
                                     @error('firstname')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -133,7 +133,7 @@
                                     <select class="form-select" aria-label="Default select example"
                                         wire:model="selectedProvince">
                                         <option value="" selected></option>
-                                        <option value="" >Select Province</option>
+                                        <option value="">Select Province</option>
                                         @foreach ($provinces as $province)
                                         <option value="{{ $province->provCode }}">{{ $province->provDesc }}</option>
                                         @endforeach
@@ -325,8 +325,8 @@
                             {{-- end --}}
 
 
-                            <div class="row justify-content-center">
-                                <div class="col-md-4 text-center">
+                            <div class="row align-items-start justify-content-start">
+                                <div class="col-md-4">
                                     <label class="form-check-label fw-bold mb-1" for="semester">Semester</label>
                                     <select
                                         class="form-select form-select-sm mb-2 @error('semester') is-invalid @enderror"
@@ -341,7 +341,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4 text-center">
+                                <div class="col-md-4">
                                     <label class="form-check-label fw-bold mb-1" for="selectedYear">School Year</label>
                                     <select
                                         class="form-select form-select-sm @error('selectedYear') is-invalid @enderror"
@@ -361,43 +361,28 @@
 
 
                             {{-- start --}}
-                            <div class="row mt-2 mx-3 mb-3">
+                            <div class="row mt-3 mx-5 mb-3">
                                 <div class="row">
+                                    <h3 class="text-start">Scholarships</h3>
                                     <div class="col-12 col-md-6">
-                                        <h5>Scholarships</h5>
+
                                         <div class="mb-4">
                                             <div class="grid col-6 col-md-12">
                                                 <div class="mb-2">
-                                                    <label for="government_scholarship" class="mb-2">Government
-                                                        Scholarship
-                                                        Name</label>
-                                                    <select wire:model="selectedGovernmentScholarship"
-                                                        id="government_scholarship"
+                                                    <label for="scholarshipType" class="mb-2">Scholarship Type</label>
+                                                    <select wire:model="selectedScholarshipType1" id="scholarshipType"
                                                         class="form-select form-select-sm mb-2">
-                                                        <option value="">Select Scholarship Name</option>
-                                                        @foreach ($governmentScholars as $governmentScholar)
-                                                        <option value="{{ $governmentScholar->id }}">{{
-                                                            $governmentScholar->name }}</option>
-                                                        @endforeach
+                                                        <option value="">Select Scholarship Type</option>
+                                                        <option value="0">Government</option>
+                                                        <option value="1">Private</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 mt-2">
-                                                    <label for="government_fund_sources">Government Scholarship Fund
-                                                        Sources</label>
-                                                    <select id="government_fund_sources"
-                                                        class="form-select form-select-sm"
-                                                        wire:model="selectedGovernmentFundSources">
+                                                    <label for="fund_sources">Fund Sources</label>
+                                                    <select id="fund_sources" class="form-select form-select-sm"
+                                                        wire:model="selectedtFundSources1">
                                                         <option selected>Select Fund Source</option>
-                                                        @if ($selectedGovernmentScholarship)
-                                                        @foreach ($governmentScholars as $governmentScholar)
-                                                        @if ($governmentScholar->id == $selectedGovernmentScholarship)
-                                                        @foreach ($governmentScholar->fundsources as $fundSource)
-                                                        <option value="{{ $fundSource->source_id }}">{{
-                                                            $fundSource->source_name }}</option>
-                                                        @endforeach
-                                                        @endif
-                                                        @endforeach
-                                                        @endif
+                                                        <option></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -408,43 +393,23 @@
                                     <div class="col-12 col-md-6">
                                         {{-- Scholarship 2 (Private Scholarship) --}}
                                         <div class="mb-4">
-                                            <h5>Scholarship 2 (Private Scholarship)</h5>
                                             <div class="mb-2">
-                                                <label for="private_scholarship" class="mb-2">Private Scholarship
-                                                    Name</label>
-                                                <select wire:model="selectedPrivateScholarship" id="private_scholarship"
-                                                    class="form-select form-select-sm mb-2">
-                                                    <option value="">Select Scholarship Name</option>
-                                                    @foreach ($privateScholars as $privateScholar)
-                                                    <option value="{{ $privateScholar->id }}">{{ $privateScholar->name
-                                                        }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('selectedPrivateScholarship') <span class="error">{{ $message
-                                                    }}</span> @enderror
+                                                <label for="scholarshipType" class="mb-2">Scholarship Type</label>
+                                                    <select wire:model="selectedScholarshipType2" id="scholarshipType"
+                                                        class="form-select form-select-sm mb-2">
+                                                        <option value="">Select Scholarship Type</option>
+                                                        <option value="0">Government</option>
+                                                        <option value="1">Private</option>
+                                                    </select>
                                             </div>
 
                                             <div class="mb-2 mt-2">
-                                                <label for="private_fund_sources">Private Scholarship Fund
-                                                    Sources</label>
-                                                <select id="private_fund_sources" class="form-select form-select-sm"
-                                                    wire:model="selectedPrivateFundSources">
+                                                <label for="fund_sources">Fund Sources</label>
+                                                <select id="fund_sources" class="form-select form-select-sm"
+                                                    wire:model="selectedtFundSources2">
                                                     <option selected>Select Fund Source</option>
-                                                    @if ($selectedPrivateScholarship)
-                                                    @foreach ($privateScholars as $privateScholar)
-                                                    @if ($privateScholar->id == $selectedPrivateScholarship)
-                                                    @foreach ($privateScholar->fundsources as $fundSource)
-                                                    <option value="{{ $fundSource->source_id }}">{{
-                                                        $fundSource->source_name
-                                                        }}</option>
-                                                    @endforeach
-                                                    @endif
-                                                    @endforeach
-                                                    @endif
+                                                    <option></option>
                                                 </select>
-                                                @error('selectedPrivateFundSources') <span class="error">{{ $message
-                                                    }}</span> @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -483,7 +448,7 @@
                                         {{-- ends here --}}
                                     </div>
                                 </div>
-
+                            </div>
                         </form>
                     </div>
                 </div>
