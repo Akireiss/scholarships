@@ -2,6 +2,8 @@
 
 
 
+
+
         namespace App\Http\Livewire;
 
         use App\Models\Student;
@@ -9,7 +11,8 @@
         use App\Models\ScholarshipName;
         use App\Models\SchoolYear;
         use Illuminate\Support\Facades\Redirect;
-
+        use App\Models\Grantee;
+        use App\Models\Campus;
 
         class ScholarshipCountGovernment extends Component
         {
@@ -49,12 +52,12 @@
             // ends
             public function render()
             {
-                // $data = $this->getChartData();
-                // // Initialize the chart when rendering the component
+                $data = $this->fetchCampusChartData();
+
                 // $this->initializeChart();
 
                 return view('livewire.scholarship-count-government', [
-                    // 'data' => $data,
+                    'data' => $data,
                 ]);
             }
 
@@ -73,39 +76,36 @@
                 $this->selectedYear = 'allYear';
             }
 
+            public function fetchCampusChartData()
+                {
+                    // Fetch all unique campus names as default labels
+                    $defaultLabels = Campus::pluck('campus_name')->toArray();
 
-            // public function initializeChart()
-            // {
-            //     $this->emit('renderChart', ['labels' => $this->dataLabels(), 'values' => $this->dataValues()]);
-            // }
+                    $query = Grantee::when($this->selectedSources !== 'All', function ($query) {
+                        return $query->where('scholarship_name', $this->selectedSources);
+                    })
+                    ->when($this->selectedYear !== 'allYear', function ($query) {
+                        return $query->where('school_year', $this->selectedYear);
+                    })
+                    ->join('students', 'grantees.student_id', '=', 'students.student_id')
+                    ->join('campuses', 'students.campus', '=', 'campuses.id') // Assuming the column name is campus_id
+                    ->select('campuses.campus_name'); // Select campus_name instead of campus_id
 
-            // private function getChartData()
-            // {
-            //     $data = Student::join('campuses', 'students.campus', '=', 'campuses.campusDesc')
-            //     ->when($this->selectedSources != 'All', function ($query) {
-            //         return $query->where('students.grant', $this->selectedSources);
-            //     })
-            //     ->when($this->selectedYear != 'allYear', function ($query) {
-            //         return $query->where('students.school_year', $this->selectedYear);
-            //     })
-            //     ->select('campuses.campus_name as campus', DB::raw('count(*) as count'))
-            //     ->groupBy('campuses.campus_name')
-            //     ->get();
+                    $campusData = $query->get()->groupBy('campuses.campus_name');
 
-            //     return $data;
-            // }
+                    if ($campusData->isEmpty()) {
+                        // Use the default labels and set values to 0
+                        $labels = $defaultLabels;
+                        $values = [];
+                    } else {
+                        // Use the retrieved labels and values
+                        $labels = $campusData->keys()->toArray();
+                        $values = $campusData->map->count()->toArray();
+                    }
 
+                    $this->emit('renderChart', ['labels' => $labels, 'values' => $values]);
+                }
 
-
-            // private function dataLabels()
-            // {
-            //     return $this->getChartData()->pluck('campus')->toArray();
-            // }
-
-            // private function dataValues()
-            // {
-            //     return $this->getChartData()->pluck('count')->toArray();
-            // }
 
 
         }

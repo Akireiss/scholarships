@@ -110,7 +110,7 @@
                     class="form-select form-select-sm mb-3">
                     <option value="All" {{ $selectedSources==='All' ? 'selected' : '' }}>All</option>
                     @foreach($fundSources as $source)
-                    <option value="{{ $source->source_id }}">{{ $source->source_name }}</option>
+                    <option value="{{ $source->id }}">{{ $source->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -127,7 +127,6 @@
                 <label for="applyFilters" class="form-label">Filter</label>
                 <button class="btn btn-sm btn-primary form-control">Apply Filters</button>
             </div>
-            {{-- wire:click="initializeChart" --}}
         </div>
 
         {{-- line chart --}}
@@ -135,62 +134,58 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <canvas id="myChart" wire:ignore></canvas>
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        {{-- <script defer src="{{ asset('assets/js/lib.js') }}"></script>
-        <script>
-            document.addEventListener('livewire:load', function () {
-                Livewire.on('renderChart', function (data) {
-                    renderChart(data);
-                });
-
-                function getRandomColor() {
-                    var letters = '0123456789ABCDEF';
-                    var color = '#';
-                    for (var i = 0; i < 6; i++) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    return color;
-                }
-
-                function renderChart(data) {
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var backgroundColors = data.labels.map(function () {
-                        return getRandomColor();
-                    });
-
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                label: 'Grantees per Campus',
-                                data: data.values,
-                                backgroundColor: backgroundColors,
-                                borderColor: backgroundColors,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('livewire:load', function () {
+        @this.on('renderChart', function (data){
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const config = {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Student',
+                        data: data.values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
-                    });
-
-                    // Log the chart instance to the console for debugging
-
-                }
-            });
-        </script>
-        --}}
+                    }
+                },
+            };
+            const myChart = new Chart(ctx, config);
+        });
+    });
+</script>
 
 
 
@@ -204,7 +199,8 @@
         .btn-primary:hover {
             background-color: #148697 !important;
         }
-        a{
+
+        a {
             color: black;
             text-decoration: none;
         }

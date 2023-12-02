@@ -21,6 +21,10 @@
     class Grantees extends Component
     {
         use Variables;
+        public $selectedScholarshipType1;
+        public $selectedScholarshipType2;
+        public $fundSources1 = [];
+        public $fundSources2 = [];
 
 
             protected $rules = [
@@ -29,13 +33,12 @@
                 'selectedYear' => 'required',
             ];
 
-
-
-
         public function fetchSchoolYears()
         {
             $this->years = SchoolYear::orderBy('school_year', 'desc')->limit(5)->get();
         }
+
+
 
 
         public function saveStudent()
@@ -43,21 +46,8 @@
 
             $this->validate();
 
-                $campus = Campus::findOrFail($this->selectedCampus);
-                $course = Course::findOrFail($this->selectedCourse);
-
-                // Get the province, municipal, and barangay names based on their IDs
-                $province = Province::where('provCode', $this->selectedProvince)->firstOrFail();
-                $municipality = Municipal::where('citymunCode', $this->selectedMunicipality)->firstOrFail();
-                $barangay = Barangay::where('brgyCode', $this->selectedBarangay)->firstOrFail();
-
         $privateStudentData = [
-            'campus' => $campus->campusDesc,
-            'course' => $course->course_name,
-            'lastname' => $this->lastname,
-            'firstname' => $this->firstname,
-            'initial' => $this->initial,
-            'province' => $province->provDesc,
+
         ];
 
         $privateStudent = Student::create($privateStudentData);
@@ -76,7 +66,34 @@
         ]);
         }
 
+        public function updatedSelectedScholarshipType1()
+        {
+            $this->fundSources1 = $this->getFundSources($this->selectedScholarshipType1);
+        }
 
+        public function updatedSelectedScholarshipType2()
+        {
+            $this->fundSources2 = $this->getFundSources($this->selectedScholarshipType2);
+        }
+
+        private function getFundSources($scholarshipType)
+        {
+            // Fetch fund sources based on the selected scholarship type
+            $scholarshipTypeAttribute = $this->mapScholarshipType($scholarshipType);
+
+            // Replace this with your actual logic to fetch fund sources
+            $fundSources = ScholarshipName::where('scholarship_type', $scholarshipTypeAttribute)
+                ->pluck('name')
+                ->toArray();
+
+            return $fundSources;
+        }
+
+        private function mapScholarshipType($selectedType)
+        {
+            // Map Livewire selected type to actual database value
+            return $selectedType === 'Government' ? 0 : ($selectedType === 'Private' ? 1 : null);
+        }
 
 
         public function render()
@@ -85,9 +102,13 @@
             // Call the methods to fetch scholarship data
             $this->fetchSchoolYears();
 
-
-            // Fetch campuses and courses
-            $this->campuses = Campus::all();
+            if (auth()->user()->role === 0 || auth()->user()->role === 1) {
+                // User is an admin or superadmin, fetch all campuses
+                $this->campuses = Campus::all();
+            } else {
+                // User is not an admin or superadmin, fetch campuses based on specific conditions
+                $this->campuses = Campus::where('id', 1)->get();
+            }
 
             if ($this->selectedCampus) {
                 $campus = Campus::findOrFail($this->selectedCampus);

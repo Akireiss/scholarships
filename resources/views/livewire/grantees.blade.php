@@ -368,21 +368,24 @@
 
                                         <div class="mb-4">
                                             <div class="grid col-6 col-md-12">
-                                                <div class="mb-2">
-                                                    <label for="scholarshipType" class="mb-2">Scholarship Type</label>
-                                                    <select wire:model="selectedScholarshipType1" id="scholarshipType"
+                                                <!-- Scholarship 1 -->
+                                                <div class="mb-2 mt-2">
+                                                    <label for="scholarshipType1" class="mb-2">Scholarship Type</label>
+                                                    <select wire:model="selectedScholarshipType1" id="scholarshipType1"
                                                         class="form-select form-select-sm mb-2">
                                                         <option value="">Select Scholarship Type</option>
-                                                        <option value="0">Government</option>
-                                                        <option value="1">Private</option>
+                                                        <option value="Government">Government</option>
+                                                        <option value="Private">Private</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 mt-2">
-                                                    <label for="fund_sources">Fund Sources</label>
-                                                    <select id="fund_sources" class="form-select form-select-sm"
+                                                    <label for="fund_sources1">Fund Sources</label>
+                                                    <select id="fund_sources1" class="form-select form-select-sm"
                                                         wire:model="selectedtFundSources1">
                                                         <option selected>Select Fund Source</option>
-                                                        <option></option>
+                                                        @foreach($fundSources1 as $fundSource)
+                                                        <option value="{{ $fundSource }}">{{ $fundSource }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -393,62 +396,64 @@
                                     <div class="col-12 col-md-6">
                                         {{-- Scholarship 2 (Private Scholarship) --}}
                                         <div class="mb-4">
-                                            <div class="mb-2">
-                                                <label for="scholarshipType" class="mb-2">Scholarship Type</label>
-                                                    <select wire:model="selectedScholarshipType2" id="scholarshipType"
-                                                        class="form-select form-select-sm mb-2">
-                                                        <option value="">Select Scholarship Type</option>
-                                                        <option value="0">Government</option>
-                                                        <option value="1">Private</option>
-                                                    </select>
+                                            <!-- Scholarship 2 -->
+                                            <div class="mb-2 mt-2">
+                                                <label for="scholarshipType2" class="mb-2">Scholarship Type</label>
+                                                <select wire:model="selectedScholarshipType2" id="scholarshipType2"
+                                                    class="form-select form-select-sm mb-2">
+                                                    <option value="">Select Scholarship Type</option>
+                                                    <option value="Government">Government</option>
+                                                    <option value="Private">Private</option>
+                                                </select>
                                             </div>
 
                                             <div class="mb-2 mt-2">
-                                                <label for="fund_sources">Fund Sources</label>
-                                                <select id="fund_sources" class="form-select form-select-sm"
+                                                <label for="fund_sources2">Fund Sources</label>
+                                                <select id="fund_sources2" class="form-select form-select-sm"
                                                     wire:model="selectedtFundSources2">
                                                     <option selected>Select Fund Source</option>
-                                                    <option></option>
+                                                    @foreach($fundSources2 as $fundSource)
+                                                    <option value="{{ $fundSource }}">{{ $fundSource }}</option>
+                                                    @endforeach
                                                 </select>
+                                            </div>
+                                            {{-- End Scholarship 2 (Private Scholarship) --}}
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-md-6 d-flex justify-content-center gap-4">
+                                                <button type="reset"
+                                                    class="btn btn-warning btn-md fw-bold text-dark mt-2">
+                                                    <i class="mdi mdi-close"></i>
+                                                    Reset
+                                                </button>
+                                                <button type="submit" wire:loading.attr='disabled'
+                                                    class="btn btn-success btn-md fw-bold text-dark mt-2">
+                                                    <i class="mdi mdi-content-save"></i>
+                                                    Save
+                                                </button>
+                                                <a type="button" class="btn btn-danger btn-md fw-bold text-dark mt-2"
+                                                    href="{{ route('admin.dashboard') }}">
+                                                    <i class="mdi mdi-close-circle"></i>
+                                                    Cancel
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{-- Display success message --}}
+                                                @if (session()->has('success'))
+                                                <div class="alert alert-success text-center">
+                                                    {{ session('success') }}
+                                                </div>
+                                                @endif
+                                                @if (session()->has('error'))
+                                                <div class="alert alert-danger text-center">
+                                                    {{ session('error') }}
+                                                </div>
+                                                @endif
+                                                {{-- ends here --}}
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- End Scholarship 2 (Private Scholarship) --}}
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-md-6 d-flex justify-content-center gap-4">
-                                        <button type="reset" class="btn btn-warning btn-md fw-bold text-dark mt-2">
-                                            <i class="mdi mdi-close"></i>
-                                            Reset
-                                        </button>
-                                        <button type="submit" wire:loading.attr='disabled'
-                                            class="btn btn-success btn-md fw-bold text-dark mt-2">
-                                            <i class="mdi mdi-content-save"></i>
-                                            Save
-                                        </button>
-                                        <a type="button" class="btn btn-danger btn-md fw-bold text-dark mt-2"
-                                            href="{{ route('admin.dashboard') }}">
-                                            <i class="mdi mdi-close-circle"></i>
-                                            Cancel
-                                        </a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{-- Display success message --}}
-                                        @if (session()->has('success'))
-                                        <div class="alert alert-success text-center">
-                                            {{ session('success') }}
-                                        </div>
-                                        @endif
-                                        @if (session()->has('error'))
-                                        <div class="alert alert-danger text-center">
-                                            {{ session('error') }}
-                                        </div>
-                                        @endif
-                                        {{-- ends here --}}
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>

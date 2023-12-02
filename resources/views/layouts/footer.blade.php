@@ -1,7 +1,5 @@
 <script defer src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}"></script>
-<script defer src="{{ asset('assets/js/chartjs-custom.js')}}"></script>
-<script defer src="{{ asset('assets/js/chartlibrary.js') }}"></script>
-<script defer src="{{ asset('assets/js/jquery.dataTables.min.js')}}"></script>
+
 
 <script>
     $(document).ready(function() {
