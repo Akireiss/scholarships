@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barangay;
-use App\Models\Campus;
-use App\Models\Municipal;
-use App\Models\Province;
 use App\Models\Student;
-use Illuminate\Http\Request;
+
 
 
 class StudentController extends Controller

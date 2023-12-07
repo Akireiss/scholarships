@@ -2466,3 +2466,41 @@ class Student extends Model
                                             <i class="fas fa-edit fa-lg"></i>
                                         </a>
                                     </td>
+
+
+
+
+
+
+
+
+        {{-- <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
+
+
+<!-- Include the required CSS libraries -->
+<link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/buttons-DataTables.min.css') }}">
+
+
+<!-- Include jQuery -->
+<script defer  src="{{ asset('assets/js/jquery.js') }}"></script>
+
+
+<!-- Include DataTables and DataTables Buttons scripts -->
+<script defer src="{{ asset('assets/js/jquery.DataTables.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/dataTables.buttons.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/jszip.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/pdfmake.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
+<script defer src="{{ asset('assets/js/buttons.html5.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/buttons.html5.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/buttons.html5.min.js') }}"></script>
+<script defer src="{{ asset('assets/js/buttons.print.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"> --}}
+
+
+
+
+{{-- <script src="{{ asset('assets/js/jquery.min.js') }}"></script> --}}
+
+        <!-- jQuery -->

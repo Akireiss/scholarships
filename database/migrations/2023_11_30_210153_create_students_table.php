@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('sex');
             $table->string('status');
-            $table->unsignedBigInteger('barangay');
-            $table->unsignedBigInteger('municipal');
-            $table->unsignedBigInteger('province');
+            $table->string('barangay');
+            $table->string('municipal');
+            $table->string('province');
             $table->unsignedBigInteger('campus');
             $table->string('course');
             $table->integer('level');
@@ -37,10 +37,6 @@ return new class extends Migration
 
             // Define the foreign key constraint
             $table->foreign('campus')->references('id')->on('campuses');
-            $table->foreign('barangay')->references('id')->on('barangays');
-            $table->foreign('municipal')->references('id')->on('municipals');
-            $table->foreign('province')->references('id')->on('provinces');
-            // $table->foreign('course')->references('course_id')->on('courses');
         });
     }
 

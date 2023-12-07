@@ -11,7 +11,7 @@
                             <div class="row">
                                 <div class="col-md-3 position-relative mt-0 mb-2">
                                     <label class="form-label" for="student_id">Student ID</label>
-                                    <input type="text" id="student_id"
+                                    <input type="tel" id="student_id"
                                         class="form-control form-control-sm @error('student_id') is-invalid @enderror"
                                         wire:model="student_id" name="student_id" maxlength="10" />
                                     @error('student_id')
@@ -19,11 +19,6 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                    {{-- @if ($scholarshipLimitExceeded)
-                                    <div class="alert alert-danger mt-2">
-                                        The student has reached the maximum scholarship limit.
-                                    </div>
-                                    @endif --}}
                                 </div>
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function()

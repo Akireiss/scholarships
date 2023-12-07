@@ -64,7 +64,7 @@ class AddStudentForm extends Component
     }
 
 
-    public function saveStudent(Student $studentModel, Grantee $granteeModel)
+    public function saveStudent(Student $studentModel)
     {
         $this->validate();
 
@@ -92,18 +92,6 @@ class AddStudentForm extends Component
                 ]);
                     // Save the student
                     $student->save();
-
-                    // Save the student ID in the grantees table as a foreign key
-                    $grantee = $granteeModel->create([
-                        'student_id' => $student->student_id,
-                        'semester' => '',
-                        'school_year' => '',
-                        'scholarship_type' => '',
-                        'scholarship_name' => '',
-
-                    ]);
-
-                    $grantee->save();
 
                     // Display success message
                     session()->flash('success', 'Student data saved successfully.');

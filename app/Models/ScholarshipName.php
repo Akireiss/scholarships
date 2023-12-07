@@ -19,7 +19,7 @@ class ScholarshipName extends Model
 
     public function getTypeScholarshipNameAttribute()
     {
-        $value = $this->attributes['scholarship_type'];
+        $value = optional($this->grantee)->scholarship_type;
         switch ($value) {
             case 0:
                 return 'Government';

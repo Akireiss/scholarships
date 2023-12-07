@@ -126,8 +126,8 @@ Route::put('campus-NLUC/scholarship/actions/edit/{student}', [StudentController:
 
 // add grantees
 // admin
-Route::get('/admin/scholarship/grantees', Grantees::class)->name('admin.scholarship.grantees');
-Route::get('admin/scholarship/grantees', [AddStudentController::class, 'grantees'])->name('admin.scholarship.grantees');
+Route::get('/admin/scholarship/grantees{{student}', Grantees::class)->name('admin.scholarship.grantees');
+Route::get('admin/scholarship/grantees/{student}', [AddStudentController::class, 'grantees'])->name('admin.scholarship.grantees');
 // staff
 Route::get('/staff/scholarship/grantees', Grantees::class)->name('staff.scholarship.grantees');
 Route::get('staff/scholarship/grantees', [AddStudentController::class, 'granteesStaff'])->name('staff.scholarship.grantees');
