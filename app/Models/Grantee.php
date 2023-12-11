@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\StudentGrantee;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Grantee extends Model
 {
@@ -16,9 +17,12 @@ class Grantee extends Model
         'scholarship_type',
         'scholarship_name',
     ];
-    public function student()
+    // public function student()
+    // {
+    //     return $this->belongsTo(Student::class);
+    // }
+    public function studentGrantee()
     {
-        return $this->belongsTo(Student::class);
+        return $this->hasMany(StudentGrantee::class, 'grantees_id');
     }
-
 }

@@ -29,6 +29,19 @@ class ScholarshipName extends Model
                 return 'No info';
         }
     }
+
+    public function getTypeScholarshipAttribute()
+    {
+        $value = $this->attributes['scholarship_type'];
+        switch ($value) {
+            case 0:
+                return 'Government';
+            case 1:
+                return 'Private';
+            default:
+                return 'No info';
+        }
+    }
     public function getStatusScholarshipNameAttribute()
     {
         $value = $this->attributes['status'];

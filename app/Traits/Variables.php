@@ -7,7 +7,8 @@ trait Variables
     public $selectedScholarship;
     // campus & course
     public $selectedCampus, $campuses;
-    public $selectedCourse, $courses = [];
+    public $selectedCourse = [];
+    public $courses = [];
 
     public $governmentScholars = [],  $selectedScholarshipType, $scholarshipType;
     public $privateScholars = [];
@@ -38,6 +39,10 @@ trait Variables
     public $showNewInput = false;
 
     public $grant;
+    public $selectedScholarshipType1;
+    public $selectedfundsources1;
+    public $selectedScholarshipType2;
+    public $selectedfund2sources2;
 
 
     public function showNewInput()

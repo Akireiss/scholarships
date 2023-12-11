@@ -13880,7 +13880,7 @@ dl {
 /* Navbar */
 .navbar {
   font-family: "ubuntu-light", sans-serif;
-  background: lightgreen;
+  background: linear-gradient(to right, #dc3545, #d33a49);
   transition: background 0.25s ease;
   -webkit-transition: background 0.25s ease;
   -moz-transition: background 0.25s ease;
@@ -13892,7 +13892,7 @@ dl {
     -webkit-transition: width 0.25s ease, background 0.25s ease;
     -moz-transition: width 0.25s ease, background 0.25s ease;
     -ms-transition: width 0.25s ease, background 0.25s ease;
-    background: lightgreen;
+    background: linear-gradient(to right, #dc3545, #d33a49); 
     width: 260px;
     height: 70px; }
     @media (max-width: 991px) {

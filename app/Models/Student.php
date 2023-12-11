@@ -36,6 +36,10 @@ class Student extends Model
     {
         return $this->belongsTo(Campus::class, 'campus');
     }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 
     public function province()
     {
@@ -60,6 +64,11 @@ class Student extends Model
     public function grantee()
     {
         return $this->hasOne(Grantee::class, 'student_id', 'id');
+    }
+
+    public function grantees()
+    {
+        return $this->hasMany(Grantee::class);
     }
 
     public function getStatusTextAttribute()

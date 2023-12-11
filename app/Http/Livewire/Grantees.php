@@ -2,15 +2,15 @@
 
 
     namespace App\Http\Livewire;
-    use App\Traits\Variables;
-    use App\Models\AuditLog;
+
     use App\Models\Campus;
+    use App\Models\Course;
+    use App\Traits\Variables;
+    use Illuminate\Support\Facades\Log;
+    use App\Models\AuditLog;
     use App\Models\Student;
     use Illuminate\Support\Facades\Auth;
     use Livewire\Component;
-    use App\Models\Barangay;
-    use App\Models\Province;
-    use App\Models\Municipal;
     use App\Models\ScholarshipName;
     use App\Models\SchoolYear;
 
@@ -23,6 +23,7 @@
         public $selectedfundsources1;
         public $selectedScholarshipType2;
         public $selectedfund2sources2;
+        public $studentId, $student;
 
             protected $rules = [
                 'student_id' => 'required',
@@ -64,59 +65,61 @@
         ]);
         }
 
+        public function mount($studentId)
+        {
+            $this->student = $studentId;
+            // Load the student details based on $studentId
+            $this->student = Student::findOrFail($studentId);
+           // $campus= Campus::findOrfail('selectedCampus');
+
+            $this->student_id= $this->student->student_id;
+            $this->lastname= $this->student->lastname;
+            $this->firstname= $this->student->firstname;
+            $this->initial= $this->student->initial;
+            $this->email= $this->student->email;
+            $this->sex= $this->student->sex;
+            $this->status= $this->student->status;
+            $this->selectedBarangay= $this->student->barangay;
+            $this->selectedMunicipality = $this->student->municipal;
+            $this->selectedProvince= $this->student->province;
+            $this->selectedCampus= $this->student->campus;
+            $this->selectedCourse= $this->student->course;
+            $this->level= $this->student->level;
+            $this->father= $this->student->father;
+            $this->mother= $this->student->mother;
+            $this->contact= $this->student->contact;
+            $this->studentType= $this->student->studentType;
+            $this->nameSchool = $this->student->nameSchool ?? "No data";
+            $this->lastYear= $this->student->lastYear ?? "No data";
+
+        }
 
         public function render()
         {
-
             // Call the methods to fetch scholarship data
             $this->fetchSchoolYears();
 
-            if (auth()->user()->role === 0 || auth()->user()->role === 1) {
-                // User is an admin or superadmin, fetch all campuses
-                $this->campuses = Campus::all();
-            } else {
-                // User is not an admin or superadmin, fetch campuses based on specific conditions
-                $this->campuses = Campus::where('id', 1)->get();
-            }
-
-            if ($this->selectedCampus) {
-                $campus = Campus::findOrFail($this->selectedCampus);
-                $this->courses = $campus->courses;
-            } else {
-                $this->courses = [];
-            }
-
-            // Fetch provinces
-            $this->provinces = Province::where('regCode', 01)->get();
-
-            // Fetch municipalities and barangays based on the selected province and municipality
-            if ($this->selectedProvince) {
-                $this->municipalities = Municipal::where('provCode', $this->selectedProvince)->get();
-            } else {
-                $this->municipalities = [];
-            }
-
-            if ($this->selectedMunicipality) {
-                $this->barangays = Barangay::where('citymunCode', $this->selectedMunicipality)->get();
-            } else {
-                $this->barangays = [];
-            }
-
+            // $student = Student::findOrFail($this->student);
             // Load fund sources based on the selected scholarship type for Scholarship 1
-        $fundSources1 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType1)->get();
+            $fundSources1 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType1)->get();
 
-        // Load fund sources based on the selected scholarship type for Scholarship 2
-        $fundSources2 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType2)->get();
+        // Load fund  based on the selected scholarship type for Scholarship 2
+            $fundSources2 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType2)->get();
+
+
+            $courses = Course::all();
 
             return view('livewire.grantees', [
-                'campuses' => $this->campuses,
-                'provinces' => $this->provinces,
                 'years' => $this->years,
                 'fundSources1' => $fundSources1,
                 'fundSources2' => $fundSources2,
+                'courses' => $courses,
+                'student' => $this->student
+                // 'student' => $this->student,
 
 
-            ]);
+
+            ])->extends('layouts.includes.admin.index')->section('content');
         }
 
         public function updatedSelectedScholarshipType1()
@@ -130,16 +133,5 @@
             // Reset fund sources when the scholarship type for Scholarship 2 changes
             $this->selectedfund2sources2 = null;
         }
-
-            // Method to reset the form fields
-            public function resetForm()
-            {
-                $this->semester = "";
-                $this->studentType = "";
-                $this->nameSchool = "";
-                $this->lastYear = "";
-                $this->father = "";
-                $this->mother = "";
-            }
 
     }

@@ -110,7 +110,7 @@
                                     @forelse($scholarships as $scholarship)
                                     <tr>
                                         <td>{{ $scholarship->name }}</td>
-                                        <td>{{ $scholarship->getTypeScholarshipNameAttribute() }}</td>
+                                        <td>{{ $scholarship->getTypeScholarshipAttribute() }}</td>
                                         <td>{{ $scholarship->getStatusScholarshipNameAttribute() }}</td>
                                         <td>
                                             <a href="{{ route('scholar.edit', ['scholar' => $scholarship->id]) }}">

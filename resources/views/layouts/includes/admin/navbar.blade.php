@@ -1,5 +1,5 @@
 {{-- navbar here --}}
-<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row bg.gradrient{success}">
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row danger-gradient">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img
                 src="{{ asset('assets/images/logo.png') }}" alt="logo" /></a>
@@ -34,7 +34,7 @@
                         @else
                             <p class="text-dark mb-0"> No students added today</p>
                         @endif
-                        
+
                         </div>
                     </a>
                     {{-- <div class="dropdown-divider"></div>
@@ -57,3 +57,4 @@
         </button>
     </div>
 </nav>
+

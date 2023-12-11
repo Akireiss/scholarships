@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class AddStudentController extends Controller
 {
-    public function grantees(Student $student)
+    public function grantees()
     {
 
-        return view('admin.scholarship.grantees', ['student' => $student]);
+        return view('admin.scholarship.grantees');
     }
-    public function granteesStaff(Request $request)
+    public function granteesStaff()
     {
         return view('staff.scholarship.grantees'  );
     }
-    public function granteesNLUC(Request $request)
+    public function granteesNLUC()
     {
         return view('campus-NLUC.scholarship.grantees'  );
     }
