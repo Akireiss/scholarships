@@ -64,7 +64,7 @@ class Student extends Model
 
     public function grantee()
     {
-        return $this->hasOne(Grantee::class, 'student_id', 'id');
+        return $this->hasOne(Grantee::class, 'student_id');
     }
 
     public function grantees()

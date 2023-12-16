@@ -127,6 +127,7 @@
                 ->addColumn('course')
                 ->addColumn('level')
                 ->addColumn('semester',  fn (Student $model) => $model->semester ?: "No Data")
+                ->addColumn('school_year', fn (Student $model) => $model->grantee ? $model->grantee->school_year : "No Data")
                 ->addColumn('father')
                 ->addColumn('mother')
                 ->addColumn('contact')
@@ -137,11 +138,11 @@
                     $grantee = $model->grantee;
 
                     if ($grantee instanceof Grantee) {
+                        // Display the name instead of the saved data
                         return optional($grantee->scholarshipName)->name ?? "No Data";
-                    } else {
-                        return "No Data";
                     }
                 })
+
                 ->addColumn('scholarshipType', function (Student $model) {
                     $grantee = $model->grantee;
 

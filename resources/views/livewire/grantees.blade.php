@@ -214,22 +214,6 @@
                                                 </div>
                                                 <div class="mb-2 mt-2">
                                                     <label for="fund_sources1">Fund Sources</label>
-                                                    {{-- <input class="form-control form-control-sm "
-                                                        value="{{ $studentGrant->scholarship_name }}"
-                                                        @if($studentGrant->scholarship_name) disabled @endif /> --}}
-
-
-                                                    {{-- <label for="fund_sources1">Fund Sources</label>
-                                                    <select id="fund_sources1" class="form-select form-select-sm"
-                                                        wire:model="selectedfundsources1"
-                                                        @if($studentGrant->scholarship_name) disabled @endif>
-                                                        <option value="{{ $studentGrant->scholarship_name }}">Select
-                                                            Fund Source</option>
-                                                        @foreach($fundSources1 as $source)
-                                                        <option value="{{ $source->id }}">{{ $source->name }}</option>
-                                                        @endforeach
-                                                    </select> --}}
-                                                    <label for="fund_sources1">Fund Sources</label>
                                                     <select id="fund_sources1" class="form-select form-select-sm"
                                                         wire:model="selectedfundsources1"
                                                         @if($studentGrant->scholarship_name) disabled @endif>

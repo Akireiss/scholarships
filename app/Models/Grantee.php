@@ -25,4 +25,8 @@ class Grantee extends Model
     {
         return $this->hasMany(StudentGrantee::class, 'grantees_id');
     }
+    public function scholarshipName()
+    {
+        return $this->belongsTo(ScholarshipName::class, 'scholarship_name');
+    }
 }
