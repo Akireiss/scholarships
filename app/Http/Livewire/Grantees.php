@@ -5,6 +5,9 @@
 
     use App\Models\Campus;
     use App\Models\Course;
+    use App\Models\Barangay;
+    use App\Models\Municipal;
+    use App\Models\Province;
     use App\Traits\Variables;
     use Illuminate\Support\Facades\Log;
     use App\Models\AuditLog;
@@ -70,7 +73,6 @@
             $this->student = $studentId;
             // Load the student details based on $studentId
             $this->student = Student::findOrFail($studentId);
-           // $campus= Campus::findOrfail('selectedCampus');
 
             $this->student_id= $this->student->student_id;
             $this->lastname= $this->student->lastname;
@@ -79,11 +81,12 @@
             $this->email= $this->student->email;
             $this->sex= $this->student->sex;
             $this->status= $this->student->status;
-            $this->selectedBarangay= $this->student->barangay;
+            // Use the find method to get the related models
+            $this->selectedBarangay = $this->student->barangay;
             $this->selectedMunicipality = $this->student->municipal;
-            $this->selectedProvince= $this->student->province;
-            $this->selectedCampus= $this->student->campus;
-            $this->selectedCourse= $this->student->course;
+            $this->selectedProvince = $this->student->province;
+            $this->selectedCampus = Campus::find($this->student->campus);
+            $this->selectedCourse = $this->student->course;
             $this->level= $this->student->level;
             $this->father= $this->student->father;
             $this->mother= $this->student->mother;
@@ -106,16 +109,16 @@
         // Load fund  based on the selected scholarship type for Scholarship 2
             $fundSources2 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType2)->get();
 
-
-            $courses = Course::all();
+            // $campus = Campus::all();
+            // $courses = Course::all();
 
             return view('livewire.grantees', [
                 'years' => $this->years,
                 'fundSources1' => $fundSources1,
                 'fundSources2' => $fundSources2,
-                'courses' => $courses,
+                // 'courses' => $courses,
+                // 'campus' =>$campus,
                 'student' => $this->student
-                // 'student' => $this->student,
 
 
 

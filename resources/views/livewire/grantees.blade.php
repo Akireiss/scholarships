@@ -23,13 +23,15 @@
                             <div class="row">
                                 <div class="col-6 col-md-6">
                                     <label class="form-label" for="campus">CAMPUS</label>
-                                    <input class="form-control form-control-sm" type="text" wire:model="selectedCampus"
-                                        wire:model="selectedCampus">
+                                    <input class="form-control form-control-sm" type="text"
+                                           value="{{ $selectedCampus ? $selectedCampus->campusDesc : '' }}"
+                                           @if($selectedCampus) disabled @endif>
+
                                 </div>
                                 <div class="col-6 col-md-6">
                                     <label class="form-label" for="studentType">STUDENT TYPE</label>
                                     <input class="form-control form-control-sm" type="text" wire:model="studentType"
-                                        name="studentType" value="">
+                                        name="studentType">
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-6 mx-3 my-3">
                                     <p><span class="text-danger">*</span>
@@ -76,7 +78,7 @@
                                 <div class="col-md-4 position-relative mt-0">
                                     <label class="form-label">Province</label>
                                     <input type="text" class="form-control form-control-sm"
-                                        wire:model="selectedProvince">
+                                        wire:model="selectedProvince" @if($selectedProvince) disabled @endif>
                                 </div>
 
                                 <div class="col-md-4 position-relative mt-0">
@@ -136,7 +138,7 @@
                                 <!-- Course -->
                                 <div class="col-md-6 position-relative mt-0">
                                     <label class="form-label">Course</label>
-                                    <input class="form-select form-select-sm" wire:model="selectedCourse" />
+                                    <input class="form-control form-control-sm" wire:model="selectedCourse" />
                                 </div>
                             </div>
 
@@ -156,8 +158,7 @@
                                 <div class="col-md-6 position-relative mt-0">
                                     <label class="form-label" for="mother" name="mother">Mother's Full
                                         name</label>
-                                    <input type="text" id="mother" class="form-control form-control-sm" name="mother"
-                                        wire:model="mother" />
+                                    <input type="text" id="mother" class="form-control form-control-sm" name="mother" />
                                 </div>
                             </div>
                             {{-- end --}}
@@ -200,25 +201,47 @@
                                                 <div class="mb-2 mt-2">
                                                     <label for="scholarshipType1" class="mb-2">Scholarship Type</label>
                                                     <select wire:model="selectedScholarshipType1" id="scholarshipType1"
-                                                        class="form-select form-select-sm mb-2" >
-                                                        <option value="{{ $studentGrant->scholarship_type }}"
-                                                            @if($studentGrant->scholarship_type) disabled @endif></option>
-                                                        <option value="">Select Scholarship Type</option>
+                                                        class="form-select form-select-sm mb-2"
+                                                        @if($studentGrant->scholarship_type) disabled @endif>
+                                                        <option value="{{ $studentGrant->scholarship_type }}">
+                                                            {{ $studentGrant->scholarship_type ?
+                                                            ($studentGrant->scholarship_type == 0 ? 'Government' :
+                                                            'Private') : 'Select Scholarship Type' }}
+                                                        </option>
                                                         <option value="0">Government</option>
                                                         <option value="1">Private</option>
-                                                    </select>
-
-
-                                                    <input class="form-control form-control-sm "
-                                                        value="{{ $studentGrant->scholarship_type }}"
-                                                        @if($studentGrant->scholarship_type) disabled @endif />
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 mt-2">
                                                     <label for="fund_sources1">Fund Sources</label>
-                                                    <input class="form-control form-control-sm "
+                                                    {{-- <input class="form-control form-control-sm "
                                                         value="{{ $studentGrant->scholarship_name }}"
-                                                        @if($studentGrant->scholarship_name) disabled @endif />
+                                                        @if($studentGrant->scholarship_name) disabled @endif /> --}}
+
+
+                                                    {{-- <label for="fund_sources1">Fund Sources</label>
+                                                    <select id="fund_sources1" class="form-select form-select-sm"
+                                                        wire:model="selectedfundsources1"
+                                                        @if($studentGrant->scholarship_name) disabled @endif>
+                                                        <option value="{{ $studentGrant->scholarship_name }}">Select
+                                                            Fund Source</option>
+                                                        @foreach($fundSources1 as $source)
+                                                        <option value="{{ $source->id }}">{{ $source->name }}</option>
+                                                        @endforeach
+                                                    </select> --}}
+                                                    <label for="fund_sources1">Fund Sources</label>
+                                                    <select id="fund_sources1" class="form-select form-select-sm"
+                                                        wire:model="selectedfundsources1"
+                                                        @if($studentGrant->scholarship_name) disabled @endif>
+                                                        <option>
+                                                            {{ $studentGrant->scholarship_name ?
+                                                            $studentGrant->scholarship_name : 'Select Fund Source' }}
+                                                        </option>
+                                                        @foreach($fundSources1 as $source)
+                                                        <option value="{{ $source->id }}">{{ $source->name }}</option>
+                                                        @endforeach
+                                                    </select>
+
                                                 </div>
                                             </div>
 

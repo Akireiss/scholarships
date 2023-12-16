@@ -36,6 +36,7 @@ class Student extends Model
     {
         return $this->belongsTo(Campus::class, 'campus');
     }
+
     public function course()
     {
         return $this->belongsTo(Course::class);
