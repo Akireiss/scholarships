@@ -267,9 +267,9 @@ final class StudentTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Scholarship Type', 'scholarshipType')
-                ->sortable()
-                ->searchable(),
+            // Column::make('Scholarship Type', 'scholarshipType')
+            //     ->sortable()
+            //     ->searchable(),
 
             Column::make('Remarks', 'student_status')
             ->sortable()
@@ -325,10 +325,10 @@ final class StudentTable extends PowerGridComponent
             ->optionLabel('grant'),
 
             //
-            Filter::select('scholarshipType', 'scholarshipType')
-            ->dataSource(Student::codes())
-            ->optionValue('scholarshipType')
-            ->optionLabel('label'),
+            // Filter::select('scholarshipType', 'scholarshipType')
+            // ->dataSource(Student::codes())
+            // ->optionValue('scholarshipType')
+            // ->optionLabel('label'),
         ];
     }
 

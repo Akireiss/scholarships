@@ -72,7 +72,7 @@
                 'courses.course_name',
                 'grantees.semester',
                 'grantees.school_year',
-                'grantees.scholarship_name'
+                // 'grantees.scholarship_name'
             );
         }
 
@@ -134,32 +134,32 @@
                 ->addColumn('studentType')
                 ->addColumn('nameSchool', fn (Student $model) => $model->nameSchool ?: "No Data")
                 ->addColumn('lastYear', fn (Student $model) => $model->lastYear ?: "No Data")
-                ->addColumn('scholarship_name', function (Student $model) {
-                    $grantee = $model->grantee;
+                // ->addColumn('scholarship_name', function (Student $model) {
+                //     $grantee = $model->grantee;
 
-                    if ($grantee instanceof Grantee) {
-                        // Display the name instead of the saved data
-                        return optional($grantee->scholarshipName)->name ?? "No Data";
-                    }
-                })
+                //     if ($grantee instanceof Grantee) {
+                //         // Display the name instead of the saved data
+                //         return optional($grantee->scholarshipName)->name ?? "No Data";
+                //     }
+                // })
 
-                ->addColumn('scholarshipType', function (Student $model) {
-                    $grantee = $model->grantee;
+                // ->addColumn('scholarshipType', function (Student $model) {
+                //     $grantee = $model->grantee;
 
-                    if ($grantee instanceof Grantee) {
-                        $value = optional($grantee)->scholarship_type;
-                        switch ($value) {
-                            case 0:
-                                return 'Government';
-                            case 1:
-                                return 'Private';
-                            default:
-                                return 'No info';
-                        }
-                    } else {
-                        return "No Data";
-                    }
-                })
+                //     if ($grantee instanceof Grantee) {
+                //         $value = optional($grantee)->scholarship_type;
+                //         switch ($value) {
+                //             case 0:
+                //                 return 'Government';
+                //             case 1:
+                //                 return 'Private';
+                //             default:
+                //                 return 'No info';
+                //         }
+                //     } else {
+                //         return "No Data";
+                //     }
+                // })
                 ->addColumn('student_status');
         }
 
@@ -295,13 +295,13 @@
                     ->hidden()
                     ->visibleInExport(true),
 
-                Column::make('Recepient', 'scholarship_name')
-                    ->sortable()
-                    ->searchable(),
+                // Column::make('Recepient', 'scholarship_name')
+                //     ->sortable()
+                //     ->searchable(),
 
-                Column::make('Scholarship Type', 'scholarshipType')
-                    ->sortable()
-                    ->searchable(),
+                // Column::make('Scholarship Type', 'scholarshipType')
+                //     ->sortable()
+                //     ->searchable(),
 
                 Column::make('Remarks', 'student_status')
                 ->sortable()
@@ -333,10 +333,10 @@
                 ->optionValue('semester')
                 ->optionLabel('semester'),
                 // recepient
-                Filter::select('scholarship_name', 'scholarship_name')
-                ->dataSource(Grantee::select('scholarship_name')->distinct()->get())
-                ->optionValue('scholarship_name')
-                ->optionLabel('scholarship_name'),
+                // Filter::select('scholarship_name', 'scholarship_name')
+                // ->dataSource(Grantee::select('scholarship_name')->distinct()->get())
+                // ->optionValue('scholarship_name')
+                // ->optionLabel('scholarship_name'),
 
                 //
                 //  Filter::select('scholarshipType', 'scholarshipType')

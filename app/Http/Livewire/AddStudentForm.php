@@ -68,6 +68,8 @@ class AddStudentForm extends Component
     {
         $this->validate();
 
+    
+
                 // Save the student data to the database
                 $student = $studentModel->create([
                     'student_id' => $this->student_id,

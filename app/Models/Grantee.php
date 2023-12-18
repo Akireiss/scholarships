@@ -14,8 +14,8 @@ class Grantee extends Model
         'student_id',
         'semester',
         'school_year',
-        'scholarship_type',
-        'scholarship_name',
+        // 'scholarship_type',
+        // 'scholarship_name',
     ];
     // public function student()
     // {
