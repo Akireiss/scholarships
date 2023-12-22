@@ -5,14 +5,16 @@ use App\Http\Livewire\Grantees;
 use App\Http\Livewire\AccountSet;
 use App\Http\Livewire\AuditTrail;
 use App\Http\Livewire\NlucGrantees;
+use App\Http\Livewire\StudentSearch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 // account
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 // add
-use App\Http\Livewire\Admin\EditStudent;
+use App\Http\Controllers\UserController;
 // view
+use App\Http\Livewire\Admin\EditStudent;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\auditController;
 use App\Http\Controllers\backupController;
 use App\Http\Controllers\reportController;
@@ -26,7 +28,6 @@ use App\Http\Controllers\addScholarController;
 use App\Http\Controllers\AddStudentController;
 use App\Http\Controllers\schoolyearController;
 use App\Http\Controllers\AdminGovernmentController;
-use App\Http\Controllers\AdminController;
 
 
 
@@ -126,9 +127,15 @@ Route::put('campus-NLUC/scholarship/actions/edit/{student}', [StudentController:
 
 // add grantees
 // admin
-//Route::get('admin/scholarship/grantees/{studentId}', Grantees::class)->name('admin.student.edit');
-
+Route::get('admin/student/{studentId}',  Grantees::class)->name('admin.student.edit');
 Route::get('admin/scholarship/grantees', [AddStudentController::class, 'grantees'])->name('admin.scholarship.grantees');
+
+// Route::get('admin/scholarship/grantees_search', StudentSearch::class)->name('admin.scholarship.grantees_search');
+Route::get('/admin/scholarship/search', [AddStudentController::class, 'searchAdmin'])->name('admin.scholarship.grantees_search');
+
+
+
+
 // staff
 Route::get('/staff/scholarship/grantees', Grantees::class)->name('staff.scholarship.grantees');
 Route::get('staff/scholarship/grantees', [AddStudentController::class, 'granteesStaff'])->name('staff.scholarship.grantees');
@@ -230,4 +237,3 @@ Route::get('admin/scholarship/view/{student}', EditStudent::class)->name('admin.
 
 });
 
-Route::get('admin/student/{studentId}',  Grantees::class)->name('admin.student.edit');

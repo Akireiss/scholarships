@@ -13,6 +13,13 @@ class AddStudentController extends Controller
 
         return view('admin.scholarship.grantees');
     }
+    public function searchAdmin()
+    {
+        return view('admin.scholarship.grantees_search');
+    }
+
+
+
     public function granteesStaff()
     {
         return view('staff.scholarship.grantees'  );

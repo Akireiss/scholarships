@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 
 use App\Models\Campus;
+use App\Models\Course;
 use App\Models\Grantee;
 use App\Models\Student;
 use Livewire\Component;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 class AddStudentForm extends Component
 {
     use Variables;
+    public $noStudentRecord = false;
+    public $existingStudent;
 
 
     protected $rules = [
@@ -68,7 +71,7 @@ class AddStudentForm extends Component
     {
         $this->validate();
 
-    
+
 
                 // Save the student data to the database
                 $student = $studentModel->create([
@@ -110,6 +113,54 @@ class AddStudentForm extends Component
 
     }
 
+    public function studentSearch()
+    {
+        $this->existingStudent = Student::where('student_id', $this->student_id)->first();
+
+        if (!$this->existingStudent) {
+            $this->noStudentRecord = true;
+        } else {
+            $this->lastname = $this->existingStudent->lastname;
+            $this->firstname = $this->existingStudent->firstname;
+            $this->initial = $this->existingStudent->initial;
+
+            $this->sex = $this->existingStudent->sex;
+            $this->status = $this->existingStudent->status;
+            $this->email = $this->existingStudent->email;
+            $this->contact = $this->existingStudent->contact;
+
+            $this->selectedCampus = Campus::join('students', 'campuses.id', '=', 'students.campus')
+                ->where('students.id', $this->existingStudent->id)
+                ->value('campusDesc') ?? "No data";
+            $this->selectedCourse = Course::join('students', 'courses.course_id', '=', 'students.course')
+                ->where('students.id', $this->existingStudent->id)
+                ->value('course_name') ?? "No data";
+
+            $this->studentType = $this->existingStudent->studentType;
+            $this->nameSchool = $this->existingStudent->nameSchool ?? "No Data";
+            $this->lastYear = $this->existingStudent->lastYear ?? "No Data";
+
+            $this->selectedBarangay = Barangay::join('students', 'barangays.brgyCode', '=', 'students.barangay')
+                ->where('students.id', $this->existingStudent->id)
+                ->value('brgyDesc') ?? "No data";
+
+            $this->selectedMunicipality = Municipal::join('students', 'municipals.citymunCode', '=', 'students.municipal')
+                ->where('students.id', $this->existingStudent->id)
+                ->value('citymunDesc') ?? "No data";
+
+            $this->selectedProvince = Province::join('students', 'provinces.provCode', '=', 'students.province')
+                ->where('students.id', $this->existingStudent->id)
+                ->value('provDesc') ?? "No data";
+
+            $this->level = $this->existingStudent->level;
+
+            $this->father = $this->existingStudent->father;
+            $this->mother = $this->existingStudent->mother;
+
+        }
+    }
+
+
 
 
     public function render()
@@ -143,7 +194,10 @@ class AddStudentForm extends Component
         } else {
             $this->barangays = [];
         }
-        return view('livewire.add-student-form');
+        return view('livewire.add-student-form',[
+            'existingStudent' => $this->existingStudent,
+            'noStudentRecord' => $this->noStudentRecord
+        ]);
     }
 
     private function resetForm()

@@ -11,7 +11,7 @@ class StudentGrantee extends Model
     protected $table = 'student_grantee';
 
     protected $fillable =  [
-        'grantees_id',
+        'student_id',
         'scholarship_type',
         'scholarship_name'
     ];

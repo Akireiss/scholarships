@@ -42,19 +42,19 @@ class Student extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function province()
+    public function barangay()
     {
-        return $this->belongsTo(Province::class, 'province', 'provCode');
+        return $this->belongsTo(Barangay::class, 'barangay', 'id');
     }
 
     public function municipal()
     {
-        return $this->belongsTo(Municipal::class, 'municipal', 'citymunCode');
+        return $this->belongsTo(Municipal::class, 'municipal', 'id');
     }
 
-    public function barangay()
+    public function province()
     {
-        return $this->belongsTo(Barangay::class, 'barangay', 'brgyCode');
+        return $this->belongsTo(Province::class, 'province', 'id');
     }
 
     public function scholarshipName()
@@ -71,7 +71,10 @@ class Student extends Model
     {
         return $this->hasMany(Grantee::class);
     }
-
+    public function studentGrantee()
+    {
+        return $this->hasMany(StudentGrantee::class);
+    }
     public function getStatusTextAttribute()
     {
         $value = $this->attributes['student_status'];
@@ -84,4 +87,16 @@ class Student extends Model
                 return 'No info';
         }
     }
+    // public function getCampus()
+    // {
+    //     $value = $this->attributes['campus'];
+    //     switch($value){
+    //         case 1:
+    //             return 'Active';
+    //         case 1:
+    //             return 'Inactive';
+    //         default:
+    //             return 'No info';
+    //     }
+    // }
 }

@@ -9,17 +9,33 @@
                     <div class="card-body">
                         <form wire:submit.prevent="saveStudent">
                             <div class="row">
-                                <div class="col-md-3 position-relative mt-0 mb-2">
-                                    <label class="form-label" for="student_id">Student ID</label>
-                                    <input type="tel" id="student_id"
-                                        class="form-control form-control-sm @error('student_id') is-invalid @enderror"
-                                        wire:model="student_id" name="student_id" maxlength="10" />
-                                    @error('student_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+
+                                <div class="col-md-3 position-relative mb-3">
+                                    <div class="input-group">
+                                        <label class="form-label" for="student_id">Student ID</label>
+                                        <input type="text" id="student_id" class="form-control form-control-sm"
+                                               wire:model.lazy="student_id" name="student_id" maxlength="10" aria-describedby="studentIdHelp" />
+                                        <button type="button" class="btn btn-primary btn-sm" wire:click="studentSearch" wire:loading.attr="disabled">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        @error('student_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                        <small id="studentIdHelp" class="form-text text-muted">Enter the 10-digit student ID.</small>
+                                    </div>
                                 </div>
+
+                                @if($noStudentRecord)
+                                <div class="col-md-3 mt-3">
+                                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        No record of the student.
+                                    </div>
+                                </div>
+                                @endif
+
                                 <script>
                                     document.addEventListener("DOMContentLoaded", function()
                                         {
@@ -82,7 +98,7 @@
                                     If new, indicate name of school last attended:
                                 </p>
                                 <input type="text" class="form-control form-control-sm" name="nameSchool"
-                                    id="nameSchool">
+                                    id="nameSchool" wire:model="nameSchool">
 
                                 <p class="mt-1"><span class="text-danger">*</span>
                                     School year last attended:

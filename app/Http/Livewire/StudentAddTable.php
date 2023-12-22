@@ -57,12 +57,20 @@
         {
             $query = Student::query();
 
+            // Apply conditional filtering based on user role
+            if (in_array(auth()->user()->role, [0, 1])) {
+                // No filtering for staff (role 0) and admin (role 1)
+            } else {
+                // Filter for role 2 (limited access)
+                $query->where('campus', 1);
+            }
+
             return $query->join('barangays', 'students.barangay', '=', 'barangays.brgyCode')
             ->join('municipals', 'students.municipal', '=', 'municipals.citymunCode')
             ->join('provinces', 'students.province', '=', 'provinces.provCode')
             ->join('campuses', 'students.campus', '=', 'campuses.id')
             ->join('courses', 'students.course', '=', 'courses.course_id') // Update join condition
-            ->leftJoin('grantees', 'students.id', '=', 'grantees.student_id')
+            // ->leftJoin('grantees', 'students.id', '=', 'grantees.student_id')
             ->select(
                 'students.*',
                 'barangays.brgyDesc',
@@ -70,8 +78,8 @@
                 'provinces.provDesc',
                 'campuses.campusDesc',
                 'courses.course_name',
-                'grantees.semester',
-                'grantees.school_year',
+                // 'grantees.semester',
+                // 'grantees.school_year',
                 // 'grantees.scholarship_name'
             );
         }
@@ -126,14 +134,17 @@
                 ->addColumn('campus')
                 ->addColumn('course')
                 ->addColumn('level')
-                ->addColumn('semester',  fn (Student $model) => $model->semester ?: "No Data")
-                ->addColumn('school_year', fn (Student $model) => $model->grantee ? $model->grantee->school_year : "No Data")
                 ->addColumn('father')
                 ->addColumn('mother')
                 ->addColumn('contact')
                 ->addColumn('studentType')
                 ->addColumn('nameSchool', fn (Student $model) => $model->nameSchool ?: "No Data")
                 ->addColumn('lastYear', fn (Student $model) => $model->lastYear ?: "No Data")
+                ->addColumn('student_status', fn (Student $model) => $model->getStatusTextAttribute());
+        }
+
+                // ->addColumn('semester',  fn (Student $model) => $model->semester ?: "No Data")
+                // ->addColumn('school_year', fn (Student $model) => $model->grantee ? $model->grantee->school_year : "No Data")
                 // ->addColumn('scholarship_name', function (Student $model) {
                 //     $grantee = $model->grantee;
 
@@ -160,8 +171,6 @@
                 //         return "No Data";
                 //     }
                 // })
-                ->addColumn('student_status');
-        }
 
         /*
         |--------------------------------------------------------------------------
@@ -236,9 +245,9 @@
 
             Column::make('Campus', 'campus')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
+                // ->hidden()
+                // ->visibleInExport(true),
 
             Column::make('Course/Program', 'course')
                 ->sortable()
@@ -249,15 +258,15 @@
             Column::make('Year level', 'level')
                 ->sortable()
                 ->searchable(),
-                Column::make('Semester', 'semester')
-                    ->sortable()
-                    ->searchable(),
+                // Column::make('Semester', 'semester')
+                //     ->sortable()
+                //     ->searchable(),
 
-                    Column::make('School year', 'school_year')
-                    ->sortable()
-                    ->searchable()
-                    ->hidden()
-                    ->visibleInExport(true),
+                //     Column::make('School year', 'school_year')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->hidden()
+                //     ->visibleInExport(true),
 
                 Column::make('Father Fullname', 'father')
                     ->sortable()
@@ -305,9 +314,7 @@
 
                 Column::make('Remarks', 'student_status')
                 ->sortable()
-                ->searchable()
-                ->hidden()
-                ->visibleInExport(true),
+                ->searchable(),
 
 
             ];
@@ -327,22 +334,6 @@
                 ->dataSource(Student::select('level')->distinct()->get())
                 ->optionValue('level')
                 ->optionLabel('level'),
-                // semester
-                Filter::select('semester', 'semester')
-                ->dataSource(Grantee::select('semester')->distinct()->get())
-                ->optionValue('semester')
-                ->optionLabel('semester'),
-                // recepient
-                // Filter::select('scholarship_name', 'scholarship_name')
-                // ->dataSource(Grantee::select('scholarship_name')->distinct()->get())
-                // ->optionValue('scholarship_name')
-                // ->optionLabel('scholarship_name'),
-
-                //
-                //  Filter::select('scholarshipType', 'scholarshipType')
-                //  ->dataSource(Student::codes())
-                //  ->optionValue('scholarshipType')
-                //  ->optionLabel('label'),
             ];
         }
 

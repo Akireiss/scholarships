@@ -31,7 +31,7 @@
                     </li>
                     <!-- Add grantees -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.scholarship.grantees') }}">Grantee</a>
+                        <a class="nav-link" href="{{ route('admin.scholarship.grantees_search') }}">Grantee</a>
                     </li>
                 </ul>
             </div>
