@@ -1,18 +1,15 @@
 <?php
 
 
+namespace App\Http\Livewire;
 
-
-
-        namespace App\Http\Livewire;
-
+        use App\Models\Campus;
         use App\Models\Student;
         use Livewire\Component;
         use App\Models\ScholarshipName;
         use App\Models\SchoolYear;
-        use Illuminate\Support\Facades\Redirect;
-        use App\Models\Grantee;
-        use App\Models\Campus;
+        use App\Models\StudentGrantee;
+        use Illuminate\Support\Facades\DB;
 
         class ScholarshipCountGovernment extends Component
         {
@@ -46,19 +43,15 @@
                 // $this->privateStudent = Student::where('scholarshipType', 1)->distinct('student_id')->count();
 
                 $this->fetchFilterOptions();
-                // $this->initializeChart();
+
 
             }
             // ends
             public function render()
             {
-                $data = $this->fetchCampusChartData();
 
-                // $this->initializeChart();
 
-                return view('livewire.scholarship-count-government', [
-                    'data' => $data,
-                ]);
+                return view('livewire.scholarship-count-government');
             }
 
             public function fetchFilterOptions()
@@ -71,41 +64,38 @@
                                     ->groupBy('school_year')
                                     ->take(5)
                                     ->pluck('school_year');
-                // Set default values
-                $this->selectedSources = 'All';
-                $this->selectedYear = 'allYear';
             }
 
-            public function fetchCampusChartData()
-                {
-                    // Fetch all unique campus names as default labels
-                    $defaultLabels = Campus::pluck('campus_name')->toArray();
+    public $studentCounts = [];
 
-                    $query = Grantee::when($this->selectedSources !== 'All', function ($query) {
-                        return $query->where('scholarship_name', $this->selectedSources);
-                    })
-                    ->when($this->selectedYear !== 'allYear', function ($query) {
-                        return $query->where('school_year', $this->selectedYear);
-                    })
-                    ->join('students', 'grantees.student_id', '=', 'students.student_id')
-                    ->join('campuses', 'students.campus', '=', 'campuses.id') // Assuming the column name is campus_id
-                    ->select('campuses.campus_name'); // Select campus_name instead of campus_id
+    public function filterScholarship()
+    {
+        $selectedSources = $this->selectedSources;
+        $selectedYear = $this->selectedYear;
 
-                    $campusData = $query->get()->groupBy('campuses.campus_name');
+        $studentCountsQuery = StudentGrantee::join('grantees', 'student_grantee.student_id', '=', 'grantees.student_id')
+            ->join('students', 'grantees.student_id', '=', 'students.id')
+            ->leftJoin('campuses', 'students.campus', '=', 'campuses.id')
+            ->where('scholarship_name', $selectedSources)
+            ->where('school_year', $selectedYear)
+            ->select('campuses.campus_name', DB::raw('count(*) as student_count'))
+            ->groupBy('campuses.campus_name');
 
-                    if ($campusData->isEmpty()) {
-                        // Use the default labels and set values to 0
-                        $labels = $defaultLabels;
-                        $values = [];
-                    } else {
-                        // Use the retrieved labels and values
-                        $labels = $campusData->keys()->toArray();
-                        $values = $campusData->map->count()->toArray();
-                    }
+        if (auth()->user()->role === 0 || auth()->user()->role === 1) {
+            // Admin or manager sees data for all campuses
+            $studentCounts = $studentCountsQuery->get();
+        } else {
+            // Other users see data for their campus only
+            $studentCounts = $studentCountsQuery->where('students.campus', 1)->get(); // Assuming 1 represents their campus
+        }
 
-                    $this->emit('renderChart', ['labels' => $labels, 'values' => $values]);
-                }
+        $campusNames = Campus::pluck('campus_name')->toArray();
+
+        $this->emit('renderChart', ['data' => $studentCounts, 'labels' => $campusNames]);
+    }
+
 
 
 
         }
+

@@ -37,6 +37,8 @@
             </div>
         </li>
 
+        @can('admin-access')
+
         <!-- Settings -->
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#settings" aria-expanded="false"
@@ -67,6 +69,60 @@
                 </ul>
             </div>
         </li>
+        @endcan
+
+        @can('incharge-access')
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#settings" aria-expanded="false"
+                aria-controls="settings">
+                <span class="menu-title">Settings</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-settings menu-icon"></i>
+            </a>
+            <div class="collapse" id="settings">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.addScholar') }}"> Add
+                            Scholarships </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.reports') }}"> Reports </a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.program') }}"> Program </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        @endcan
+
+        @can('staff-access')
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#settings" aria-expanded="false"
+                aria-controls="settings">
+                <span class="menu-title">Settings</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-settings menu-icon"></i>
+            </a>
+            <div class="collapse" id="settings">
+                <ul class="nav flex-column sub-menu">
+
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.addScholar') }}"> Add
+                        Scholarships </a></li>
+
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.auditTrail') }}"> Audit
+                        Trail </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.backup') }}"> Data back-up
+                    </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.reports') }}"> Reports </a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.program') }}"> Program </a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.settings.school-year') }}"> School
+                        Year </a>
+                </ul>
+            </div>
+        </li>
+        @endcan
+
         <li class="nav-item">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

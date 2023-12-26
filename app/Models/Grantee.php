@@ -14,10 +14,10 @@ class Grantee extends Model
         'student_id',
         'semester',
         'school_year',
-        'scholarship_type_1',
-        'scholarship_name_1',
-        'scholarship_type_2',
-        'scholarship_name_2',
+        // 'scholarship_type_1',
+        // 'scholarship_name_1',
+        // 'scholarship_type_2',
+        // 'scholarship_name_2',
     ];
     // public function student()
     // {

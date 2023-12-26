@@ -133,14 +133,37 @@ use App\Models\StudentGrantee;
 
             $fundSources2 = ScholarshipName::where('scholarship_type', $this->selectedScholarshipType2)->get();
 
-            return view('livewire.grantees', [
+            if(auth()->user()->role === 0)
+            {
+             return view('livewire.grantees', [
                 'years' => $this->years,
                 'fundSources1' => $fundSources1,
                 'fundSources2' => $fundSources2,
                 'student' => $this->student
             ])->extends('layouts.includes.admin.index')
               ->section('content');
+            } elseif(auth()->user()->role === 1)
+            {
+                return view('livewire.grantees', [
+                    'years' => $this->years,
+                    'fundSources1' => $fundSources1,
+                    'fundSources2' => $fundSources2,
+                    'student' => $this->student
+                ])->extends('layouts.includes.admin.index')
+                  ->section('content');
+
+            } else{
+             return view('livewire.grantees', [
+                'years' => $this->years,
+                'fundSources1' => $fundSources1,
+                'fundSources2' => $fundSources2,
+                'student' => $this->student
+            ])->extends('layouts.includes.admin.index')
+              ->section('content');
+
+            }
         }
+
 
         public function updatedSelectedScholarshipType1()
         {

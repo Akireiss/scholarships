@@ -18,7 +18,27 @@ class ViewForm extends Component
 
     public function render()
     {
-        return view('livewire.view-form');
+
+
+        if(auth()->user()->role === 0)
+            {
+                return view('livewire.view-form')
+                ->extends('layouts.includes.admin.index')
+                ->section('content');
+
+            } elseif(auth()->user()->role === 1)
+            {
+                  return view('livewire.view-form')
+                  ->extends('layouts.includes.admin.index')
+                  ->section('content');
+
+            } else{
+
+              return view('livewire.view-form')
+              ->extends('layouts.includes.admin.index')
+              ->section('content');
+
+            }
     }
 
     public function importData()

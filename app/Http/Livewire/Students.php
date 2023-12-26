@@ -13,7 +13,15 @@ class Students extends Component
 
 public function render()
 {
-    return view('livewire.students');
+   if(auth()->user()->role === 0)
+   {
+    return view('livewire.students')->extends('layouts.includes.staff.index')->section('content');
+   } elseif(auth()->user()->role === 1)
+   {
+    return view('livewire.students')->extends('layouts.includes.admin.index')->section('content');
+   } else{
+    return view('livewire.students')->extends('layouts.includes.campus-NLUC.index')->section('content');
+   }
 }
 
 }

@@ -1,7 +1,9 @@
 <?php
 
-    namespace App\Http\Livewire;
 
+namespace App\Http\Livewire;
+
+    use App\Models\Campus;
     use App\Models\Grantee;
     use App\Models\Student;
     use Illuminate\Support\Carbon;
@@ -29,9 +31,9 @@
             // $this->showCheckBox();
 
             return [
-                Exportable::make('export')
-                    ->striped()
-                    ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+                // Exportable::make('export')
+                //     ->striped()
+                //     ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
                 Header::make()->showSearchInput(),
                 Footer::make()
                     ->showPerPage()
@@ -55,6 +57,7 @@
 
         public function datasource(): Builder
         {
+
             $query = Student::query();
 
             // Apply conditional filtering based on user role
@@ -64,25 +67,28 @@
                 // Filter for role 2 (limited access)
                 $query->where('campus', 1);
             }
-
-            return $query->join('barangays', 'students.barangay', '=', 'barangays.brgyCode')
+            return $query
+            ->join('barangays', 'students.barangay', '=', 'barangays.brgyCode')
             ->join('municipals', 'students.municipal', '=', 'municipals.citymunCode')
             ->join('provinces', 'students.province', '=', 'provinces.provCode')
             ->join('campuses', 'students.campus', '=', 'campuses.id')
-            ->join('courses', 'students.course', '=', 'courses.course_id') // Update join condition
-            // ->leftJoin('grantees', 'students.id', '=', 'grantees.student_id')
-            ->select(
+            ->join('courses', 'students.course', '=', 'courses.course_id')->select(
                 'students.*',
                 'barangays.brgyDesc',
                 'municipals.citymunDesc',
                 'provinces.provDesc',
                 'campuses.campusDesc',
                 'courses.course_name',
-                // 'grantees.semester',
-                // 'grantees.school_year',
-                // 'grantees.scholarship_name'
+                // dd($query->get())
+
             );
+
         }
+
+        // ->leftJoin('grantees', 'students.id', '=', 'grantees.student_id')
+        // 'grantees.semester',
+        // 'grantees.school_year',
+        // 'grantees.scholarship_name'
 
         /*
         |--------------------------------------------------------------------------
@@ -99,8 +105,13 @@
          */
         public function relationSearch(): array
         {
-            return [];
+            return [
+                'Campus' => [
+                    'campusDesc',
+                ]
+            ];
         }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -128,11 +139,11 @@
                 ->addColumn('email')
                 ->addColumn('sex')
                 ->addColumn('status')
-                ->addColumn('barangay')
-                ->addColumn('municipal')
-                ->addColumn('province')
-                ->addColumn('campus')
-                ->addColumn('course')
+                ->addColumn('barangay', fn (Student $model) => $model->brgyDesc ?: "No Data")
+                ->addColumn('municipal', fn (Student $model) => $model->citymunDesc ?: "No Data")
+                ->addColumn('province', fn (Student $model) => $model->provDesc ?: "No Data")
+                ->addColumn('campus', fn (Student $model) => $model->campusDesc ?: "No Data" )
+                ->addColumn('course', fn (Student $model) => $model->course_name ?: "No Data")
                 ->addColumn('level')
                 ->addColumn('father')
                 ->addColumn('mother')
@@ -205,7 +216,9 @@
 
             Column::make('Middle Initial', 'initial')
                 ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->hidden()
+                ->visibleInExport(true),
 
             Column::make('Email Address', 'email')
                 ->sortable()
@@ -329,12 +342,28 @@
         {
             return [
 
+
                 // Level
                 Filter::select('level', 'level')
-                ->dataSource(Student::select('level')->distinct()->get())
+                ->dataSource(Student::select('level')->distinct()->orderBy('level')->get())
                 ->optionValue('level')
                 ->optionLabel('level'),
+
+                Filter::select('student_status', 'student_status')
+                ->dataSource([
+                    ['student_status' => 0, 'name' => 'Active'],
+                    ['student_status' => 1, 'name' => 'Inactive'],
+                ])
+                ->optionValue('student_status')
+                ->optionLabel('name'),
+
+                Filter::select('campus', 'campus')
+                ->dataSource(Campus::select('id', 'campusDesc')->distinct()->orderBy('campusDesc')->get())  // Adjust query if needed
+                ->optionValue('id')
+                ->optionLabel('campusDesc'),
+
             ];
+
         }
 
         /*

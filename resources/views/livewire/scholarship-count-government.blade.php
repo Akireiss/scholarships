@@ -108,7 +108,7 @@
                 <label for="fundSources" class="form-label">Recipient</label>
                 <select id="selectedSources" name="selectedSources" wire:model="selectedSources"
                     class="form-select form-select-sm mb-3">
-                    <option value="All" {{ $selectedSources==='All' ? 'selected' : '' }}>All</option>
+                    <option selected>Select below...</option>
                     @foreach($fundSources as $source)
                     <option value="{{ $source->id }}">{{ $source->name }}</option>
                     @endforeach
@@ -117,7 +117,7 @@
             <div class="col-md-3">
                 <label for="year" class="form-label">Select Year</label>
                 <select id="selectedYear" name="selectedYear" wire:model="selectedYear" class="form-select form-select">
-                    <option value="allYear" {{ $selectedYear==='allYear' ? 'selected' : '' }}>All</option>
+                    <option selected>Select below...</option>
                     @foreach($years as $year)
                     <option value="{{ $year }}">{{ $year }}</option>
                     @endforeach
@@ -125,7 +125,8 @@
             </div>
             <div class="col-md-3">
                 <label for="applyFilters" class="form-label">Filter</label>
-                <button class="btn btn-sm btn-primary form-control">Apply Filters</button>
+                <button class="btn btn-sm btn-primary form-control" wire:click="filterScholarship">Apply
+                    Filters</button>
             </div>
         </div>
 
@@ -141,18 +142,22 @@
         </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('livewire:load', function () {
-        @this.on('renderChart', function (data){
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const config = {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Student',
-                        data: data.values,
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        document.addEventListener('livewire:load', function () {
+        Livewire.on('renderChart', function (data) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const labels = data.labels; // Use directly for labels
+        const studentCounts = data.data.map(item => item.student_count);
+
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Student',
+                    data: studentCounts,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(255, 159, 64, 0.2)',
@@ -180,14 +185,11 @@
                             beginAtZero: true
                         }
                     }
-                },
-            };
-            const myChart = new Chart(ctx, config);
+                }
+            });
         });
     });
-</script>
-
-
+        </script>
 
     </div>
 

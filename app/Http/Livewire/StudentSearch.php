@@ -25,7 +25,21 @@ class StudentSearch extends Component
 
     public function studentSearch()
     {
-        $this->existingStudent = Student::where('student_id', $this->student_id)->first();
+
+        if (auth()->user()->role == 0 || auth()->user()->role == 1) {
+            $this->existingStudent = Student::where('student_id', $this->student_id)->first();
+        } else {
+            $this->existingStudent = Student::where('student_id', $this->student_id)
+                ->where('campus', 1)
+                ->first();
+
+            // Additional validation for users with roles other than 0 or 1
+            if ($this->existingStudent && $this->existingStudent->campus !== 1) {
+                // If the student's campus is not 1, handle the error or add your custom logic
+                $error = 'Access Denied!';
+                session()->flash('success', $error);
+            }
+        }
 
         if (!$this->existingStudent) {
             $this->noStudentRecord = true;
@@ -105,7 +119,7 @@ class StudentSearch extends Component
         }
     }
 
-    
+
 
     public function fetchSchoolYears()
     {

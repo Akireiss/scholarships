@@ -28,6 +28,7 @@ use App\Http\Controllers\addScholarController;
 use App\Http\Controllers\AddStudentController;
 use App\Http\Controllers\schoolyearController;
 use App\Http\Controllers\AdminGovernmentController;
+use App\Http\Livewire\Students;
 
 
 
@@ -84,7 +85,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // students
 // admin
-Route::get('admin/student', [StudentsController::class, 'studentAdmin'])->name('admin.student');
+Route::get('admin/student', Students::class)->name('admin.student');
 // addStudent
 Route::get('/admin/actions/add_student', [AdminController::class, 'adminAdd'])->name('admin.actions.add_student');
 
@@ -101,7 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('staff/scholarship/view', [AdminGovernmentController::class, 'viewStaff'])->name('staff.scholarship.view');
 
     // campus-NLUC
-    Route::get('campus-NLUC/scholarship/view', [AdminGovernmentController::class, 'viewNLUC'])->name('campus-NLUC.scholarship.view');
+  //  Route::get('admin/scholarship/view', [AdminGovernmentController::class, 'viewNLUC'])->name('campus-NLUC.scholarship.view');
 
 });
 // Route::get('layouts/includes/admin/navbar', [NavbarController::class, 'notification'])
